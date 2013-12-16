@@ -10,7 +10,7 @@ def Login(request):
 
 def Registration(request):
     parameters = Model.process_business_logic()
-    return Registration_View.pushTemplate('Registration.txt')
+    return Registration_View.pushTemplate('Registration.mako')
 
 def MainPage(request):
     return Registration_View.pushTemplate('MainPage.txt')

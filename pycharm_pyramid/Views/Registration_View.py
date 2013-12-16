@@ -13,10 +13,10 @@ def pushTemplate(templatename):
 
 
 #after registration, send email to leo
-mailer=get_mailer(request)
-message = Message(subject="Registration by "+name,
-                  sender=cuore_email,
-                  recipients=["leo@cuore.io"],
-                  body=name+" has registered for the Cuore Intranet with the email "+email+". Click here to confirm "
-                       +name+"'s registration: "+admin_panel)
-mailer.send(message)
+#mailer=get_mailer(request)
+#message = Message(subject="Registration by "+name,
+#                  sender=cuore_email,
+#                  recipients=["kirby@cuore.io"], #change to leo when rolled out
+#                  body=name+" has registered for the Cuore Intranet with the email "+email+". Click here to confirm "
+#                       +name+"'s registration: "+link_to_admin_panel)
+#mailer.send(message)
