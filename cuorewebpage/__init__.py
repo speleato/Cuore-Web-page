@@ -2,8 +2,7 @@ from wsgiref.simple_server import make_server
 from pyramid.config import Configurator
 #from Model import Model
 #from Views import Login_View, Registration_View
-from pyramid_mailer import get_mailer
-from pyramid_mailer.message import Message
+
 from pyramid.response import Response
 from pyramid.view import view_config
 

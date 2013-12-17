@@ -1,6 +1,9 @@
 from pyramid.response import Response
 from pyramid.view import view_config
 
+from pyramid_mailer import get_mailer
+from pyramid_mailer.message import Message
+
 @view_config(route_name='Registration', renderer='cuorewebpage:templates/Registration.mako')
 def Registration(request):
     #parameters = Model.process_business_logic()

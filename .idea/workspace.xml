@@ -2,47 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="53e4fb9f-2e2a-4957-b876-b2413ade521f" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/cuorewebpage/static/favicon.ico" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/cuorewebpage/static/footerbg.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/cuorewebpage/static/headerbg.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/cuorewebpage/static/middlebg.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/cuorewebpage/static/pyramid-small.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/cuorewebpage/static/pyramid.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/cuorewebpage/static/transparent.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/cuorewebpage/templates/Admin.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/cuorewebpage/templates/Blog.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/CHANGES.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/cuorewebpage/templates/Calendar.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/cuorewebpage/templates/Files.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/cuorewebpage/Views/Login_View.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/MANIFEST.in" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/cuorewebpage/templates/MainPage.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/cuorewebpage/Model/Model.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Cuore_Web_page.egg-info/PKG-INFO" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/README.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/cuorewebpage/templates/Registration.mako" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/cuorewebpage/Views/Registration_View.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Cuore_Web_page.egg-info/SOURCES.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/cuorewebpage/templates/Tasks.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/cuorewebpage/templates/Workspace.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/cuorewebpage/__init__.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/cuorewebpage/Model/__init__.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/cuorewebpage/Views/__init__.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/cuorewebpage/Model/database_config.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/cuorewebpage/Model/database_example.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Cuore_Web_page.egg-info/dependency_links.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/development.ini" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Cuore_Web_page.egg-info/entry_points.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/cuorewebpage/static/ie6.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/cuorewebpage/templates/mytemplate.pt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Cuore_Web_page.egg-info/not-zip-safe" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/production.ini" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/cuorewebpage/static/pylons.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Cuore_Web_page.egg-info/requires.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/setup.cfg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/setup.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/cuorewebpage/tests.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Cuore_Web_page.egg-info/top_level.txt" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/cuorewebpage/Views/templates/Login.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/cuorewebpage/Views/templates/Registration.txt" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/pycharm_pyramid/.idea/.name" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/pycharm_pyramid/.idea/encodings.xml" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/pycharm_pyramid/.idea/misc.xml" afterPath="" />
@@ -70,6 +31,9 @@
       <change type="DELETED" beforePath="$PROJECT_DIR$/pycharm_pyramid/Views/templates/Workspace.txt" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/pycharm_pyramid/main.py" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/pycharm_pyramid/tasks/static/tasks.py" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cuorewebpage/Views/Registration_View.py" afterPath="$PROJECT_DIR$/cuorewebpage/Views/Registration_View.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cuorewebpage/__init__.py" afterPath="$PROJECT_DIR$/cuorewebpage/__init__.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Cuore-Web-page.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -92,10 +56,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="__init__.py" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="__init__.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/cuorewebpage/__init__.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="37" column="0" selection-start="1124" selection-end="1124" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1335">
+            <state line="76" column="4" selection-start="2323" selection-end="2323" vertical-scroll-proportion="0.87096775" vertical-offset="465" max-vertical-offset="1320">
               <folding>
                 <element signature="e#0#45#0" expanded="true" />
               </folding>
@@ -103,10 +67,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Registration_View.py" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="Registration_View.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/cuorewebpage/Views/Registration_View.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="3" column="62" selection-start="138" selection-end="138" vertical-scroll-proportion="0.05905512" vertical-offset="0" max-vertical-offset="795">
+            <state line="24" column="40" selection-start="1023" selection-end="1023" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="840">
               <folding>
                 <element signature="e#0#37#0" expanded="true" />
               </folding>
@@ -136,8 +100,8 @@
         <option value="$PROJECT_DIR$/setup.cfg" />
         <option value="$PROJECT_DIR$/setup.py" />
         <option value="$PROJECT_DIR$/cuorewebpage/Model/Model.py" />
-        <option value="$PROJECT_DIR$/cuorewebpage/__init__.py" />
         <option value="$PROJECT_DIR$/cuorewebpage/Views/Registration_View.py" />
+        <option value="$PROJECT_DIR$/cuorewebpage/__init__.py" />
       </list>
     </option>
   </component>
@@ -527,20 +491,20 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/cuorewebpage/__init__.py">
+    <entry file="file://$PROJECT_DIR$/cuorewebpage/Views/Registration_View.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="37" column="0" selection-start="1124" selection-end="1124" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1335">
+        <state line="24" column="40" selection-start="1023" selection-end="1023" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="840">
           <folding>
-            <element signature="e#0#45#0" expanded="true" />
+            <element signature="e#0#37#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/cuorewebpage/Views/Registration_View.py">
+    <entry file="file://$PROJECT_DIR$/cuorewebpage/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="3" column="62" selection-start="138" selection-end="138" vertical-scroll-proportion="0.05905512" vertical-offset="0" max-vertical-offset="795">
+        <state line="76" column="4" selection-start="2323" selection-end="2323" vertical-scroll-proportion="0.87096775" vertical-offset="465" max-vertical-offset="1320">
           <folding>
-            <element signature="e#0#37#0" expanded="true" />
+            <element signature="e#0#45#0" expanded="true" />
           </folding>
         </state>
       </provider>
