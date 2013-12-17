@@ -1,6 +1,6 @@
 import sys
 
-from py2neo import neo4j, ogm, cypher
+from py2neo import neo4j, ogm
 from database_config import db_config
 
 graph_db = neo4j.GraphDatabaseService(db_config['uri'])
@@ -24,7 +24,6 @@ class Person(object):
         return (self.first_name)
 
     def submit_settings(self):
-        try ( tx = graph_db.)
         store.save_unique("People", "email", self.email, self)
         return self
 
@@ -49,6 +48,6 @@ print me
 president = store.load_unique("People", "email", leo.email, Person)
 print president
 
-if store.load_unique("People", "first_name", "george", Person) = None:
-    print me
+#if store.load_unique("People", "first_name", "george", Person) = None:
+#    print me
 
