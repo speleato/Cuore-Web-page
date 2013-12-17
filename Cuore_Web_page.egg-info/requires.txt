@@ -1,0 +1,8 @@
+pyramid
+pyramid_chameleon
+pyramid_debugtoolbar
+waitress
+transaction
+pyramid_tm
+py2neo
+pyramid_mailer
