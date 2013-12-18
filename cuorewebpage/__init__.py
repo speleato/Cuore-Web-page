@@ -1,7 +1,7 @@
 from wsgiref.simple_server import make_server
 from pyramid.config import Configurator
-#from Model import Model
-#from Views import Login_View, Registration_View
+from Model import Model
+from Views import Login_View, Registration_View
 
 from pyramid.response import Response
 from pyramid.view import view_config
@@ -51,6 +51,10 @@ def main(global_config, **settings):
 
     config.add_route('Registration', '/registration')
     #config.add_view(Registration, route_name='Registration')
+
+    config.add_route('ConfirmRegistration', 'registration/confirm')
+    config.add_route('Directory', '/directory')
+    config.add_route('Profile', '/directory/profile')
 
     config.add_route('MainPage', '/main')
     #config.add_view(MainPage, route_name='MainPage')

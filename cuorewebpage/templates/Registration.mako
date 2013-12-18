@@ -1,8 +1,10 @@
 <%
-    #Values for testing permissions
+    # Values for testing permissions, I'd suggest combining confirmation variables into one variable. For example,
+    #       0 means no one has confirmed anything, 1 means that leo has confirmed it, 3 means leo and user confirmed it
     admin=0
     registered=0
     awaitingConfirmation=0
+    justConfirmed=0
 
     #get info from database to use as defaults
     ''' psuedocode:
@@ -13,6 +15,8 @@
 %>
 %if awaitingConfirmation:
     <h2>Your registration has been submitted and is in the process of being approved.</h2>
+%elif justConfirmed:
+    <h2>Thank you for confirming your registration, you are now part of Cuore's system.</h2>
 %else:
     <form action="/registration" method="post">
     %if admin:
@@ -20,7 +24,7 @@
             <input type="hidden" name="task" value="admin">
             Title:<input required type="text" name="title"><br/>
             Department:<select name="department">
-                            <option value="Business Team">(Taking Care of) Business Team</option>
+                            <option value="Business Team">Business Team</option>
                             <option value="Applications Team">Applications Team</option>
                             <option value="Systems Team">Systems Team</option>
                             <option value="Hardware Team">Hardware Team</option>
