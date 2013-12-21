@@ -28,7 +28,7 @@
         <h3>${j}</h3>
         <%
         person=list()
-        tx.append("MATCH (a),(b) WHERE  (a:Person)-->(b:Title) AND b.name='"+j+"' RETURN a.first_name")
+        tx.append("MATCH (a),(b) WHERE  (a)-->(b:Title) AND b.name='"+j+"' RETURN a.first_name")
         result1=tx.execute()
         for k in result1[0]:
             node=k.values
@@ -36,10 +36,9 @@
             person.append(str(x))
         %>
         %for k in person:
-            <h4>${k}</h4>
             <%doc>add link to person's profile, i think can be done using get and then rendering the profile with the
-                        name as a parameter
-              <a href="/profile?name=${k}">${k}</a></%doc>
+                        name as a parameter</%doc>
+              <a href="/profile?name=${k}">${k}</a>
         %endfor
     %endfor
 %endfor
