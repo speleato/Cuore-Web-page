@@ -4,37 +4,42 @@
     session = cypher.Session("http://localhost:7474")
     tx = session.create_transaction()
     tx.append("MATCH (n) WHERE (n:Department) RETURN n.name")
-    result=tx.commit()
-    print result
+    result=tx.execute()
+    department=list()
     for i in result[0]:
         node=i.values
-        print node
-        print type(node)
+        #print node
+        #print type(node)
         x,=node
-        print x #gives you department, now use x to find titles
-        '''tx = session.create_transaction()
-        tx.append("MATCH (a),(b) WHERE  (b:Title)-->(a:Department) RETURN a.name")
-        result=tx.commit()
-            for j in result[0]:
-                node=j.values
-                print node
-                print type(node)
-                x,=node
-                print x'''
+        department.append(str(x))
 %>
-<%doc>%for :
-    ${node}
-    %for department in node:
-        <h2>${type(department)}</h2>
-        %for title in department:
-            <h3>${type(title)}</h3><%doc>
-            %for employee in ${title}:
-                <h4>${employee}</h4>
-                <%doc>employee info</%doc>
-                <%doc>add link to person's profile, i think can be done using get and then rendering the profile with the
+%for i in department:
+    <h2>${i}</h2>
+    <%
+    title=list()
+    tx.append("MATCH (a),(b) WHERE  (a:Title)-->(b:Department) AND b.name='"+i+"' RETURN a.name")
+    result1=tx.execute()
+    for j in result1[0]:
+        node=j.values
+        x,=node
+        title.append(str(x))
+    %>
+    %for j in title:
+        <h3>${j}</h3>
+        <%
+        person=list()
+        tx.append("MATCH (a),(b) WHERE  (a:Person)-->(b:Title) AND b.name='"+j+"' RETURN a.first_name")
+        result1=tx.execute()
+        for k in result1[0]:
+            node=k.values
+            x,=node
+            person.append(str(x))
+        %>
+        %for k in person:
+            <h4>${k}</h4>
+            <%doc>add link to person's profile, i think can be done using get and then rendering the profile with the
                         name as a parameter
-              <a href="/profile?name=${name}">${name}</a></%doc><%doc>
-            %endfor</%doc>
-       <%doc> %endfor
+              <a href="/profile?name=${k}">${k}</a></%doc>
+        %endfor
     %endfor
-%endfor</%doc>
+%endfor
