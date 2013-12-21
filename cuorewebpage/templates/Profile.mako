@@ -1,3 +1,3 @@
 <%
-    #get_info_from_db
+    #get_info_from_db using ${name}
 %>
