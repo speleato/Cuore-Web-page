@@ -54,7 +54,7 @@ def main(global_config, **settings):
 
     config.add_route('ConfirmRegistration', 'registration/confirm')
     config.add_route('Directory', '/directory')
-    config.add_route('Profile', '/directory/profile')
+    config.add_route('Profile', '/profile')
 
     config.add_route('MainPage', '/main')
     #config.add_view(MainPage, route_name='MainPage')

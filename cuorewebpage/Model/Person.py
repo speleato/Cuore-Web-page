@@ -50,4 +50,19 @@ print president
 
 #if store.load_unique("People", "first_name", "george", Person) = None:
 #    print me
-
+neo4j.CypherQuery(graph_db, "CREATE (Business:Department{name:'Business'})").run()
+neo4j.CypherQuery(graph_db, "CREATE (Systems:Department{name:'Systems'})").run()
+neo4j.CypherQuery(graph_db, "CREATE (Hardware:Department{name:'Hardware'})").run()
+neo4j.CypherQuery(graph_db, "CREATE (Applications:Department{name:'Applications'})").run()
+neo4j.CypherQuery(graph_db, "CREATE (President:Title{name:'President'})").run()
+neo4j.CypherQuery(graph_db, "CREATE (Vice_President:Title{name:'Vice President'})").run()
+neo4j.CypherQuery(graph_db, "CREATE (Applications_Developer:Title{name:'Applications Developer'})").run()
+neo4j.CypherQuery(graph_db, "MATCH a,b WHERE a:Department AND b:Title AND a.name='Business' AND b.name='President' CREATE b-[:in]->a").run()
+neo4j.CypherQuery(graph_db, "MATCH a,b WHERE a:Department AND b:Title AND a.name='Business' AND b.name='Vice President' CREATE b-[:in]->a").run()
+neo4j.CypherQuery(graph_db, "MATCH a,b WHERE a:Department AND b:Title AND a.name='Applications' AND b.name='Applications Developer' CREATE b-[:in]->a").run()
+neo4j.CypherQuery(graph_db, "CREATE (Kirby:Person{first_name:'Kirby', last_name:'Linvill', email:'kirby@cuore.io'})").run()
+neo4j.CypherQuery(graph_db, "CREATE (Kevin:Person{first_name:'Kevin', last_name:'Ryan', email:'kevincryan23@gmail.com'})").run()
+neo4j.CypherQuery(graph_db, "MATCH a,b WHERE b:Title AND a.first_name='Leo' AND b.name='President' CREATE a-[:is_a]->b").run()
+neo4j.CypherQuery(graph_db, "MATCH a,b WHERE b:Title AND a.first_name='Kevin' AND b.name='Vice President' CREATE a-[:is_a]->b").run()
+neo4j.CypherQuery(graph_db, "MATCH a,b WHERE b:Title AND a.first_name='Sandy' AND b.name='Applications Developer' CREATE a-[:is_a]->b").run()
+neo4j.CypherQuery(graph_db, "MATCH a,b WHERE b:Title AND a.first_name='Kirby' AND b.name='Applications Developer' CREATE a-[:is_a]->b").run()
