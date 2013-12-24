@@ -6,13 +6,39 @@ from database_config import db_config
 graph_db = neo4j.GraphDatabaseService(db_config['uri'])
 store = ogm.Store(graph_db)
 
+
+class Company(object):
+    def __init__(self, name=None):
+        self.name=name
+
+    def __str__(self):
+        return self.name
+
+
+class Department(object):
+    def __init__(self, name=None):
+        self.name=name
+
+    def __str__(self):
+        return self.name
+
+
+class Title(object):
+    def __init__(self, name=None):
+        self.name=name
+        #self.permissions=permissions
+
+    def __str__(self):
+        return self.name
+
+
 class Person(object):
-    def __init__(self, first_name=None, last_name=None, email=None):
+    def __init__(self, first_name=None, last_name=None, email=None, title=None):
         self.first_name = first_name
         self.last_name = last_name
         self.email = email
-        '''
         self.title = title
+        '''
         self.department = department
         self.phone = phone
         self.address = address
@@ -29,14 +55,16 @@ class Person(object):
 
 
 
-sandy = Person("Sandy", "Siththanandan", "sandymeep@gmail.com")
+sandy = Person("Sandy", "Siththanandan", "sandymeep@gmail.com", "Applications Developer")
 store.save_unique("People", "email", sandy.email, sandy)
 chippie = Person("Chippie", "Siththanandan", "chippie.vbs@gmail.com")
 lauren = Person("Lauren", "Ruge", "lruge008@gmail.com")
+store.save_unique("People", "email", chippie.email, chippie)
+store.save_unique("People", "email", lauren.email, lauren)
 store.relate(sandy, "LIKES", chippie)
 store.relate(sandy, "LIKES", lauren)
 store.save(sandy)
-leo = Person("Leo", "Schultz", "leo@cuore.io")
+leo = Person("Leo", "Schultz", "leo@cuore.io", "President")
 leo.submit_settings()
 
 friends = store.load_related(sandy, "LIKES", Person)
@@ -50,6 +78,64 @@ print president
 
 #if store.load_unique("People", "first_name", "george", Person) = None:
 #    print me
+
+Kirby = Person("Kirby", "Linvill", "kirby@cuore.io", "Applications Developer")
+Kevin = Person("Kevin", "Ryan", "kevincryan23@gmail.com", "Vice President")
+#List of people in each position, first entry is the name of the position
+President = ["President", leo]
+Vice_President = ["Vice President", Kevin]
+Lead_Applications_Developer = ["Lead Applications Developer"]
+Applications_Developer = ["Applications Developer", Kirby, sandy]
+Web_Applications_Developer = ["Web Applications Developer"]
+Lead_Systems_Engineer = ["Lead Systems Engineer"]
+Lead_Hardware_Engineer = ["Lead Hardware Engineer"]
+
+#Lists of titles in each department
+business = [President, Vice_President]
+applications = [Lead_Applications_Developer, Applications_Developer, Web_Applications_Developer]
+systems = [Lead_Systems_Engineer]
+hardware = [Lead_Hardware_Engineer]
+
+#List of departments containing the lists of titles in that department
+departments = [business, applications, systems, hardware]
+departmentNames = ["Business", "Applications", "Systems", "Hardware"]
+
+#Company node tying departments together
+cuore = Company("Cuore")
+'''
+#List of employees
+Kirby = Person("Kirby", "Linvill", "kirby@cuore.io", "Applications Developer")
+Kevin = Person("Kevin", "Ryan", "kevincryan23@gmail.com", "Vice President")
+employees = [Kirby, Kevin]
+
+for i in range(0, len(employees)):
+    title=Title(employees[i].title)
+    store.relate(title, "IS A", employees[i])
+    store.save_unique("People", "email", employees[i].email, employees[i])
+'''
+for i in range(0, len(departments)):
+    dep = Department(departmentNames[i])
+    store.relate(cuore, "UNDER", dep)
+    for j in range(0, len(departments[i])):
+        title = Title(departments[i][j][0])
+        store.relate(dep, "IN", title)
+        for k in range(1, len(departments[i][j])):
+            employee = departments[i][j][k]
+            print departments[i][j][k]
+            print type(employee)
+            store.save_unique("People", "email", employee.email, employee)
+            store.relate(title, "IS A", employee)
+        store.save_unique("Title", "name", title.name, title)
+    store.save_unique("Department", "name", departmentNames[i], dep)
+store.save_unique("Company", "name", "Cuore", cuore)
+
+
+'''
+for i in range(0, len(employees)):
+    store.relate(employees[i], "IS A", store.load_unique("Title", "name", employees[i].title, Title))
+    store.save_unique("People", "email", employees[i].email, employees[i])
+
+Same thing as above but in Cypher
 neo4j.CypherQuery(graph_db, "CREATE (Business:Department{name:'Business'})").run()
 neo4j.CypherQuery(graph_db, "CREATE (Systems:Department{name:'Systems'})").run()
 neo4j.CypherQuery(graph_db, "CREATE (Hardware:Department{name:'Hardware'})").run()
@@ -66,3 +152,4 @@ neo4j.CypherQuery(graph_db, "MATCH a,b WHERE b:Title AND a.first_name='Leo' AND 
 neo4j.CypherQuery(graph_db, "MATCH a,b WHERE b:Title AND a.first_name='Kevin' AND b.name='Vice President' CREATE a-[:is_a]->b").run()
 neo4j.CypherQuery(graph_db, "MATCH a,b WHERE b:Title AND a.first_name='Sandy' AND b.name='Applications Developer' CREATE a-[:is_a]->b").run()
 neo4j.CypherQuery(graph_db, "MATCH a,b WHERE b:Title AND a.first_name='Kirby' AND b.name='Applications Developer' CREATE a-[:is_a]->b").run()
+'''
