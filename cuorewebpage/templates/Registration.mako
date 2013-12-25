@@ -1,7 +1,7 @@
 <%
     # Values for testing permissions, I'd suggest combining confirmation variables into one variable. For example,
     #       0 means no one has confirmed anything, 1 means that leo has confirmed it, 3 means leo and user confirmed it
-    admin=0
+    admin=1
     registered=0
     awaitingConfirmation=0
     justConfirmed=0
@@ -24,10 +24,10 @@
             <input type="hidden" name="task" value="admin">
             Title:<input required type="text" name="title"><br/>
             Department:<select name="department">
-                            <option value="Business Team">Business Team</option>
-                            <option value="Applications Team">Applications Team</option>
-                            <option value="Systems Team">Systems Team</option>
-                            <option value="Hardware Team">Hardware Team</option>
+                            <option value="Business">Business Team</option>
+                            <option value="Applications">Applications Team</option>
+                            <option value="Systems">Systems Team</option>
+                            <option value="Hardware">Hardware Team</option>
                         </select>
             First Name:<input required type="text" name="firstName"><br/>
             Last Name:<input required type="text" name="lastName"><br/>

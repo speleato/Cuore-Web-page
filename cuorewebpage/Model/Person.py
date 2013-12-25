@@ -31,13 +31,15 @@ class Title(object):
     def __str__(self):
         return self.name
 
-
+# The confirmed variable represents the level of confirmation similar to chmod. 1 means Leo confirmed, 2 means
+# person confirmed, and 3 means both confirmed
 class Person(object):
-    def __init__(self, first_name=None, last_name=None, email=None, title=None):
+    def __init__(self, first_name=None, last_name=None, email=None, title=None, confirmed=0):
         self.first_name = first_name
         self.last_name = last_name
         self.email = email
         self.title = title
+        self.confirmed = confirmed
         '''
         self.department = department
         self.phone = phone
@@ -55,7 +57,7 @@ class Person(object):
 
 
 
-sandy = Person("Sandy", "Siththanandan", "sandymeep@gmail.com", "Applications Developer")
+sandy = Person("Sandy", "Siththanandan", "sandymeep@gmail.com", "Applications Developer", 3)
 store.save_unique("People", "email", sandy.email, sandy)
 chippie = Person("Chippie", "Siththanandan", "chippie.vbs@gmail.com")
 lauren = Person("Lauren", "Ruge", "lruge008@gmail.com")
@@ -64,7 +66,7 @@ store.save_unique("People", "email", lauren.email, lauren)
 store.relate(sandy, "LIKES", chippie)
 store.relate(sandy, "LIKES", lauren)
 store.save(sandy)
-leo = Person("Leo", "Schultz", "leo@cuore.io", "President")
+leo = Person("Leo", "Schultz", "leo@cuore.io", "President", 3)
 leo.submit_settings()
 
 friends = store.load_related(sandy, "LIKES", Person)
@@ -79,8 +81,8 @@ print president
 #if store.load_unique("People", "first_name", "george", Person) = None:
 #    print me
 
-Kirby = Person("Kirby", "Linvill", "kirby@cuore.io", "Applications Developer")
-Kevin = Person("Kevin", "Ryan", "kevincryan23@gmail.com", "Vice President")
+Kirby = Person("Kirby", "Linvill", "kirby@cuore.io", "Applications Developer", 3)
+Kevin = Person("Kevin", "Ryan", "kevincryan23@gmail.com", "Vice President", 3)
 #List of people in each position, first entry is the name of the position
 President = ["President", leo]
 Vice_President = ["Vice President", Kevin]
