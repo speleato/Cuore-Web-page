@@ -1,6 +1,5 @@
 <%
     #get_info_from_db using ${email}
-    #from py2neo import cypher
     from py2neo import neo4j, ogm
     from database_config import db_config
 
