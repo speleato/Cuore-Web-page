@@ -6,6 +6,15 @@ from database_config import db_config
 graph_db = neo4j.GraphDatabaseService(db_config['uri'])
 store = ogm.Store(graph_db)
 
+# Newsfeed class keeps track of the number of posts in each department, used for pagination
+class Newsfeed(object):
+    def __init__(self, name=None, numPosts=0):
+        self.name=name
+        self.numPosts=numPosts
+
+    def __str__(self):
+        return self.name
+
 
 class Company(object):
     def __init__(self, name=None):
@@ -117,7 +126,9 @@ for i in range(0, len(employees)):
 '''
 for i in range(0, len(departments)):
     dep = Department(departmentNames[i])
+    newsfeed = Newsfeed(departmentNames[i], 0)
     store.relate(cuore, "UNDER", dep)
+    store.relate(dep, "NEWSFEED", newsfeed)
     for j in range(0, len(departments[i])):
         title = Title(departments[i][j][0])
         store.relate(dep, "IN", title)
@@ -128,6 +139,7 @@ for i in range(0, len(departments)):
             store.save_unique("People", "email", employee.email, employee)
             store.relate(title, "IS A", employee)
         store.save_unique("Title", "name", title.name, title)
+    store.save_unique("Newsfeed", "name", departmentNames[i], newsfeed)
     store.save_unique("Department", "name", departmentNames[i], dep)
 store.save_unique("Company", "name", "Cuore", cuore)
 

@@ -6,8 +6,11 @@
 
     from py2neo import neo4j, ogm, cypher
     from database_config import db_config
-
+    from math import ceil
     import datetime
+
+    graph_db = neo4j.GraphDatabaseService(db_config['uri'])
+
     class Company(object):
         def __init__(self, name=None):
             self.name=name
@@ -23,9 +26,20 @@
         def __str__(self):
             return self.name
 
+    # get what page you're on (which 15 posts to display)
+    if request.GET:
+        page=int(request.GET.getone('page'))
+    else:
+        page=1
+
+    #get number of total pages of posts
+    numPages=int(ceil(float(graph_db.get_or_create_indexed_node("Newsfeed", "name", viewDepartment)["numPosts"])/15))+1
+    print graph_db.get_or_create_indexed_node("Newsfeed", "name", viewDepartment)["numPosts"]/15
+    print numPages
+
     session = cypher.Session("http://localhost:7474")
     tx = session.create_transaction()
-    tx.append ('MATCH a,b WHERE a.name="'+viewDepartment+'" and a-[:NEWS]-b RETURN b ORDER BY b.time DESC LIMIT 15')
+    tx.append ('MATCH a,b WHERE a.name="'+viewDepartment+'" and a-[:NEWS]-b RETURN b ORDER BY b.time DESC SKIP '+str(((page-1)*15))+' LIMIT 15')
     result = tx.execute()
 
     graph_db = neo4j.GraphDatabaseService(db_config['uri'])
@@ -41,6 +55,16 @@
     <h5>${i.values[0]["author"]} ${time}</h5>
     <p>${i.values[0]["news"]}</p>
 %endfor
+<div>
+    Page:
+    %for i in range (1,numPages):
+        %if page==i:
+            ${i}
+        %else:
+            <a href="/newsfeed?page=${i}">${i}</a>
+        %endif
+    %endfor
+</div>
 <form action="/newsfeed" method="post">
     <input type="hidden" name="author" value=${author}>
     <h4>Post to Newsfeed</h4>

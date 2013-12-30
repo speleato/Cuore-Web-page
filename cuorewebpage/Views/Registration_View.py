@@ -135,6 +135,8 @@ def Newsfeed(request):
         newsNode=graph_db.create({"news":request.POST.getone('news'), "time":time.time(), "author":request.POST.getone('author')})
         departments=request.POST.getall('postTo[]')
         for i in departments:
-            depNode=graph_db.get_indexed_node("Department", "name", i)
+            depNode=graph_db.get_indexed_node("Newsfeed", "name", i)
+            number=depNode.get_properties()["numPosts"]
+            depNode.update_properties({"numPosts":(number+1)})
             graph_db.create((depNode, "NEWS", newsNode[0]))
     return {}
