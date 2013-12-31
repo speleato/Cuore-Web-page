@@ -30,11 +30,12 @@
 
 
     class Person(object):
-        def __init__(self, first_name=None, last_name=None, email=None, title=None):
+        def __init__(self, first_name=None, last_name=None, email=None, title=None, confirmed=0):
             self.first_name = first_name
             self.last_name = last_name
             self.email = email
             self.title = title
+            self.confirmed = confirmed
             '''
             self.department = department
             self.phone = phone
