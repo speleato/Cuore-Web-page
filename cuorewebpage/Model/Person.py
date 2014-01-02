@@ -43,12 +43,13 @@ class Title(object):
 # The confirmed variable represents the level of confirmation similar to chmod. 1 means Leo confirmed, 2 means
 # person confirmed, and 3 means both confirmed
 class Person(object):
-    def __init__(self, first_name=None, last_name=None, email=None, title=None, confirmed=0):
+    def __init__(self, first_name=None, last_name=None, email=None, title=None, confirmed=0, confirmationNumber=None):
         self.first_name = first_name
         self.last_name = last_name
         self.email = email
         self.title = title
         self.confirmed = confirmed
+        self.confirmationNumbner = confirmationNumber
         '''
         self.department = department
         self.phone = phone
