@@ -12,30 +12,6 @@ def Login(request):
     #return Login_View.pushTemplate('Login.txt', parameters)
     return {'name': 'John', 'surname': 'Doe'}
 
-'''
-
-def MainPage(request):
-    return Registration_View.pushTemplate('MainPage.txt')
-
-def Blog(request):
-    return Registration_View.pushTemplate('Blog.txt')
-
-def Files(request):
-    return Registration_View.pushTemplate('Files.txt')
-
-def Calendar(request):
-    return Registration_View.pushTemplate('Calendar.txt')
-
-def Workspace(request):
-    return Registration_View.pushTemplate('Workspace.txt')
-
-def Workspace(request):
-    return Registration_View.pushTemplate('Admin.txt')
-
-def Tasks(request):
-    return Registration_View.pushTemplate('Admin.txt')
-'''
-
 def main(global_config, **settings):
     config = Configurator(settings=settings)
 

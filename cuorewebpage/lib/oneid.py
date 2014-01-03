@@ -1,3 +1,4 @@
+'''
 #!/usr/bin/python
 
 # OneID Python API Library
@@ -112,5 +113,5 @@ class OneID:
         """
         return oneid_response.get("errorcode", None) == 0
 
-
+'''
 
