@@ -79,7 +79,7 @@ def Registration(request):
             about = request.POST.getone('about')
             # update info in database, need to pass in email, currently not implemented
             # personNode = graph_db.get_indexed_node("People", "email", email)
-            # personNode.update_properties(properties='"phone":phone, "address":address, "about":about')
+            # personNode.update_properties(properties='"phone":phone, "address":address, "city":city, "state":state, "zipcode":zipcode "about":about')
             print "updated"
     return {}
 
