@@ -43,20 +43,19 @@ class Title(object):
 # The confirmed variable represents the level of confirmation similar to chmod. 1 means Leo confirmed, 2 means
 # person confirmed, and 3 means both confirmed
 class Person(object):
-    def __init__(self, first_name=None, last_name=None, email=None, title=None, confirmed=0):
+    def __init__(self, first_name=None, last_name=None, email=None, title=None, confirmed=0, department=None, phone=None, address=None, city=None, state=None, zipcode=None):
         self.first_name = first_name
         self.last_name = last_name
         self.email = email
         self.title = title
         self.confirmed = confirmed
-        '''
         self.department = department
         self.phone = phone
         self.address = address
         self.city = city
         self.state = state
         self.zipcode = zipcode
-        '''
+
     def __str__(self):
         return (self.first_name)
 
@@ -113,17 +112,7 @@ departmentNames = ["Business", "Applications", "Systems", "Hardware"]
 
 #Company node tying departments together
 cuore = Company("Cuore")
-'''
-#List of employees
-Kirby = Person("Kirby", "Linvill", "kirby@cuore.io", "Applications Developer")
-Kevin = Person("Kevin", "Ryan", "kevincryan23@gmail.com", "Vice President")
-employees = [Kirby, Kevin]
 
-for i in range(0, len(employees)):
-    title=Title(employees[i].title)
-    store.relate(title, "IS A", employees[i])
-    store.save_unique("People", "email", employees[i].email, employees[i])
-'''
 for i in range(0, len(departments)):
     dep = Department(departmentNames[i])
     newsfeed = Newsfeed(departmentNames[i], 0)
@@ -142,28 +131,3 @@ for i in range(0, len(departments)):
     store.save_unique("Newsfeed", "name", departmentNames[i], newsfeed)
     store.save_unique("Department", "name", departmentNames[i], dep)
 store.save_unique("Company", "name", "Cuore", cuore)
-
-
-'''
-for i in range(0, len(employees)):
-    store.relate(employees[i], "IS A", store.load_unique("Title", "name", employees[i].title, Title))
-    store.save_unique("People", "email", employees[i].email, employees[i])
-
-Same thing as above but in Cypher
-neo4j.CypherQuery(graph_db, "CREATE (Business:Department{name:'Business'})").run()
-neo4j.CypherQuery(graph_db, "CREATE (Systems:Department{name:'Systems'})").run()
-neo4j.CypherQuery(graph_db, "CREATE (Hardware:Department{name:'Hardware'})").run()
-neo4j.CypherQuery(graph_db, "CREATE (Applications:Department{name:'Applications'})").run()
-neo4j.CypherQuery(graph_db, "CREATE (President:Title{name:'President'})").run()
-neo4j.CypherQuery(graph_db, "CREATE (Vice_President:Title{name:'Vice President'})").run()
-neo4j.CypherQuery(graph_db, "CREATE (Applications_Developer:Title{name:'Applications Developer'})").run()
-neo4j.CypherQuery(graph_db, "MATCH a,b WHERE a:Department AND b:Title AND a.name='Business' AND b.name='President' CREATE b-[:in]->a").run()
-neo4j.CypherQuery(graph_db, "MATCH a,b WHERE a:Department AND b:Title AND a.name='Business' AND b.name='Vice President' CREATE b-[:in]->a").run()
-neo4j.CypherQuery(graph_db, "MATCH a,b WHERE a:Department AND b:Title AND a.name='Applications' AND b.name='Applications Developer' CREATE b-[:in]->a").run()
-neo4j.CypherQuery(graph_db, "CREATE (Kirby:Person{first_name:'Kirby', last_name:'Linvill', email:'kirby@cuore.io'})").run()
-neo4j.CypherQuery(graph_db, "CREATE (Kevin:Person{first_name:'Kevin', last_name:'Ryan', email:'kevincryan23@gmail.com'})").run()
-neo4j.CypherQuery(graph_db, "MATCH a,b WHERE b:Title AND a.first_name='Leo' AND b.name='President' CREATE a-[:is_a]->b").run()
-neo4j.CypherQuery(graph_db, "MATCH a,b WHERE b:Title AND a.first_name='Kevin' AND b.name='Vice President' CREATE a-[:is_a]->b").run()
-neo4j.CypherQuery(graph_db, "MATCH a,b WHERE b:Title AND a.first_name='Sandy' AND b.name='Applications Developer' CREATE a-[:is_a]->b").run()
-neo4j.CypherQuery(graph_db, "MATCH a,b WHERE b:Title AND a.first_name='Kirby' AND b.name='Applications Developer' CREATE a-[:is_a]->b").run()
-'''

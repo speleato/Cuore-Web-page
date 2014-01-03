@@ -8,23 +8,9 @@
     from database_config import db_config
     from math import ceil
     import datetime
+    from cuorewebpage.Model.Person import Company, Department
 
     graph_db = neo4j.GraphDatabaseService(db_config['uri'])
-
-    class Company(object):
-        def __init__(self, name=None):
-            self.name=name
-
-        def __str__(self):
-            return self.name
-
-
-    class Department(object):
-        def __init__(self, name=None):
-            self.name=name
-
-        def __str__(self):
-            return self.name
 
     # get what page you're on (which 15 posts to display)
     if request.GET:

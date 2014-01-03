@@ -10,44 +10,20 @@ import time
 from py2neo import neo4j, ogm
 from database_config import db_config
 
+from cuorewebpage.Model.Person import Person
+
 graph_db = neo4j.GraphDatabaseService(db_config['uri'])
 store = ogm.Store(graph_db)
-
-class Person(object):
-    def __init__(self, first_name=None, last_name=None, email=None, title=None, confirmed=0, confirmationNumber=None):
-        self.first_name = first_name
-        self.last_name = last_name
-        self.email = email
-        self.title = title
-        self.confirmed = confirmed
-        self.confirmationNumber = confirmationNumber
-        '''
-        self.department = department
-        self.phone = phone
-        self.address = address
-        self.city = city
-        self.state = state
-        self.zipcode = zipcode
-        '''
-    def __str__(self):
-        return (self.first_name)
-
-    def submit_settings(self):
-        store.save_unique("People", "email", self.email, self)
-        return self
 
 @view_config(route_name='Registration', renderer='cuorewebpage:templates/Registration.mako')
 def Registration(request):
     #parameters = Model.process_business_logic()
-    print "bingo"
     if request.POST:
-        print "submitted"
         if request.POST.getone('task') == "admin":
             title=request.POST.getone('title')
             email=request.POST.getone('email')
             department=request.POST.getone('department')
 
-            print "admin path"
             # add updated info to database
             # Note: Either another unique identifier needs to be used or the admin panel shouldn't be allowed to change email
             personNode = graph_db.get_indexed_node("People", "email", email)
@@ -76,11 +52,9 @@ def Registration(request):
             name=firstName + " " + lastName
             email=request.POST.getone('email')
 
-            print "created"
             # generates a unique user ID for confirmation
             import uuid
             confirmationNumber=str(uuid.uuid4())
-            print confirmationNumber
             # store confirmationNumber in db
             # create flags and set to not confirmed
             # create user node in database, put in temporary zone
@@ -99,6 +73,9 @@ def Registration(request):
         elif request.POST.getone('task') == "edit":
             phone = request.POST.getone('phone')
             address = request.POST.getone('address')
+            city = request.POST.getone('city')
+            state = request.POST.getone('state')
+            zipcode = request.POST.getone('zipcode')
             about = request.POST.getone('about')
             # update info in database, need to pass in email, currently not implemented
             # personNode = graph_db.get_indexed_node("People", "email", email)
