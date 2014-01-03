@@ -1,4 +1,5 @@
-<div id="loading"><img src="img/ajax-loader.gif"></div>
+## header.mako
+
 <div id="responsive_part">
     <div class="logo"> <a href="index.html"><img src="img/logo.png"/></a> </div>
     <ul class="nav responsive">
@@ -9,4 +10,4 @@
 </div>
 <!-- Responsive part -->
 
-<%include file="Nav_Bar.mako"/>
+<%include file="nav_bar.mako"/>

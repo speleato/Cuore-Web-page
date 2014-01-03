@@ -1,4 +1,4 @@
-## Head.mako
+## head.mako
 <head>
     <meta charset="utf-8">
     <title>Cuore - Full Name</title>

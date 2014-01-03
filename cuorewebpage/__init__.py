@@ -1,14 +1,14 @@
 from wsgiref.simple_server import make_server
 from pyramid.config import Configurator
-from Model import Model
-from Views import Login_View, Registration_View
+from model import Model
+from views import login_view, registration_view
 
 from pyramid.response import Response
 from pyramid.view import view_config
 
 @view_config(route_name='Login', renderer='cuorewebpage:templates/Login.mako')
 def Login(request):
-    parameters = Model.get_initial_data()
+    parameters = model.get_initial_data()
     #return Login_View.pushTemplate('Login.txt', parameters)
     return {'name': 'John', 'surname': 'Doe'}
 
