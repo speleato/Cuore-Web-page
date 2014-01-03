@@ -4,11 +4,11 @@
 <%include file="head.mako"/>
 
 <body>
-    <%include file="header.mako"/>
+<%include file="header.mako"/>
 
-    ${next.body()}
+${next.body()}
 
-    <%include file="footer.mako"/>
+<%include file="footer.mako"/>
 </body>
 
 </html>
