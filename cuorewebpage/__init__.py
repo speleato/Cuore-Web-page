@@ -12,30 +12,6 @@ def Login(request):
     #return Login_View.pushTemplate('Login.txt', parameters)
     return {'name': 'John', 'surname': 'Doe'}
 
-'''
-
-def MainPage(request):
-    return Registration_View.pushTemplate('MainPage.txt')
-
-def Blog(request):
-    return Registration_View.pushTemplate('Blog.txt')
-
-def Files(request):
-    return Registration_View.pushTemplate('Files.txt')
-
-def Calendar(request):
-    return Registration_View.pushTemplate('Calendar.txt')
-
-def Workspace(request):
-    return Registration_View.pushTemplate('Workspace.txt')
-
-def Workspace(request):
-    return Registration_View.pushTemplate('Admin.txt')
-
-def Tasks(request):
-    return Registration_View.pushTemplate('Admin.txt')
-'''
-
 def main(global_config, **settings):
     config = Configurator(settings=settings)
 
@@ -47,35 +23,21 @@ def main(global_config, **settings):
     #    config.add_route(child.find('name').text, child.find('path').text)
     #    config.add_view(child.find('module'), route_name=child.find('name').text)
     config.add_route('Login', '/')
-    #config.add_view(Login , route_name='Login')
-
     config.add_route('Registration', '/registration')
-    #config.add_view(Registration, route_name='Registration')
-
     config.add_route('ConfirmRegistration', 'registration/confirm')
     config.add_route('Directory', '/directory')
     config.add_route('Profile', '/profile')
     config.add_route('Newsfeed', '/newsfeed')
-
-    config.add_route('MainPage', '/main')
-    #config.add_view(MainPage, route_name='MainPage')
-
+    config.add_route('Dashboard', '/dashboard')
     config.add_route('Blog', '/blog')
-    #config.add_view(Blog, route_name='Blog')
-
     config.add_route('Files', '/files')
-    #config.add_view(Files, route_name='Files')
-
     config.add_route('Calendar', '/calendar')
-    #config.add_view(Calendar, route_name='Calendar')
-
     config.add_route('Workspace', '/workspace')
-    #config.add_view(Workspace, route_name='Workspace')
-
     config.add_route('Admin', '/DoNotPutAdmin')
-    #config.add_view(Workspace, route_name='Admin')
-
     config.add_route('Tasks', '/tasks')
+    config.add_static_view(name='img', path='cuorewebpage:img')
+    config.add_static_view(name='js', path='cuorewebpage:js')
+    config.add_static_view(name='css', path='cuorewebpage:css')
     #config.add_view(Workspace, route_name='Tasks')
 
     #needed for pyramid mailer
