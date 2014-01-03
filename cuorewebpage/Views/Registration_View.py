@@ -18,15 +18,12 @@ store = ogm.Store(graph_db)
 @view_config(route_name='Registration', renderer='cuorewebpage:templates/Registration.mako')
 def Registration(request):
     #parameters = Model.process_business_logic()
-    print "bingo"
     if request.POST:
-        print "submitted"
         if request.POST.getone('task') == "admin":
             title=request.POST.getone('title')
             email=request.POST.getone('email')
             department=request.POST.getone('department')
 
-            print "admin path"
             # add updated info to database
             # Note: Either another unique identifier needs to be used or the admin panel shouldn't be allowed to change email
             personNode = graph_db.get_indexed_node("People", "email", email)
@@ -55,11 +52,9 @@ def Registration(request):
             name=firstName + " " + lastName
             email=request.POST.getone('email')
 
-            print "created"
             # generates a unique user ID for confirmation
             import uuid
             confirmationNumber=str(uuid.uuid4())
-            print confirmationNumber
             # store confirmationNumber in db
             # create flags and set to not confirmed
             # create user node in database, put in temporary zone
@@ -78,6 +73,9 @@ def Registration(request):
         elif request.POST.getone('task') == "edit":
             phone = request.POST.getone('phone')
             address = request.POST.getone('address')
+            city = request.POST.getone('city')
+            state = request.POST.getone('state')
+            zipcode = request.POST.getone('zipcode')
             about = request.POST.getone('about')
             # update info in database, need to pass in email, currently not implemented
             # personNode = graph_db.get_indexed_node("People", "email", email)

@@ -40,12 +40,18 @@
             Email:<input required type="email" name="email"><br/>
             Phone Number:<input required type="tel" name="phone"><br/>
             Address:<input required type="text" name="address"><br/>
+            City:<input required type="text" name="city"><br/>
+            State:<input required type="text" name="state"><br/>
+            Zip Code:<input required type="text" name="zipcode" pattern="\d*"><br/>
             About:<textarea name="about"></textarea><br/>
     %else:
         <h2>Edit Profile</h2>
             <input type="hidden" name="task" value="edit">
             Phone Number:<input required type="tel" name="phone"><br/>
             Address:<input required type="text" name="address"><br/>
+            City:<input required type="text" name="city"><br/>
+            State:<input required type="text" name="state"><br/>
+            Zip Code:<input required type="text" name="zipcode" pattern="\d*"><br/>
             About:<textarea name="about"></textarea><br/>
     %endif
         <input type="submit" value="submit">
