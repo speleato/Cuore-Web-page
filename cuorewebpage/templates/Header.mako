@@ -1,5 +1,5 @@
 <header>
-    <div id="loading"><img src="img/ajax-loader.gif"></div>
+    <!-- <div id="loading"><img src="img/ajax-loader.gif"></div> -->
     <div id="responsive_part">
         <div class="logo"> <a href="index.html"><img src="img/logo.png"/></a> </div>
         <ul class="nav responsive">
