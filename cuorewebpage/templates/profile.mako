@@ -1,4 +1,4 @@
-<%inherit file="cuorewebpage:templates/Base.mako"/>
+<%inherit file="cuorewebpage:templates/base.mako"/>
 
 <%
     #get_info_from_db using ${email}
