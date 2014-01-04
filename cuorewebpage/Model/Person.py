@@ -64,7 +64,7 @@ class Person(object):
         return self
 
 
-
+"""
 sandy = Person("Sandy", "Siththanandan", "sandymeep@gmail.com", "Applications Developer", 3)
 store.save_unique("People", "email", sandy.email, sandy)
 chippie = Person("Chippie", "Siththanandan", "chippie.vbs@gmail.com")
@@ -79,15 +79,13 @@ leo.submit_settings()
 
 friends = store.load_related(sandy, "LIKES", Person)
 print ("Sandy likes {0}".format(" and ".join(str(f) for f in friends)))
-
 me = store.load_unique("People", "email", sandy.email, Person)
 print me
-
 president = store.load_unique("People", "email", leo.email, Person)
 print president
-
 #if store.load_unique("People", "first_name", "george", Person) = None:
 #    print me
+"""
 
 Kirby = Person("Kirby", "Linvill", "kirby@cuore.io", "Applications Developer", 3)
 Kevin = Person("Kevin", "Ryan", "kevincryan23@gmail.com", "Vice President", 3)
