@@ -1,4 +1,4 @@
-## Base.mako
+## base.mako
 <!DOCTYPE html>
 <html class="sidebar_default no-js" lang="en">
 <%include file="head.mako"/>
