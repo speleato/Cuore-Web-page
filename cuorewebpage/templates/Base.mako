@@ -4,7 +4,7 @@
 <%include file="head.mako"/>
 
 <body>
-<%include file="header.mako"/>
+<%include file="layout.mako"/>
 
 ${next.body()}
 

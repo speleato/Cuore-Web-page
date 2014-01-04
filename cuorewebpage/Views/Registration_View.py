@@ -10,12 +10,14 @@ import time
 from py2neo import neo4j, ogm
 from database_config import db_config
 
-from cuorewebpage.model.Person import Person
+from cuorewebpage.Model.Person import Person
 
 graph_db = neo4j.GraphDatabaseService(db_config['uri'])
 store = ogm.Store(graph_db)
 
-@view_config(route_name='Registration', renderer='cuorewebpage:templates/Registration.mako')
+
+
+@view_config(route_name='Registration', renderer='cuorewebpage:templates/registration.mako')
 def Registration(request):
     #parameters = Model.process_business_logic()
     if request.POST:
@@ -83,37 +85,3 @@ def Registration(request):
             print "updated"
     return {}
 
-@view_config(route_name="ConfirmRegistration", renderer="cuorewebpage:templates/Registration.mako")
-def ConfirmRegistration(request):
-    email=request.GET.getone('email')
-    personNode = graph_db.get_indexed_node("People", "email", email)
-    confirmationNumber=request.GET.getone('confirm')
-    # check confirmationNumber against user's confirmationNumber
-    if confirmationNumber == personNode.get_properties()["confirmationNumber"]:
-        # move from temp area of database to permanent area of database
-        confirmed=personNode.get_properties()["confirmed"]
-        if(confirmed!=1 and confirmed!=3):
-            confirmed += 1
-        personNode.update_properties({"confirmed":confirmed})
-        print "confirmed"
-    return{}
-
-@view_config(route_name="Directory", renderer="cuorewebpage:templates/Directory.mako")
-def Directory(request):
-    return {}
-
-@view_config(route_name="Profile", renderer="cuorewebpage:templates/Profile.mako")
-def Profile(request):
-    return {}
-
-@view_config(route_name="Newsfeed", renderer="cuorewebpage:templates/Newsfeed.mako")
-def Newsfeed(request):
-    if request.POST:
-        newsNode=graph_db.create({"news":request.POST.getone('news'), "time":time.time(), "author":request.POST.getone('author')})
-        departments=request.POST.getall('postTo[]')
-        for i in departments:
-            depNode=graph_db.get_indexed_node("Newsfeed", "name", i)
-            number=depNode.get_properties()["numPosts"]
-            depNode.update_properties({"numPosts":(number+1)})
-            graph_db.create((depNode, "NEWS", newsNode[0]))
-    return {}

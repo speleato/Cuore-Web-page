@@ -1,32 +1,5 @@
 <%inherit file="base.mako"/>
 
-<div id="main">
-<div id="main">
-  <div class="container">
-    <div class="header row-fluid">
-      <div class="logo"> <a href="index.html"><span>Start</span><span class="icon"></span></a> </div>
-      <div class="top_right">
-        <ul class="nav nav_menu">
-          <li class="dropdown"> <a class="dropdown-toggle administrator" id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="/page.html">
-            <div class="title"><span class="name">George</span><span class="subtitle">Future Buyer</span></div>
-            <span class="icon"><img src="img/thumbnail_george.jpg"></span></a>
-            <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-              <li><a href="profile.html"><i class=" icon-user"></i> My Profile</a></li>
-              <li><a href="forms_general.html"><i class=" icon-cog"></i>Settings</a></li>
-              <li><a href="index2.html"><i class=" icon-unlock"></i>Log Out</a></li>
-              <li><a href="search.html"><i class=" icon-flag"></i>Help</a></li>
-            </ul>
-          </li>
-        </ul>
-      </div>
-      <!-- End top-right --> 
-    </div>
-    <div id="main_container">
-      <div class="row-fluid">
-        <div class="span3">
-          <div class="title">
-            <div class="row-fluid legend">
-              <h1>Cuore Directory</h1>
 <%
     from py2neo import neo4j, ogm
     from database_config import db_config
@@ -37,6 +10,30 @@
 
     department = store.load_related(store.load_unique("Company", "name", "Cuore", Company), "UNDER", Department)
 %>
+
+<div id="main_container">
+  <div class="row-fluid">
+    <div class="span3">
+      <div class="title">
+        <div class="row-fluid legend">
+          <h1>Directory</h1>
+            </div>
+          </div>
+          <!-- End .title -->
+
+          <div class="content">
+            <div class="row-fluid well well-small"> </div>
+            <ul class="nav nav-tabs dark nav-stacked">
+              <li><a href="#"><i class="gicon-user"></i> Profile Dashboard</a></li>
+              <li><a href="#"><i class="gicon-wrench"></i> Settings</a></li>
+              <li><a href="#"><i class="gicon-globe"></i> Friends</a></li>
+              <li><a href="#"><i class="gicon-envelope"></i> Messages</a></li>
+              <li><a href="#"><i class="gicon-lock"></i> Log Out</a></li>
+            </ul>
+          </div>
+          <!-- End .content --> 
+        </div>
+        <!-- End .span3 -->
 
 %for i in department:
     <h2>${i.name}</h2>
@@ -55,30 +52,12 @@
         %endfor
     %endfor
 %endfor
-            </div>
-          </div>
-          <!-- End .title -->
-          <div class="content">
-            <div class="row-fluid well well-small"> <img class="row-fluid" src="img/sample_avatar_big.jpg"> </div>
-            <ul class="nav nav-tabs dark nav-stacked">
-              <li><a href="#"><i class="gicon-user"></i> Profile Dashboard</a></li>
-              <li><a href="#"><i class="gicon-wrench"></i> Settings</a></li>
-              <li><a href="#"><i class="gicon-globe"></i> Friends</a></li>
-              <li><a href="#"><i class="gicon-envelope"></i> Messages</a></li>
-              <li><a href="#"><i class="gicon-lock"></i> Log Out</a></li>
-            </ul>
-          </div>
-          <!-- End .content --> 
-        </div>
-        <!-- End .span3 -->
         
         <div class="span9">
           <div class="row-fluid legend profile">
             <div class="row-fluid ">
               <div class="span6 spacer">
                 <ul class="unstyled">
-                  <li class="location pull-left right_offset"><span class="muted"><i class="icon-map-marker"></i> Location:</span> London, UK</li>
-                  <li class="location "><span class="muted"><i class="icon-globe"></i></span> Brighton Business School </li>
                 </ul>
               </div>
               <div class="span6">
