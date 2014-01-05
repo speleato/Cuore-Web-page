@@ -1,16 +1,18 @@
-<%inherit file="cuorewebpage:templates/base.mako"/>
+<%def name="ajax_loader()">
+    <div id="loading"><img src="${request.static_url('cuorewebpage:img/ajax-loader.gif')}"></div>
 
-<div id="main_container">
-  <div class="row-fluid">
-    <div class="box paint_hover color_3">
-      <div id="elfinder"></div>
+    <div id="responsive_part">
+        <div class="logo"> <a href="index.html"><img src="${request.static_url('cuorewebpage:img/logo.png')}"/></a> </div>
+        <ul class="nav responsive">
+          <li><button class="btn responsive_menu icon_item" data-toggle="collapse" data-target=".overview">
+          <i class="icon-reorder"></i> </button>
+          </li>
+        </ul>
     </div>
-    <!-- End .box -->
-  </div>
-  <!-- End .row-fluid -->
-</div>
-<!-- End #container -->
-</div>
+    <!-- Responsive part -->
+</%def>
+
+<%def name="background_changer()">
 <div class="background_changer dropdown">
   <div class="dropdown" id="colors_pallete"> <a data-toggle="dropdown" data-target="drop4" class="change_color"></a>
     <ul  class="dropdown-menu pull-left" role="menu" aria-labelledby="drop4">
@@ -44,12 +46,13 @@
   </div>
 </div>
 <!-- End .background_changer -->
+</%def>
 
+<%def name="general_js()">
 <!-- Le javascript
-    ================================================== -->
+ ================================================== -->
 <!-- General scripts -->
 <script src="js/jquery.js" type="text/javascript"> </script>
-<script src="js/jquery-ui-1.8.23.custom.min.js" type="text/javascript"></script>
 <!--[if !IE]> -->
 <script src="js/plugins/enquire.min.js" type="text/javascript"></script>
 <!-- <![endif]-->
@@ -69,36 +72,11 @@
 <script src="js/bootstrap-typeahead.js" type="text/javascript"></script>
 <script src="js/bootstrap-affix.js" type="text/javascript"></script>
 <script src="js/fileinput.jquery.js" type="text/javascript"></script>
+<script src="js/jquery-ui-1.8.23.custom.min.js" type="text/javascript"></script>
 <script src="js/jquery.touchdown.js" type="text/javascript"></script>
 <script language="javascript" type="text/javascript" src="js/plugins/jquery.uniform.min.js"></script>
 <script language="javascript" type="text/javascript" src="js/plugins/jquery.tinyscrollbar.min.js"></script>
 <script language="javascript" type="text/javascript" src="js/jnavigate.jquery.min.js"></script>
 <script language="javascript" type="text/javascript" src="js/jquery.touchSwipe.min.js"></script>
 <script language="javascript" type="text/javascript" src="js/plugins/jquery.peity.min.js"></script>
-
-
-<!-- Custom made scripts for this template -->
-<script src="${request.static_url('cuorewebpage:js/scripts.js')}" type="text/javascript"></script>
-
-<!-- File Explorer - elFinder JS (REQUIRED) -->
-<script type="text/javascript" src="${request.static_url('cuorewebpage:js/plugins/elfinder2.0/js/elfinder.min.js')}"></script>
-
-<!-- elFinder translation (OPTIONAL) -->
-<script type="text/javascript" src="${request.static_url('cuorewebpage:js/plugins/elfinder2.0/js/i18n/elfinder.ru.js')}"></script>
-
-<!-- elFinder initialization (REQUIRED) -->
-<script type="text/javascript" charset="utf-8">
-      $(document).ready(function() {
-          $('#sidebar').tinyscrollbar();
-        var elf = $('#elfinder').elfinder({
-          url : '${request.static_url('cuorewebpage:js/plugins/elfinder2.0/php/connector.php')}',  // connector URL (REQUIRED)
-          height: 900
-        }).elfinder('instance');
-      });
-    </script>
-<script type="text/javascript">
-  /**** Specific JS for this page ****/
-
-
-
-</script>
+</%def>

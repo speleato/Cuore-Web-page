@@ -41,6 +41,8 @@ def main(global_config, **settings):
     config.add_route('Contact', '/contact')
     config.add_route('Logout', '/logout')
     config.add_route('Admin', '/DoNotPutAdmin')
+    config.add_route('Test', '/test')
+
     config.add_static_view(name='img', path='cuorewebpage:img')
     config.add_static_view(name='js', path='cuorewebpage:js')
     config.add_static_view(name='css', path='cuorewebpage:css')
