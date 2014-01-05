@@ -1,4 +1,3 @@
-<%namespace name="UIutil" file="UIutil.mako"/>
 
     <div id="footer">
         <p> &copy; Cuore 2011 </p>
@@ -8,4 +7,3 @@
     </div>
     <!-- /container -->
 
-${UIutil.general_js()}

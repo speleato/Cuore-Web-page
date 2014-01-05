@@ -5,11 +5,21 @@
 
 </head>
 <body>
-<table>
-    %for row in range(1,10):
-        <a href="/registration"> this is a link<a></br>
-    %endfor
-</table>
-<p>And this is a data field: ${name}</p>
-<p>And this is another data field: ${surname}</p>
-<body>
+
+<div id="oneid-signin-button"></div>
+
+<script type="text/javascript">
+OneID.init({
+ buttons: {
+   "signin #oneid-signin-button": [{
+     challenge: {
+       "callback": "/authenticate",
+       "attr": "email name"
+     }
+   }]
+ }
+});
+</script>
+
+</body>
+</html>

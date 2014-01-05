@@ -1,7 +1,5 @@
 ## base.mako
 
-<%namespace name="UIutil" file="UIutil.mako"/>
-
 <!DOCTYPE html>
 <html class="sidebar_default no-js" lang="en">
 <%block name="head">
@@ -21,7 +19,6 @@
 <%block name="header">
 <%include file="header.mako"/>
 </%block>
-
 
 ${next.body()}
 
