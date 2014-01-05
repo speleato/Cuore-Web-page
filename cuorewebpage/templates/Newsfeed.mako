@@ -20,8 +20,6 @@
 
     #get number of total pages of posts
     numPages=int(ceil(float(graph_db.get_or_create_indexed_node("Newsfeed", "name", viewDepartment)["numPosts"])/15))+1
-    print graph_db.get_or_create_indexed_node("Newsfeed", "name", viewDepartment)["numPosts"]/15
-    print numPages
 
     session = cypher.Session("http://localhost:7474")
     tx = session.create_transaction()

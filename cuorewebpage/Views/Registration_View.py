@@ -12,11 +12,17 @@ from database_config import db_config
 
 from cuorewebpage.Model.Person import Person
 
+from pyramid.httpexceptions import HTTPUnauthorized
+
 graph_db = neo4j.GraphDatabaseService(db_config['uri'])
 store = ogm.Store(graph_db)
 
 @view_config(route_name='Registration', renderer='cuorewebpage:templates/Registration.mako')
 def Registration(request):
+    return {}
+
+@view_config(route_name='SubmitRegistration', renderer='cuorewebpage:templates/Registration.mako')
+def SubmitRegistration(request):
     #parameters = Model.process_business_logic()
     if request.POST:
         if request.POST.getone('task') == "admin":
@@ -35,6 +41,8 @@ def Registration(request):
             titleNode = graph_db.get_or_create_indexed_node("Title", "name", title, {"name":title})
             departmentNode = graph_db.get_indexed_node("Department", "name", department)
             graph_db.create((titleNode, "IS A", personNode), (departmentNode, "IN", titleNode))
+            graph_db.get_indexed_node("Unconfirmed", "name", "unconfirmed")
+            graph_db.remove(personNode, "IS", unconfirmedNode)
             # after confirmed by Leo, send email to user
             confirmationNumber=personNode.get_properties()["confirmationNumber"]
             mailer = get_mailer(request)
@@ -60,6 +68,10 @@ def Registration(request):
             # create user node in database, put in temporary zone
             person = Person(firstName, lastName, email, None, 0, confirmationNumber)
             store.save_unique("People", "email", person.email, person)
+            unconfirmedNode=graph_db.get_or_create_indexed_node("Unconfirmed", "name", "unconfirmed", {"name":"unconfirmed"})
+            personNode=graph_db.get_indexed_node("People", "email", person.email)
+            graph_db.create((personNode, "IS", unconfirmedNode))
+
             # after registration, send email to Leo
             mailer=get_mailer(request)
             message = Message(subject="Registration by " + name,
@@ -96,7 +108,7 @@ def ConfirmRegistration(request):
             confirmed += 1
         personNode.update_properties({"confirmed":confirmed})
         print "confirmed"
-    return{}
+    return {}
 
 @view_config(route_name="Directory", renderer="cuorewebpage:templates/Directory.mako")
 def Directory(request):
@@ -117,3 +129,15 @@ def Newsfeed(request):
             depNode.update_properties({"numPosts":(number+1)})
             graph_db.create((depNode, "NEWS", newsNode[0]))
     return {}
+
+@view_config(route_name="AdminPanel", renderer="cuorewebpage:templates/Admin.mako")
+def AdminPanel(request):
+    # to do: replace admin constant with user's authorization
+    admin=1
+    if not(admin):
+        raise HTTPUnauthorized()
+    return {}
+
+
+
+

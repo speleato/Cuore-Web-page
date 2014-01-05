@@ -40,21 +40,23 @@ class Title(object):
     def __str__(self):
         return self.name
 
-# The confirmed variable represents the level of confirmation similar to chmod. 1 means Leo confirmed, 2 means
-# person confirmed, and 3 means both confirmed
+# The confirmed variable represents the level of confirmation similar to chmod. 1 means person confirmed, 2 means
+# Leo confirmed, and 3 means both confirmed
 class Person(object):
-    def __init__(self, first_name=None, last_name=None, email=None, title=None, confirmed=0, department=None, phone=None, address=None, city=None, state=None, zipcode=None):
+    def __init__(self, first_name=None, last_name=None, email=None, title=None, confirmed=0, confirmationNumber=None, department=None, phone=None, address=None, city=None, state=None, zipcode=None, about=None):
         self.first_name = first_name
         self.last_name = last_name
         self.email = email
         self.title = title
         self.confirmed = confirmed
+        self.confirmationNumber = confirmationNumber
         self.department = department
         self.phone = phone
         self.address = address
         self.city = city
         self.state = state
         self.zipcode = zipcode
+        self.about = about
 
     def __str__(self):
         return (self.first_name)
