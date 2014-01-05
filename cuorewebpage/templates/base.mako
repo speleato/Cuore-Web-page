@@ -4,28 +4,38 @@
 
 <!DOCTYPE html>
 <html class="sidebar_default no-js" lang="en">
+<%block name="head">
 <%include file="head.mako"/>
+</%block>
 
 <body>
-${UIutil.ajax_loader()}
+<%include file="ajax_loader.mako"/>
 
+<%block name="nav_bar">
 <%include file="cuorewebpage:templates/nav_bar.mako"/>
+</%block>
 
     <div id="main">
       <div class="container">
 
+<%block name="header">
+<%include file="header.mako"/>
+</%block>
+
+
 ${next.body()}
 
-    <div id="footer">
-        <p> &copy; Cuore 2011 </p>
-        <span class="company_logo"><a href="http://www.cuoretechnology.com"></a></span> </div>
-    </div>
+<%block name="footer">
+<%include file="footer.mako"/>
+</%block>
 
       </div>
       <!-- end class="container" -->
     </div>
     <!-- end class="main"-->
 
-${UIutil.general_js()}
+<%block name="javascript">
+<%include file="general_js.mako"/>
+</%block>
 </body>
 </html>

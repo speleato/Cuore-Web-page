@@ -1,5 +1,4 @@
 ## header.mako
-
     <div class="header row-fluid">
       <div class="logo"> <a href="index.html"><span>Cuore</span><span class="icon"></span></a> </div>
       <div class="top_right">
