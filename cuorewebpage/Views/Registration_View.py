@@ -109,23 +109,3 @@ def ConfirmRegistration(request):
         personNode.update_properties({"confirmed":confirmed})
         print "confirmed"
     return {}
-
-@view_config(route_name="Directory", renderer="cuorewebpage:templates/Directory.mako")
-def Directory(request):
-    return {}
-
-@view_config(route_name="Profile", renderer="cuorewebpage:templates/Profile.mako")
-def Profile(request):
-    return {}
-
-@view_config(route_name="AdminPanel", renderer="cuorewebpage:templates/Admin.mako")
-def AdminPanel(request):
-    # to do: replace admin constant with user's authorization
-    admin=1
-    if not(admin):
-        raise HTTPUnauthorized()
-    return {}
-
-
-
-
