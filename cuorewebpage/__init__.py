@@ -7,7 +7,7 @@ from urllib import *
 import json
 
 from Model import Model
-from oneid import OneID
+#from oneid import OneID
 
 def authenticate(request):
     jsonurl = urlopen("https://keychain.oneid.com/register")
@@ -41,6 +41,8 @@ def main(global_config, **settings):
     config.add_route('Registration', '/registration')
     config.add_route('Settings', '/settings/{action}')
     config.add_route('Dashboard', '/dashboard')
+    config.add_route('SubmitRegistration', '/registration/submit')
+    config.add_route('ConfirmRegistration', 'registration/confirm')
     config.add_route('Profile', '/profile')
     config.add_route('Directory', '/directory')
     config.add_route('Newsfeed', '/newsfeed')
@@ -56,7 +58,7 @@ def main(global_config, **settings):
     config.add_route('Support', '/support')
     config.add_route('Contact', '/contact')
     config.add_route('Logout', '/logout')
-    config.add_route('Admin', '/DoNotPutAdmin')
+    config.add_route('AdminPanel', '/adminpanel')
     config.add_route('Test', '/test')
 
     config.add_static_view(name='img', path='cuorewebpage:img')

@@ -68,7 +68,7 @@
               </form>
             </div>
           </div>
-          <!-- End .box --> 
+          <!-- End .box -->
         </div>
         <!-- End .span8 -->
 
@@ -79,7 +79,7 @@
             </div>
             <div class="content ">
               <form class="bs-docs-example form-horizontal">
-               
+
                 <div class="control-group row-fluid">
                   <label class="control-label span3" for="inputPassword">Username</label>
                   <div class="controls span9 input-append">
@@ -92,7 +92,7 @@
                     <input type="password" id="inputPassword" placeholder="Password" class="row-fluid">
                     <span class="add-on"><i class="icon-lock"></i></span> </div>
                 </div>
-               
+
                 <div class="control-group row-fluid">
                  <div class="span3"></div>
                   <div class="controls span5">
@@ -102,13 +102,13 @@
               </form>
             </div>
           </div>
-          <!-- End .box --> 
+          <!-- End .box -->
         </div>
-        <!-- End .span4 --> 
+        <!-- End .span4 -->
       </div>
-      <!-- End .row-fluid --> 
+      <!-- End .row-fluid -->
     </div>
-    <!-- End #container --> 
+    <!-- End #container -->
   </div>
   <div id="footer">
     <p> &copy; Cuore 2011 </p>
@@ -148,54 +148,54 @@
 </div>
 <!-- End .background_changer -->
 </div>
-<!-- /container --> 
+<!-- /container -->
 
 <!-- Le javascript
-    ================================================== --> 
-<!-- General scripts --> 
+    ================================================== -->
+<!-- General scripts -->
 <script src="js/jquery.js" type="text/javascript"> </script>
-<script src="js/jquery-ui-1.8.23.custom.min.js" type="text/javascript"></script> 
+<script src="js/jquery-ui-1.8.23.custom.min.js" type="text/javascript"></script>
 <!--[if !IE]> -->
-<script src="js/plugins/enquire.min.js" type="text/javascript"></script> 
+<script src="js/plugins/enquire.min.js" type="text/javascript"></script>
 <!-- <![endif]-->
-<script language="javascript" type="text/javascript" src="js/plugins/jquery.sparkline.min.js"></script> 
-<script src="js/plugins/excanvas.compiled.js" type="text/javascript"></script> 
-<script src="js/bootstrap-transition.js" type="text/javascript"></script> 
-<script src="js/bootstrap-alert.js" type="text/javascript"></script> 
-<script src="js/bootstrap-modal.js" type="text/javascript"></script> 
-<script src="js/bootstrap-dropdown.js" type="text/javascript"></script> 
-<script src="js/bootstrap-scrollspy.js" type="text/javascript"></script> 
-<script src="js/bootstrap-tab.js" type="text/javascript"></script> 
-<script src="js/bootstrap-tooltip.js" type="text/javascript"></script> 
-<script src="js/bootstrap-popover.js" type="text/javascript"></script> 
-<script src="js/bootstrap-button.js" type="text/javascript"></script> 
-<script src="js/bootstrap-collapse.js" type="text/javascript"></script> 
-<script src="js/bootstrap-carousel.js" type="text/javascript"></script> 
-<script src="js/bootstrap-typeahead.js" type="text/javascript"></script> 
-<script src="js/bootstrap-affix.js" type="text/javascript"></script> 
-<script src="js/fileinput.jquery.js" type="text/javascript"></script> 
-<script src="js/jquery.touchdown.js" type="text/javascript"></script> 
-<script language="javascript" type="text/javascript" src="js/plugins/jquery.uniform.min.js"></script> 
-<script language="javascript" type="text/javascript" src="js/plugins/jquery.tinyscrollbar.min.js"></script> 
-<script language="javascript" type="text/javascript" src="js/jnavigate.jquery.min.js"></script> 
-<script language="javascript" type="text/javascript" src="js/jquery.touchSwipe.min.js"></script> 
-<script language="javascript" type="text/javascript" src="js/plugins/jquery.peity.min.js"></script> 
-<script language="javascript" type="text/javascript" src="js/plugins/wysihtml5-0.3.0.min.js"></script> 
-<script language="javascript" type="text/javascript" src="js/plugins/bootstrap-wysihtml5.js"></script> 
-<script language="javascript" type="text/javascript" src="js/plugins/jquery.peity.min.js"></script> 
-<script language="javascript" type="text/javascript" src="js/plugins/jquery.uniform.min.js"></script> 
-<script language="javascript" type="text/javascript" src="js/plugins/textarea-autogrow.js"></script> 
-<script language="javascript" type="text/javascript" src="js/plugins/character-limit.js"></script> 
-<script language="javascript" type="text/javascript" src="js/plugins/jquery.maskedinput-1.3.js"></script> 
-<script language="javascript" type="text/javascript" src="js/plugins/chosen/chosen/chosen.jquery.min.js"></script> 
-<script language="javascript" type="text/javascript" src="js/plugins/bootstrap-datepicker.js"></script> 
-<script language="javascript" type="text/javascript" src="js/plugins/bootstrap-colorpicker.js"></script> 
+<script language="javascript" type="text/javascript" src="js/plugins/jquery.sparkline.min.js"></script>
+<script src="js/plugins/excanvas.compiled.js" type="text/javascript"></script>
+<script src="js/bootstrap-transition.js" type="text/javascript"></script>
+<script src="js/bootstrap-alert.js" type="text/javascript"></script>
+<script src="js/bootstrap-modal.js" type="text/javascript"></script>
+<script src="js/bootstrap-dropdown.js" type="text/javascript"></script>
+<script src="js/bootstrap-scrollspy.js" type="text/javascript"></script>
+<script src="js/bootstrap-tab.js" type="text/javascript"></script>
+<script src="js/bootstrap-tooltip.js" type="text/javascript"></script>
+<script src="js/bootstrap-popover.js" type="text/javascript"></script>
+<script src="js/bootstrap-button.js" type="text/javascript"></script>
+<script src="js/bootstrap-collapse.js" type="text/javascript"></script>
+<script src="js/bootstrap-carousel.js" type="text/javascript"></script>
+<script src="js/bootstrap-typeahead.js" type="text/javascript"></script>
+<script src="js/bootstrap-affix.js" type="text/javascript"></script>
+<script src="js/fileinput.jquery.js" type="text/javascript"></script>
+<script src="js/jquery.touchdown.js" type="text/javascript"></script>
+<script language="javascript" type="text/javascript" src="js/plugins/jquery.uniform.min.js"></script>
+<script language="javascript" type="text/javascript" src="js/plugins/jquery.tinyscrollbar.min.js"></script>
+<script language="javascript" type="text/javascript" src="js/jnavigate.jquery.min.js"></script>
+<script language="javascript" type="text/javascript" src="js/jquery.touchSwipe.min.js"></script>
+<script language="javascript" type="text/javascript" src="js/plugins/jquery.peity.min.js"></script>
+<script language="javascript" type="text/javascript" src="js/plugins/wysihtml5-0.3.0.min.js"></script>
+<script language="javascript" type="text/javascript" src="js/plugins/bootstrap-wysihtml5.js"></script>
+<script language="javascript" type="text/javascript" src="js/plugins/jquery.peity.min.js"></script>
+<script language="javascript" type="text/javascript" src="js/plugins/jquery.uniform.min.js"></script>
+<script language="javascript" type="text/javascript" src="js/plugins/textarea-autogrow.js"></script>
+<script language="javascript" type="text/javascript" src="js/plugins/character-limit.js"></script>
+<script language="javascript" type="text/javascript" src="js/plugins/jquery.maskedinput-1.3.js"></script>
+<script language="javascript" type="text/javascript" src="js/plugins/chosen/chosen/chosen.jquery.min.js"></script>
+<script language="javascript" type="text/javascript" src="js/plugins/bootstrap-datepicker.js"></script>
+<script language="javascript" type="text/javascript" src="js/plugins/bootstrap-colorpicker.js"></script>
 
-<!-- Validation plugin --> 
-<script src="js/plugins/validation/dist/jquery.validate.min.js" type="text/javascript"></script> 
+<!-- Validation plugin -->
+<script src="js/plugins/validation/dist/jquery.validate.min.js" type="text/javascript"></script>
 
-<!-- Custom made scripts for this template --> 
-<script src="js/scripts.js" type="text/javascript"></script> 
+<!-- Custom made scripts for this template -->
+<script src="js/scripts.js" type="text/javascript"></script>
 <script type="text/javascript">
   /**** Specific JS for this page ****/
 
@@ -276,7 +276,7 @@ $().ready(function() {
 
 //Forms
  $(document).ready(function () {
-       
+
         $('textarea.autogrow').autogrow();
         var elem = $("#chars");
         $("#text").limiter(100, elem);
