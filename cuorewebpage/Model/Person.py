@@ -65,8 +65,6 @@ class Person(object):
         store.save_unique("People", "email", self.email, self)
         return self
 
-
-
 sandy = Person("Sandy", "Siththanandan", "sandymeep@gmail.com", "Applications Developer", 3)
 store.save_unique("People", "email", sandy.email, sandy)
 chippie = Person("Chippie", "Siththanandan", "chippie.vbs@gmail.com")
@@ -90,7 +88,6 @@ print president
 
 #if store.load_unique("People", "first_name", "george", Person) = None:
 #    print me
-
 Kirby = Person("Kirby", "Linvill", "kirby@cuore.io", "Applications Developer", 3)
 Kevin = Person("Kevin", "Ryan", "kevincryan23@gmail.com", "Vice President", 3)
 #List of people in each position, first entry is the name of the position

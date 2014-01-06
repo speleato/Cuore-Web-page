@@ -17,8 +17,5 @@ store = ogm.Store(graph_db)
 
 #@view_config(route_name="AdminPanel", renderer="cuorewebpage:templates/admin.mako")
 def admin_panel(request):
-    # to do: replace admin constant with user's authorization
-    admin=1
-    if not(admin):
-        raise HTTPUnauthorized()
     return {}
+

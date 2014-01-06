@@ -1,3 +1,5 @@
+<%inherit file="cuorewebpage:templates/base.mako"/>
+
 <h1>Newsfeed</h1>
 <%
     #constants to represent user's permissions

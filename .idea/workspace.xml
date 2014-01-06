@@ -1,14 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d07aedbd-ac1c-45a1-8b04-9994a637ff65" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cuorewebpage/Views/Admin_View.py" afterPath="$PROJECT_DIR$/cuorewebpage/Views/Admin_View.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cuorewebpage/Views/Blog_View.py" afterPath="$PROJECT_DIR$/cuorewebpage/Views/Blog_View.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cuorewebpage/Views/Directory_View.py" afterPath="$PROJECT_DIR$/cuorewebpage/Views/Directory_View.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cuorewebpage/Views/Login_View.py" afterPath="$PROJECT_DIR$/cuorewebpage/Views/Login_View.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cuorewebpage/Views/Profile_View.py" afterPath="$PROJECT_DIR$/cuorewebpage/Views/Profile_View.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cuorewebpage/Views/Registration_View.py" afterPath="$PROJECT_DIR$/cuorewebpage/Views/Registration_View.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+    <list default="true" id="d07aedbd-ac1c-45a1-8b04-9994a637ff65" name="Default" comment="Added Nav_Bar UI template">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cuorewebpage/templates/footer.mako" afterPath="$PROJECT_DIR$/cuorewebpage/templates/footer.mako" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cuorewebpage/templates/nav_bar.mako" afterPath="$PROJECT_DIR$/cuorewebpage/templates/nav_bar.mako" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cuorewebpage/templates/profile.mako" afterPath="$PROJECT_DIR$/cuorewebpage/templates/profile.mako" />
     </list>
     <ignored path="Cuore-Web-page.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -20,7 +16,6 @@
   </component>
   <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/Cuore-Web-page$Cuore_Web_page.coverage" NAME="Cuore-Web-page Coverage Results" MODIFIED="1388967721986" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Cuore-Web-page$Cuore_Web_Page.coverage" NAME="Cuore-Web-Page Coverage Results" MODIFIED="1388778833279" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Cuore-Web-page$__init__.coverage" NAME="__init__ Coverage Results" MODIFIED="1387394655418" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/cuorewebpage" />
   </component>
@@ -36,41 +31,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="__init__.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/cuorewebpage/__init__.py">
+      <file leaf-file-name="style.css" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/cuorewebpage/css/style.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="39" column="39" selection-start="1640" selection-end="1640" vertical-scroll-proportion="0.0" vertical-offset="209" max-vertical-offset="930">
+            <state line="0" column="0" selection-start="0" selection-end="9067" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="14685">
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Registration_View.py" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/cuorewebpage/Views/Registration_View.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="100" column="55" selection-start="5291" selection-end="5291" vertical-scroll-proportion="0.48" vertical-offset="1110" max-vertical-offset="1545">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Registration.mako" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/cuorewebpage/templates/Registration.mako">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="13" column="0" selection-start="499" selection-end="499" vertical-scroll-proportion="-5.625" vertical-offset="60" max-vertical-offset="1230">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Newsfeed.mako" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/cuorewebpage/templates/Newsfeed.mako">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="29" column="31" selection-start="1041" selection-end="1041" vertical-scroll-proportion="-10.083333" vertical-offset="193" max-vertical-offset="990">
-              <folding>
-                <marker date="1388967048000" expanded="true" signature="1434:1616" placeholder="..." />
-                <marker date="1388967048000" expanded="true" signature="1656:1971" placeholder="..." />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -103,30 +68,27 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
+        <option value="$PROJECT_DIR$/development.ini" />
+        <option value="$PROJECT_DIR$/cuorewebpage/Views/Newsfeed.mako" />
         <option value="$PROJECT_DIR$/cuorewebpage/lib/oneid.py" />
         <option value="$PROJECT_DIR$/cuorewebpage/templates/__init__.py" />
         <option value="$PROJECT_DIR$/cuorewebpage/templates/Directory.mako" />
-        <option value="$PROJECT_DIR$/cuorewebpage/templates/Profile.mako" />
-        <option value="$PROJECT_DIR$/cuorewebpage/templates/Nav_Bar.mako" />
         <option value="$PROJECT_DIR$/cuorewebpage/templates/Newsfeed.mako" />
         <option value="$PROJECT_DIR$/cuorewebpage/Model/Person.py" />
-        <option value="$PROJECT_DIR$/cuorewebpage/templates/Admin.mako" />
         <option value="$PROJECT_DIR$/cuorewebpage/templates/Registration.mako" />
-        <option value="$PROJECT_DIR$/cuorewebpage/__init__.py" />
-        <option value="$PROJECT_DIR$/cuorewebpage/Views/Admin_View.py" />
-        <option value="$PROJECT_DIR$/cuorewebpage/Views/Blog_View.py" />
-        <option value="$PROJECT_DIR$/cuorewebpage/Views/Directory_View.py" />
-        <option value="$PROJECT_DIR$/cuorewebpage/Views/Login_View.py" />
-        <option value="$PROJECT_DIR$/cuorewebpage/Views/Profile_View.py" />
         <option value="$PROJECT_DIR$/cuorewebpage/Views/Registration_View.py" />
+        <option value="$PROJECT_DIR$/cuorewebpage/__init__.py" />
+        <option value="$PROJECT_DIR$/cuorewebpage/templates/Admin.mako" />
+        <option value="$PROJECT_DIR$/cuorewebpage/templates/Nav_Bar.mako" />
+        <option value="$PROJECT_DIR$/cuorewebpage/templates/Footer.mako" />
+        <option value="$PROJECT_DIR$/cuorewebpage/templates/Profile.mako" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="631" />
-    <option name="y" value="22" />
-    <option name="width" value="807" />
-    <option name="height" value="792" />
+    <option name="y" value="609" />
+    <option name="width" value="960" />
+    <option name="height" value="587" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -154,91 +116,15 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
+      <pane id="Scope">
+        <subPane subId="Project Files" />
+      </pane>
       <pane id="ProjectPane">
         <subPane>
           <PATH>
             <PATH_ELEMENT>
               <option name="myItemId" value="Cuore-Web-page" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Cuore-Web-page" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Cuore-Web-page" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Cuore-Web-page" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Cuore-Web-page" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="cuorewebpage" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Cuore-Web-page" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Cuore-Web-page" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="cuorewebpage" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="templates" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Cuore-Web-page" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Cuore-Web-page" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="cuorewebpage" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Views" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Cuore-Web-page" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Cuore-Web-page" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="cuorewebpage" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Model" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
@@ -266,7 +152,7 @@
       <recent name="C:\Users\Kirby\PycharmProjects\Cuore-Web-page\cuorewebpage\templates" />
     </key>
   </component>
-  <component name="RunManager" selected="Pyramid server.Cuore-Web-page">
+  <component name="RunManager">
     <configuration default="false" name="__init__" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -284,26 +170,6 @@
       <option name="PARAMETERS" value="" />
       <RunnerSettings RunnerId="PythonRunner" />
       <ConfigurationWrapper RunnerId="PythonRunner" />
-      <method />
-    </configuration>
-    <configuration default="true" type="DjangoTestsConfigurationType" factoryName="Django tests">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="Cuore-Web-page" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="TARGET" value="" />
-      <option name="SETTINGS_FILE" value="" />
-      <option name="CUSTOM_SETTINGS" value="false" />
-      <option name="USE_OPTIONS" value="false" />
-      <option name="OPTIONS" value="" />
       <method />
     </configuration>
     <configuration default="true" type="tests" factoryName="py.test">
@@ -353,22 +219,6 @@
       <option name="USE_PARAM" value="false" />
       <method />
     </configuration>
-    <configuration default="true" type="Python.AppEngineServer" factoryName="App Engine server">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="Cuore-Web-page" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="launchJavascriptDebuger" value="false" />
-      <option name="browserUrl" value="" />
-      <option name="additionalOptions" value="" />
-      <method />
-    </configuration>
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -384,25 +234,6 @@
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="" />
       <option name="PARAMETERS" value="" />
-      <method />
-    </configuration>
-    <configuration default="true" type="Python.PyramidServer" factoryName="Pyramid server">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="C:/Python27/python.exe" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="Cuore-Web-page" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="launchJavascriptDebuger" value="false" />
-      <option name="additionalOptions" value="" />
-      <option name="browserUrl" value="" />
-      <option name="CONFIGURATION_FILE" value="C:\Users\Kirby\PycharmProjects\Cuore-Web-page\development.ini" />
       <method />
     </configuration>
     <configuration default="true" type="tests" factoryName="Unittests">
@@ -426,9 +257,6 @@
       <option name="PUREUNITTEST" value="true" />
       <option name="PARAMS" value="" />
       <option name="USE_PARAM" value="false" />
-      <method />
-    </configuration>
-    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true">
       <method />
     </configuration>
     <configuration default="true" type="tests" factoryName="Doctests">
@@ -492,55 +320,8 @@
       <ConfigurationWrapper RunnerId="PythonRunner" />
       <method />
     </configuration>
-    <configuration default="false" name="Cuore-Web-page" type="Python.PyramidServer" factoryName="Pyramid server">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="$USER_HOME$/env/bin/python" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="Cuore-Web-page" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="launchJavascriptDebuger" value="false" />
-      <option name="additionalOptions" value="" />
-      <option name="browserUrl" value="" />
-      <option name="CONFIGURATION_FILE" value="$PROJECT_DIR$/development.ini" />
-      <RunnerSettings RunnerId="PythonRunner" />
-      <ConfigurationWrapper RunnerId="PythonRunner" />
-      <method />
-    </configuration>
-    <configuration default="false" name="Tests in setup.py" type="tests" factoryName="Unittests">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="Cuore-Web-page" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/setup.py" />
-      <option name="CLASS_NAME" value="" />
-      <option name="METHOD_NAME" value="" />
-      <option name="FOLDER_NAME" value="" />
-      <option name="TEST_TYPE" value="TEST_SCRIPT" />
-      <option name="PATTERN" value="" />
-      <option name="USE_PATTERN" value="false" />
-      <option name="PUREUNITTEST" value="true" />
-      <option name="PARAMS" value="" />
-      <option name="USE_PARAM" value="false" />
-      <method />
-    </configuration>
-    <list size="4">
-      <item index="0" class="java.lang.String" itemvalue="Pyramid server.Cuore-Web-Page" />
-      <item index="1" class="java.lang.String" itemvalue="Pyramid server.Cuore-Web-page" />
-      <item index="2" class="java.lang.String" itemvalue="Python tests.Tests in setup.py" />
-      <item index="3" class="java.lang.String" itemvalue="Python.__init__" />
+    <list size="1">
+      <item index="0" class="java.lang.String" itemvalue="Python.__init__" />
     </list>
     <recent_temporary>
       <list size="1">
@@ -608,37 +389,29 @@
       <created>1388711893162</created>
       <updated>1388711893162</updated>
     </task>
-    <task id="LOCAL-00010" summary="Updated Nav Bar UI">
-      <created>1388782337986</created>
-      <updated>1388782337986</updated>
-    </task>
-    <task id="LOCAL-00011" summary="Finished Admin Panel">
-      <created>1388967994753</created>
-      <updated>1388967994753</updated>
-    </task>
-    <option name="localTasksCounter" value="12" />
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="631" y="22" width="807" height="792" extended-state="0" />
+    <frame x="0" y="609" width="960" height="587" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.30607188" sideWeight="0.62984216" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.246875" sideWeight="0.8004837" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3701578" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.19951633" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -660,9 +433,7 @@
     <MESSAGE value="Updated Registration pages to create/update nodes in database" />
     <MESSAGE value="Basic Newsfeed Implemented, currently only shows 15 most recent posts" />
     <MESSAGE value="Now inherits classes from Person.py" />
-    <MESSAGE value="Updated Nav Bar UI" />
-    <MESSAGE value="Finished Admin Panel" />
-    <option name="LAST_COMMIT_MESSAGE" value="Finished Admin Panel" />
+    <option name="LAST_COMMIT_MESSAGE" value="Now inherits classes from Person.py" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -670,135 +441,63 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/cuorewebpage/templates/Admin.mako">
+    <entry file="file://$PROJECT_DIR$/setup.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="14" column="0" selection-start="499" selection-end="499" vertical-scroll-proportion="-8.75" vertical-offset="0" max-vertical-offset="2475">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="884">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/cuorewebpage/templates/Newsfeed.mako">
+    <entry file="file://$PROJECT_DIR$/database_config.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="29" column="31" selection-start="1041" selection-end="1041" vertical-scroll-proportion="-10.083333" vertical-offset="193" max-vertical-offset="990">
-          <folding>
-            <marker date="1388967048000" expanded="true" signature="1434:1616" placeholder="..." />
-            <marker date="1388967048000" expanded="true" signature="1656:1971" placeholder="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/cuorewebpage/templates/dashboard.mako">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="14" selection-start="394" selection-end="394" vertical-scroll-proportion="-7.5" vertical-offset="0" max-vertical-offset="11085">
+        <state line="8" column="0" selection-start="252" selection-end="252" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="391">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/cuorewebpage/Views/Admin_View.py">
+    <entry file="file://$PROJECT_DIR$/CHANGES.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="19" column="27" selection-start="528" selection-end="528" vertical-scroll-proportion="0.0" vertical-offset="83" max-vertical-offset="450">
-          <folding>
-            <element signature="e#0#37#0" expanded="true" />
-          </folding>
-        </state>
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="776" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/cuorewebpage/Views/Blog_View.py">
+    <entry file="file://$PROJECT_DIR$/cuorewebpage/Model/Person.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="19" column="13" selection-start="499" selection-end="499" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="390">
-          <folding>
-            <element signature="e#0#37#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/cuorewebpage/Views/Directory_View.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="19" column="13" selection-start="514" selection-end="514" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="375">
-          <folding>
-            <element signature="e#0#37#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/cuorewebpage/Views/Login_View.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="21" column="35" selection-start="893" selection-end="893" vertical-scroll-proportion="0.0" vertical-offset="53" max-vertical-offset="405">
-          <folding>
-            <element signature="e#0#34#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/cuorewebpage/templates/Registration.mako">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="0" selection-start="499" selection-end="499" vertical-scroll-proportion="-5.625" vertical-offset="60" max-vertical-offset="1230">
+        <state line="55" column="26" selection-start="1529" selection-end="1529" vertical-scroll-proportion="-0.10514019" vertical-offset="825" max-vertical-offset="2025">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/cuorewebpage/Views/Profile_View.py">
+    <entry file="file://$PROJECT_DIR$/cuorewebpage/templates/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="20" column="0" selection-start="509" selection-end="509" vertical-scroll-proportion="0.8" vertical-offset="0" max-vertical-offset="390">
-          <folding>
-            <element signature="e#0#37#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/cuorewebpage/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="39" column="39" selection-start="1640" selection-end="1640" vertical-scroll-proportion="0.0" vertical-offset="209" max-vertical-offset="930">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="611">
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/cuorewebpage/Views/Workspace_View.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="388">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/cuorewebpage/Views/test_view.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="518">
-          <folding>
-            <element signature="e#0#37#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/cuorewebpage/Views/registration_settings.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1845">
-          <folding>
-            <element signature="e#0#37#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/cuorewebpage/Views/newsfeed_view.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="24" column="21" selection-start="822" selection-end="822" vertical-scroll-proportion="0.64" vertical-offset="120" max-vertical-offset="495">
-          <folding>
-            <element signature="e#0#37#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/cuorewebpage/Views/dashboard_view.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="518">
-          <folding>
-            <element signature="e#0#36#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/cuorewebpage/Views/Registration_View.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="100" column="55" selection-start="5291" selection-end="5291" vertical-scroll-proportion="0.48" vertical-offset="1110" max-vertical-offset="1545">
+        <state line="81" column="25" selection-start="4282" selection-end="4282" vertical-scroll-proportion="0.0" vertical-offset="896" max-vertical-offset="1695">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cuorewebpage/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="17" column="11" selection-start="578" selection-end="578" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="735">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/development.ini">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="10" column="30" selection-start="245" selection-end="245" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1080">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cuorewebpage/css/style.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="9067" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="14685">
           <folding />
         </state>
       </provider>

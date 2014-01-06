@@ -18,3 +18,4 @@ store = ogm.Store(graph_db)
 @view_config(route_name="Directory", renderer="cuorewebpage:templates/Directory.mako")
 def Directory(request):
     return {}
+
