@@ -118,18 +118,6 @@ def Directory(request):
 def Profile(request):
     return {}
 
-@view_config(route_name="Newsfeed", renderer="cuorewebpage:templates/Newsfeed.mako")
-def Newsfeed(request):
-    if request.POST:
-        newsNode=graph_db.create({"news":request.POST.getone('news'), "time":time.time(), "author":request.POST.getone('author')})
-        departments=request.POST.getall('postTo[]')
-        for i in departments:
-            depNode=graph_db.get_indexed_node("Newsfeed", "name", i)
-            number=depNode.get_properties()["numPosts"]
-            depNode.update_properties({"numPosts":(number+1)})
-            graph_db.create((depNode, "NEWS", newsNode[0]))
-    return {}
-
 @view_config(route_name="AdminPanel", renderer="cuorewebpage:templates/Admin.mako")
 def AdminPanel(request):
     # to do: replace admin constant with user's authorization
