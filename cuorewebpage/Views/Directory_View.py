@@ -3,6 +3,7 @@ from pyramid.view import view_config
 
 from pyramid_mailer import get_mailer
 from pyramid_mailer.message import Message
+from pyramid.httpexceptions import HTTPForbidden
 import transaction
 
 import time

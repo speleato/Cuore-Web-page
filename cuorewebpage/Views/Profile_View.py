@@ -18,4 +18,3 @@ store = ogm.Store(graph_db)
 @view_config(route_name="Profile", renderer="cuorewebpage:templates/profile.mako")
 def profile(request):
     return {}
-
