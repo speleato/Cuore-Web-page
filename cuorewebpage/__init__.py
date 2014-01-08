@@ -2,9 +2,6 @@ from wsgiref.simple_server import make_server
 from pyramid.config import Configurator
 from pyramid.request import Request
 
-
-
-
 def main(global_config, **settings):
     config = Configurator(settings=settings)
 
@@ -22,6 +19,8 @@ def main(global_config, **settings):
     config.add_route('Registration', '/registration')
     config.add_route('Settings', '/settings/{action}')
     config.add_route('Dashboard', '/dashboard')
+    config.add_route('SubmitRegistration', '/registration/submit')
+    config.add_route('ConfirmRegistration', 'registration/confirm')
     config.add_route('Profile', '/profile')
     config.add_route('Directory', '/directory')
     config.add_route('Newsfeed', '/newsfeed')
@@ -37,7 +36,7 @@ def main(global_config, **settings):
     config.add_route('Support', '/support')
     config.add_route('Contact', '/contact')
     config.add_route('Logout', '/logout')
-    config.add_route('Admin', '/DoNotPutAdmin')
+    config.add_route('AdminPanel', '/adminpanel')
     config.add_route('Test', '/test')
 
     config.add_static_view(name='img', path='cuorewebpage:img')

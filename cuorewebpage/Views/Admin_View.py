@@ -15,7 +15,7 @@ from cuorewebpage.Model.Person import Person
 graph_db = neo4j.GraphDatabaseService(db_config['uri'])
 store = ogm.Store(graph_db)
 
-#@view_config(route_name="AdminPanel", renderer="cuorewebpage:templates/admin.mako")
+@view_config(route_name="AdminPanel", renderer="cuorewebpage:templates/admin.mako")
 def admin_panel(request):
     return {}
 
