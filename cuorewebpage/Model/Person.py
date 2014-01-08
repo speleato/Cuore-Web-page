@@ -23,6 +23,35 @@ class Company(object):
     def __str__(self):
         return self.name
 
+    #return a list of Department objects
+    def getAllDepartments(self):
+        return store.load_related(self, "DEPARTMENT", Department)
+
+    #returns the requested department object
+    def getDepartment(self, name):
+        return store.load_unique("Department", "name", name, Department)
+
+    #gets the company node as a node object for use with creating relationships
+    def getNode(self):
+        return graph_db.get_indexed_node("Company", "name", self.name)
+
+    #creates a department node with the name given if it doesn't already exist
+    def addDepartment(self, name):
+        newDep = Department(name)
+        if not (self.getDepartment(name)):
+            newsfeed = Newsfeed(newDep.name, 0)
+            store.relate(newDep, "NEWSFEED", newsfeed)
+            store.save_unique("Newsfeed", "name", newDep.name, newsfeed)
+            store.save_unique("Department", "name", newDep.name, newDep)
+            graph_db.create((self.getNode(), "DEPARTMENT", newDep.getNode()))
+
+    def removeDepartment(self, name):
+        dep=self.getDepartment(name)
+        store.delete(dep.getNewsfeed())
+        for i in dep.getAllTitles():
+            dep.removeTitle(i.name)
+        store.delete(dep)
+
 
 class Department(object):
     def __init__(self, name=None):
@@ -30,6 +59,38 @@ class Department(object):
 
     def __str__(self):
         return self.name
+
+    def getAllTitles(self):
+        return store.load_related(self, "TITLE", Title)
+
+    #returns the requested department object
+    def getTitle(self, name):
+        return store.load_unique("Title", "name", name, Title)
+
+    def getNode(self):
+        return graph_db.get_indexed_node("Department", "name", self.name)
+
+    #creates a title node with the name given if it doesn't already exist
+    def addTitle(self, name):
+        newTitle = Title(name)
+        if not (store.load_indexed("Title", "name", newTitle.name, newTitle)):
+            store.save_unique("Title", "name", newTitle.name, newTitle)
+            graph_db.create((self.getNode(), "TITLE", newTitle.getNode()))
+
+    def removeTitle(self, name):
+        title=self.getTitle(name)
+        for i in title.getAllPersons():
+            title.safeRemovePerson(i.email)
+        store.delete(title)
+
+    def getNewsfeed(self):
+        return store.load_unique("Newsfeed", "name", self.name, Newsfeed)
+
+
+
+
+
+
 
 
 class Title(object):
@@ -39,6 +100,27 @@ class Title(object):
 
     def __str__(self):
         return self.name
+
+    def getAllPersons(self):
+        return store.load_related(self, "PERSON", Person)
+
+    def getPerson(self, email):
+        return store.load_unique("People", "email", email, Person)
+
+    def getNode(self):
+        return graph_db.get_indexed_node("Title", "name", self.name)
+
+    def addTitle(self, department, titleName):
+        title=store.load_unique("Department", "name", department, Department).getTitle(titleName)
+        graph_db.create((person.getNode(), "UNASSIGNED", graph_db.get_or_create_indexed_node("Unassigned", "name", "unassigned")))
+
+    #removes the relationship between the person and the Title,
+    def safeRemovePerson(self, email):
+        person=self.getPerson(email)
+        graph_db.create((person.getNode(), "UNASSIGNED", graph_db.get_or_create_indexed_node("Unassigned", "name", "unassigned")))
+        for i in person.getNode().match("TITLE"):
+            i.delete()
+
 
 # The confirmed variable represents the level of confirmation similar to chmod. 1 means person confirmed, 2 means
 # Leo confirmed, and 3 means both confirmed
@@ -59,21 +141,21 @@ class Person(object):
         self.about = about
 
     def __str__(self):
-        return (self.first_name)
+        return self.first_name
 
     def submit_settings(self):
         store.save_unique("People", "email", self.email, self)
         return self
 
+    def getNode(self):
+        return graph_db.get_indexed_node("People", "email", self.email)
+
+    def removePerson(self):
+        store.delete(self)
+
+
 sandy = Person("Sandy", "Siththanandan", "sandymeep@gmail.com", "Applications Developer", 3)
 store.save_unique("People", "email", sandy.email, sandy)
-chippie = Person("Chippie", "Siththanandan", "chippie.vbs@gmail.com")
-lauren = Person("Lauren", "Ruge", "lruge008@gmail.com")
-store.save_unique("People", "email", chippie.email, chippie)
-store.save_unique("People", "email", lauren.email, lauren)
-store.relate(sandy, "LIKES", chippie)
-store.relate(sandy, "LIKES", lauren)
-store.save(sandy)
 leo = Person("Leo", "Schultz", "leo@cuore.io", "President", 3)
 leo.submit_settings()
 
@@ -115,17 +197,17 @@ cuore = Company("Cuore")
 for i in range(0, len(departments)):
     dep = Department(departmentNames[i])
     newsfeed = Newsfeed(departmentNames[i], 0)
-    store.relate(cuore, "UNDER", dep)
+    store.relate(cuore, "DEPARTMENT", dep)
     store.relate(dep, "NEWSFEED", newsfeed)
     for j in range(0, len(departments[i])):
         title = Title(departments[i][j][0])
-        store.relate(dep, "IN", title)
+        store.relate(dep, "TITLE", title)
         for k in range(1, len(departments[i][j])):
             employee = departments[i][j][k]
             print departments[i][j][k]
             print type(employee)
             store.save_unique("People", "email", employee.email, employee)
-            store.relate(title, "IS A", employee)
+            store.relate(title, "PERSON", employee)
         store.save_unique("Title", "name", title.name, title)
     store.save_unique("Newsfeed", "name", departmentNames[i], newsfeed)
     store.save_unique("Department", "name", departmentNames[i], dep)

@@ -8,7 +8,7 @@
     graph_db = neo4j.GraphDatabaseService(db_config['uri'])
     store = ogm.Store(graph_db)
 
-    department = store.load_related(store.load_unique("Company", "name", "Cuore", Company), "UNDER", Department)
+    departments = store.load_unique("Company", "name", "Cuore", Company).getAllDepartments()
 %>
 
 <div id="main_container">
@@ -28,10 +28,9 @@
 
 <!-- span8 box for each department -->
 
-%for i in department:
+%for i in departments:
     <%
-        job_title = store.load_related(store.load_unique("Department", "name",
-                                        i.name, Department), "IN", Title)
+        job_titles = i.getAllTitles()
     %>
     <div class="row-fluid">
     <div class="span8">
@@ -50,11 +49,11 @@
               </tr>
             </thead>
             <tbody>
-    %for j in job_title:
+    %for j in job_titles:
         <%
-        person = store.load_related(store.load_unique("Title", "name", j, Title), "IS A", Person)
+        persons = j.getAllPersons()
         %>
-        %for k in person:
+        %for k in persons:
             <%doc>add link to person's profile, i think can be done using get
                   and then rendering the profile with the name as a parameter</%doc>
               <tr>
