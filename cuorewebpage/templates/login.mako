@@ -13,6 +13,7 @@ OneID.init({
  buttons: {
    "signin #oneid-signin-button": [{
      challenge: {
+       "request_method": "POST",
        "callback": "/authenticate",
        "attr": "email name"
      }
