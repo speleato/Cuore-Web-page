@@ -31,7 +31,7 @@
     graph_db = neo4j.GraphDatabaseService(db_config['uri'])
     store = ogm.Store(graph_db)
 
-    postDepartment = store.load_related(store.load_unique("Company", "name", "Cuore", Company), "UNDER", Department)
+    postDepartment = store.load_related(store.load_unique("Company", "name", "Cuore", Company), "DEPARTMENT", Department)
 %>
 %for i in result[0]:
     <%
