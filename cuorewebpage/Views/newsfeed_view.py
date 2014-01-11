@@ -25,3 +25,4 @@ def Newsfeed(request):
             number=depNode.get_properties()["numPosts"]
             depNode.update_properties({"numPosts":(number+1)})
             graph_db.create((depNode, "NEWS", newsNode[0]))
+    return {}

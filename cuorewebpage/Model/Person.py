@@ -16,6 +16,12 @@ class Newsfeed(object):
         return self.name
 
 
+
+
+
+
+
+
 class Company(object):
     def __init__(self, name=None):
         self.name=name
@@ -23,19 +29,28 @@ class Company(object):
     def __str__(self):
         return self.name
 
-    #return a list of Department objects
+    # Function: getAllDepartments
+    # Arguments:
+    # Returns: list of Department objects related to self
     def getAllDepartments(self):
         return store.load_related(self, "DEPARTMENT", Department)
 
-    #returns the requested department object
+    # Function: getDepartment
+    # Arguments: name of department to be returned (string)
+    # Returns: requested Department object related to self
     def getDepartment(self, name):
         return store.load_unique("Department", "name", name, Department)
 
-    #gets the company node as a node object for use with creating relationships
+    # Function: getNode
+    # Arguments:
+    # Returns: the neo4j node object of self (needed for graph_db.create function)
     def getNode(self):
         return graph_db.get_indexed_node("Company", "name", self.name)
 
-    #creates a department node with the name given if it doesn't already exist
+    # Function: addDepartment
+    # Arguments: name of the department (string)
+    # Returns:
+    # Description: creates a related department node in neo4j with the given name if it doesn't already exist
     def addDepartment(self, name):
         newDep = Department(name)
         if not (self.getDepartment(name)):
@@ -45,12 +60,22 @@ class Company(object):
             store.save_unique("Department", "name", newDep.name, newDep)
             graph_db.create((self.getNode(), "DEPARTMENT", newDep.getNode()))
 
+    # Function: removeDepartment
+    # Arguments: name of the department (string)
+    # Returns:
+    # Description: deletes a related department node and all associated titles, safely removes the people associated
+    #       with those titles (attaches the people to an unassigned node)
     def removeDepartment(self, name):
         dep=self.getDepartment(name)
         store.delete(dep.getNewsfeed())
         for i in dep.getAllTitles():
             dep.removeTitle(i.name)
         store.delete(dep)
+
+
+
+
+
 
 
 class Department(object):
@@ -60,29 +85,48 @@ class Department(object):
     def __str__(self):
         return self.name
 
+    # Function: getAllTitles
+    # Arguments:
+    # Returns: list of Title objects related to self
     def getAllTitles(self):
         return store.load_related(self, "TITLE", Title)
 
-    #returns the requested department object
+    # Function: getTitle
+    # Arguments: name of Title (string)
+    # Returns: requested related Title object
     def getTitle(self, name):
         return store.load_unique("Title", "name", name, Title)
 
+    # Function: getNode
+    # Arguments:
+    # Returns: the neo4j node object of self (needed for graph_db.create function)
     def getNode(self):
         return graph_db.get_indexed_node("Department", "name", self.name)
 
-    #creates a title node with the name given if it doesn't already exist
+    # Function: addTitle
+    # Arguments: name of Title (string)
+    # Returns:
+    # Description: creates a related Title node in neo4j with the given name if it doesn't already exist
     def addTitle(self, name):
         newTitle = Title(name)
         if not (store.load_indexed("Title", "name", newTitle.name, newTitle)):
             store.save_unique("Title", "name", newTitle.name, newTitle)
             graph_db.create((self.getNode(), "TITLE", newTitle.getNode()))
 
+    # Function: removeTitle
+    # Arguments: name of the title (string)
+    # Returns:
+    # Description: deletes a related title node, safely removes the people related to the title (attaches the people to
+    #       an unassigned node)
     def removeTitle(self, name):
         title=self.getTitle(name)
         for i in title.getAllPersons():
             title.safeRemovePerson(i.email)
         store.delete(title)
 
+    # Function: getNewsfeed
+    # Arguments:
+    # Returns: Newsfeed object
     def getNewsfeed(self):
         return store.load_unique("Newsfeed", "name", self.name, Newsfeed)
 
@@ -101,20 +145,33 @@ class Title(object):
     def __str__(self):
         return self.name
 
+    # Function: getAllPersons
+    # Arguments:
+    # Returns: list of Person objects related to self
     def getAllPersons(self):
         return store.load_related(self, "PERSON", Person)
 
+    # Function: getPerson
+    # Arguments: email of person (string)
+    # Returns: requested related Person object
     def getPerson(self, email):
         return store.load_unique("People", "email", email, Person)
 
+    # Function: getNode
+    # Arguments:
+    # Returns: the neo4j node object of self (needed for graph_db.create function)
     def getNode(self):
         return graph_db.get_indexed_node("Title", "name", self.name)
 
-    def addTitle(self, department, titleName):
-        title=store.load_unique("Department", "name", department, Department).getTitle(titleName)
-        graph_db.create((person.getNode(), "UNASSIGNED", graph_db.get_or_create_indexed_node("Unassigned", "name", "unassigned")))
+    #def addTitle(self, department, titleName):
+    #    title=store.load_unique("Department", "name", department, Department).getTitle(titleName)
+    #    graph_db.create((person.getNode(), "UNASSIGNED", graph_db.get_or_create_indexed_node("Unassigned", "name", "unassigned")))
 
-    #removes the relationship between the person and the Title,
+    # Function: safeRemovePerson
+    # Arguments: email of the Person (string)
+    # Returns:
+    # Description: safely removes the the relationship between Person and selfin neo4j (attaches the people to an
+    #       unassigned node)
     def safeRemovePerson(self, email):
         person=self.getPerson(email)
         graph_db.create((person.getNode(), "UNASSIGNED", graph_db.get_or_create_indexed_node("Unassigned", "name", "unassigned")))
@@ -150,6 +207,10 @@ class Person(object):
     def getNode(self):
         return graph_db.get_indexed_node("People", "email", self.email)
 
+    # Function: removePerson
+    # Arguments:
+    # Returns:
+    # Description: deletes person from neo4j db
     def removePerson(self):
         store.delete(self)
 
