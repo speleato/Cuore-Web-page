@@ -44,7 +44,7 @@
                     <li class="color_10">
                         <a class="widgets"data-parent="#sidebar_menu" href="${request.route_url('CMS')}">
                         <img src="img/menu_icons/maps.png"><span>CMS</span></a> </li>
-                    <li class="accordion-group color_12">
+<!--                    <li class="accordion-group color_12">
                         <a class="widgets" data-parent="#sidebar_menu" href="${request.route_url('Store')}">
                         <img src="img/menu_icons/tables.png"><span>Store</span></a> </li>
                     <li class="color_24">
@@ -53,6 +53,7 @@
                     <li class="accordion-group color_19">
                         <a class="widgets"data-parent="#sidebar_menu" href="${request.route_url('Support')}">
                         <img src="img/menu_icons/statistics.png"><span>Support</span></a> </li>
+-->
                     <li class="color_8">
                         <a class="widgets"data-parent="#sidebar_menu" href="${request.route_url('Contact')}">
                         <img src="img/menu_icons/gallery.png"><span>Contact Us</span></a> </li>
