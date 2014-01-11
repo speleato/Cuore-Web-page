@@ -1,9 +1,14 @@
 from wsgiref.simple_server import make_server
 from pyramid.config import Configurator
 from pyramid.request import Request
+from pyramid.session import UnencryptedCookieSessionFactoryConfig
 
 def main(global_config, **settings):
-    config = Configurator(settings=settings)
+    #SESSIONS
+    # session factory
+    session_factory = UnencryptedCookieSessionFactoryConfig('itsaseekreet')
+    # configuration setup
+    config = Configurator(settings=settings, session_factory=session_factory)
 
     #ROUTES
 
@@ -12,8 +17,8 @@ def main(global_config, **settings):
     #for child in root.findall('route'):
     #    config.add_route(child.find('name').text, child.find('path').text)
     #    config.add_view(child.find('module'), route_name=child.find('name').text)
-    config.add_route('Login', '/')
-    config.add_route('Signin', '/signin')
+    config.add_route('Index', '/')
+    config.add_route('Login', '/login')
     config.add_route('Auth', '/authenticate')
     #config.add_route('Registration', '/registration/{action}')
     config.add_route('Registration', '/registration')
@@ -51,3 +56,4 @@ def main(global_config, **settings):
     config.scan()
 
     return config.make_wsgi_app()
+

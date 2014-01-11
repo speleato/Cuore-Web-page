@@ -1,4 +1,4 @@
-<%inherit file="cuorewebpage:templates/base.mako"/>
+<%inherit file="cuorewebpage:templates/layout_sidebar_default.mako"/>
 
 <div id="main_container">
   <div class="row-fluid">
@@ -11,6 +11,9 @@
 </div>
 <!-- End #container -->
 </div>
+
+<%block name="footer">
+${parent.footer()}
 <div class="background_changer dropdown">
   <div class="dropdown" id="colors_pallete"> <a data-toggle="dropdown" data-target="drop4" class="change_color"></a>
     <ul  class="dropdown-menu pull-left" role="menu" aria-labelledby="drop4">
@@ -44,7 +47,9 @@
   </div>
 </div>
 <!-- End .background_changer -->
+</%block>
 
+<%block name="javascript">
 <!-- Le javascript
     ================================================== -->
 <!-- General scripts -->
@@ -102,3 +107,4 @@
 
 
 </script>
+</%block>

@@ -1,4 +1,4 @@
-<%inherit file="base.mako"/>
+<%inherit file="layout_sidebar_default.mako"/>
 
 <%
     from py2neo import neo4j, ogm
@@ -76,7 +76,7 @@
     <!-- End .span8 -->
 
     </div>
-    <!-- End #container --> 
+    <!-- End #container -->
   </div>
 
 <div class="background_changer dropdown">
@@ -113,6 +113,7 @@
 </div>
 <!-- End .background_changer -->
 </div>
-<!-- /container --> 
+<!-- /container -->
+
 
 

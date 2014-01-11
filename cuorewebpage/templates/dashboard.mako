@@ -1,4 +1,4 @@
-<%inherit file="cuorewebpage:templates/base.mako"/>
+<%inherit file="cuorewebpage:templates/layout_sidebar_default.mako"/>
 
 <div id="main_container">
   <div class="row-fluid">
@@ -7,7 +7,7 @@
       <div class="title">
         <div class="row-fluid">
           <div class="span12">
-            <h4> </i><span>Campaigns</span> </h4>
+            <h4> </i><span>Newsfeed</span> </h4>
           </div>
           <!-- End .span12 -->
         </div>

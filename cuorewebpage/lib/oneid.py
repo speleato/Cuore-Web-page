@@ -4,6 +4,7 @@
 # Copyright 2013 by OneID
 import json
 import requests
+from urllib import *
 
 
 class OneID:
@@ -112,5 +113,10 @@ class OneID:
         """
         return oneid_response.get("errorcode", None) == 0
 
+def init_oneid():
+    oneid_our_key = urlopen("https://keychain.oneid.com/register")
+    oneid_our_key = json.loads(oneid_our_key.read())
+    oneid_connector = OneID(oneid_our_key['API_ID'], oneid_our_key['API_KEY'])
+    return oneid_connector
 
 

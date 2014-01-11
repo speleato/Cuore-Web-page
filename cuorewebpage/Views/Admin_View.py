@@ -26,5 +26,5 @@ def admin_panel(request):
             store.load_unique("Department", "name", request.POST.getone("remFromDep"), Department).removeTitle(request.POST.getone("remTitle"))
             print 4
 
-    return {}
+    return {'section': 'Admin Panel'}
 
