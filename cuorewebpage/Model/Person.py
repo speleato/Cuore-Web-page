@@ -4,17 +4,6 @@ from database_config import *
 graph_db = neo4j.GraphDatabaseService(db_config['uri'])
 store = ogm.Store(graph_db)
 
-class Admin(object):
-    def __init__(self, name=None, permissions=0):
-        self.name=name
-        self.permissions=permissions
-
-    def __str__(self):
-        return self.name
-
-
-
-
 class Company(object):
     def __init__(self, name=None):
         self.name=name
@@ -276,14 +265,9 @@ departmentNames = ["Business", "Applications", "Systems", "Hardware"]
 #Company node tying departments together
 cuore = Company("Cuore")
 
-admin = Admin("masterAdmin")
-store.save_unique("Admin", "name", admin.name, admin)
-
 for i in range(0, len(departments)):
     dep = Department(departmentNames[i])
-    newsfeed = Newsfeed(departmentNames[i], 0)
     store.relate(cuore, REL_HASDEP, dep)
-    store.relate(dep, "NEWSFEED", newsfeed)
     for j in range(0, len(departments[i])):
         title = Title(departments[i][j][0])
         store.relate(dep, REL_HASTITLE, title)
@@ -294,7 +278,5 @@ for i in range(0, len(departments)):
             store.save_unique(IND_USER, "email", employee.email, employee)
             store.relate(title, REL_HASUSER, employee)
         store.save_unique(IND_TITLE, "name", title.name, title)
-    store.save_unique("Newsfeed", "name", departmentNames[i], newsfeed)
     store.save_unique(IND_DEP, "name", departmentNames[i], dep)
-store.relate(cuore, "ADMIN", admin)
 store.save_unique(IND_COMP, "name", "Cuore", cuore)
