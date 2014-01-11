@@ -3,7 +3,7 @@ from pyramid.httpexceptions import HTTPForbidden, HTTPFound
 
 
 from cuorewebpage.lib.oneid import OneID, init_oneid
-from cuorewebpage.lib.sesssio import *
+from cuorewebpage.lib.session import *
 
 try:
     from settings_local import *
