@@ -8,8 +8,8 @@
 #		graph_db = neo4j.GraphDatabaseService(db_config['uri'])
 
 db_config   			= {}
-db_config['address']	= "http://162.212.130.189"
-#db_config['address']	= "http://127.0.0.1"
+#db_config['address']	= "http://162.212.130.189"
+db_config['address']	= "http://127.0.0.1"
 db_config['port']		= "7474"
 db_config['ending']		= "db/data"
 db_config['uri']		= db_config['address'] 		+ ":" \
@@ -32,6 +32,7 @@ REL_HASGENTASK		= "has_gentask"
 REL_HASTASK			= "has_task"
 REL_HASFILE			= "has_file"
 REL_HASPROJECT		= "has_project"
+REL_HASPOST			= "has_post"
 
 #Label Constants
 LBL_CAL			= "Calendar"
@@ -44,3 +45,5 @@ LBL_GROUP		= "Group"
 LBL_WORKSPACE	= "Workspace"
 LBL_PROJECT		= "Project"
 LBL_FILE		= "File"
+LBL_BLOG		= "Blog"
+LBL_POST		= "Post"
