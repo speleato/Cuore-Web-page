@@ -12,8 +12,8 @@ def main(global_config, **settings):
     #for child in root.findall('route'):
     #    config.add_route(child.find('name').text, child.find('path').text)
     #    config.add_view(child.find('module'), route_name=child.find('name').text)
-    config.add_route('Login', '/')
-    config.add_route('Signin', '/signin')
+    config.add_route('Index', '/')
+    config.add_route('Login', '/login')
     config.add_route('Auth', '/authenticate')
     #config.add_route('Registration', '/registration/{action}')
     config.add_route('Registration', '/registration')

@@ -17,5 +17,7 @@ store = ogm.Store(graph_db)
 
 @view_config(route_name="Blog", renderer="cuorewebpage:templates/blog.mako")
 def blog(request):
-    return {}
+    ctx = {}
+    ctx['section'] = 'Blog'
+    return ctx
 

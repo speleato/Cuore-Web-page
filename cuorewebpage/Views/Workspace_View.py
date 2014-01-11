@@ -19,12 +19,18 @@ store = ogm.Store(graph_db)
 
 @view_config(route_name="Files", renderer="cuorewebpage:templates/files.mako")
 def Files(request):
-    return {}
+    ctx = {}
+    ctx['section'] = 'Files'
+    return ctx
 
 @view_config(route_name="Calendar", renderer="cuorewebpage:templates/calendar.mako")
 def Calendar(request):
-    return {}
+    ctx = {}
+    ctx['section'] = 'Calendar'
+    return ctx
 
 @view_config(route_name="Tasks", renderer="cuorewebpage:templates/tasks.mako")
 def Tasks(request):
-    return {}
+    ctx = {}
+    ctx['section'] = 'Tasks'
+    return ctx

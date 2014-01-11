@@ -1,7 +1,6 @@
 ## head.mako
-<head>
     <meta charset="utf-8">
-    <title>${request.view_name} - Cuore</title>
+    <title>${section} - Cuore</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -16,4 +15,3 @@
     <!--[if lt IE 9]>
         <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-</head>

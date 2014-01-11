@@ -1,15 +1,15 @@
 #**************************************
-# Current Database Info 
+# Current Database Info
 #**************************************
 
 #	To Access...
 #	from database_config 	import db_config
-#	from py2neo 			import neo4j 
+#	from py2neo 			import neo4j
 #		graph_db = neo4j.GraphDatabaseService(db_config['uri'])
 
 db_config   			= {}
-db_config['address']	= "http://162.212.130.189"
-#db_config['address']	= "http://127.0.0.1"
+#db_config['address']	= "http://162.212.130.189"
+db_config['address']	= "http://127.0.0.1"
 db_config['port']		= "7474"
 db_config['ending']		= "db/data"
 db_config['uri']		= db_config['address'] 		+ ":" \
