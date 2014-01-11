@@ -3,6 +3,7 @@ from pyramid.httpexceptions import HTTPForbidden, HTTPFound
 
 
 from cuorewebpage.lib.oneid import OneID, init_oneid
+from cuorewebpage.lib.sesssio import *
 
 try:
     from settings_local import *
@@ -24,17 +25,5 @@ def Login(request):
 
 @view_config(route_name='Auth', renderer='cuorewebpage:templates/authenticate.mako', request_method='POST')
 def oneid_login(request):
-    print request
-    ctx = {}
-    oneid_data = request.POST.get('json_data', {})
-    oneid_connector = init_oneid()
-    valid = oneid_connector.validate(oneid_data)
-
-    if oneid_connector.success(valid):
-        ctx['uid'] = valid['uid']
-        ctx['two_factor_token'] = valid['two_factor_token']
-        ctx['logged_in'] = True
-        # callback is /dashboard
-        return ctx
-    return HTTPForbidden
+    authenticate(request)
 
