@@ -1,10 +1,10 @@
 #**************************************
-# Current Database Info 
+# Current Database Info
 #**************************************
 
 #	To Access...
 #	from database_config 	import db_config
-#	from py2neo 			import neo4j 
+#	from py2neo 			import neo4j
 #		graph_db = neo4j.GraphDatabaseService(db_config['uri'])
 
 db_config   			= {}
@@ -25,17 +25,20 @@ REL_HASEVENT 		= "has_event"
 REL_HASTASK  		= "has_task"
 REL_HASSUBTASK		= "has_subtask"
 REL_HASDEADLINE 	= "has_deadline"
+REL_HASCALENDAR 	= "has_calendar"
 REL_HASSUBCALENDAR	= "has_subcalendar"
 REL_HASOWNER		= "has_owner"
 REL_HASGROUP		= "has_group"
 REL_HASGENTASK		= "has_gentask"
+REL_HASTASK			= "has_task"
 REL_HASFILE			= "has_file"
 REL_HASPROJECT		= "has_project"
 REL_HASPOST			= "has_post"
-REL_HASDEP          = "has_dep"
-REL_HASTITLE        = "has_title"
-REL_HASUSER         = "has_user"
-REL_HASBLOG         = "has_blog"
+REL_ASSIGNEDTO		= "assigned_to"
+REL_CREATEDBY		= "created_by"
+REL_INVITED			= "invited"
+REL_HASCOMMENT      = "has_comment"
+REL_HASWORKSPACE    = "has_workspace"
 
 #Label Constants
 LBL_CAL			= "Calendar"
@@ -50,9 +53,4 @@ LBL_PROJECT		= "Project"
 LBL_FILE		= "File"
 LBL_BLOG		= "Blog"
 LBL_POST		= "Post"
-
-#Index Constants (to be replaced by Label Constants at a later time)
-IND_COMP        = "Company"
-IND_DEP         = "Department"
-IND_TITLE       = "Title"
-IND_USER        = "Users"
+LBL_COMMENT     = "Comment"
