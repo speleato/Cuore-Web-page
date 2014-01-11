@@ -1,9 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d07aedbd-ac1c-45a1-8b04-9994a637ff65" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cuorewebpage/templates/newsfeed.mako" afterPath="$PROJECT_DIR$/cuorewebpage/templates/newsfeed.mako" />
+    <list default="true" id="d07aedbd-ac1c-45a1-8b04-9994a637ff65" name="Default" comment="Added Admin Class">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cuorewebpage/Views/Admin_View.py" afterPath="$PROJECT_DIR$/cuorewebpage/Views/Admin_View.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cuorewebpage/Views/Blog_View.py" afterPath="$PROJECT_DIR$/cuorewebpage/Views/Blog_View.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cuorewebpage/Views/Directory_View.py" afterPath="$PROJECT_DIR$/cuorewebpage/Views/Directory_View.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cuorewebpage/Views/Login_View.py" afterPath="$PROJECT_DIR$/cuorewebpage/Views/Login_View.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cuorewebpage/Model/Person.py" afterPath="$PROJECT_DIR$/cuorewebpage/Model/Person.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cuorewebpage/Views/Profile_View.py" afterPath="$PROJECT_DIR$/cuorewebpage/Views/Profile_View.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cuorewebpage/Views/Registration_View.py" afterPath="$PROJECT_DIR$/cuorewebpage/Views/Registration_View.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cuorewebpage/Views/Workspace_View.py" afterPath="$PROJECT_DIR$/cuorewebpage/Views/Workspace_View.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cuorewebpage/templates/admin.mako" afterPath="$PROJECT_DIR$/cuorewebpage/templates/admin.mako" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/database_config.py" afterPath="$PROJECT_DIR$/database_config.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cuorewebpage/templates/directory.mako" afterPath="$PROJECT_DIR$/cuorewebpage/templates/directory.mako" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cuorewebpage/Views/newsfeed_view.py" afterPath="$PROJECT_DIR$/cuorewebpage/Views/newsfeed_view.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cuorewebpage/templates/profile.mako" afterPath="$PROJECT_DIR$/cuorewebpage/templates/profile.mako" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cuorewebpage/Views/registration_settings.py" afterPath="$PROJECT_DIR$/cuorewebpage/Views/registration_settings.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cuorewebpage/templates/settings.mako" afterPath="$PROJECT_DIR$/cuorewebpage/templates/settings.mako" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cuorewebpage/Views/test_view.py" afterPath="$PROJECT_DIR$/cuorewebpage/Views/test_view.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Cuore-Web-page.iws" />
@@ -16,7 +30,7 @@
   </component>
   <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/Cuore-Web-page$Cuore_Web_Page.coverage" NAME="Cuore-Web-Page Coverage Results" MODIFIED="1389288793734" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Cuore-Web-page$Cuore_Web_Page.coverage" NAME="Cuore-Web-Page Coverage Results" MODIFIED="1389466667653" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Cuore-Web-page$__init__.coverage" NAME="__init__ Coverage Results" MODIFIED="1387394655418" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/cuorewebpage" />
   </component>
   <component name="CreatePatchCommitExecutor">
@@ -31,95 +45,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="Registration_View.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/cuorewebpage/Views/Registration_View.py">
+      <file leaf-file-name="database_config.py" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/database_config.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="20" column="20" selection-start="505" selection-end="505" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1560">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Person.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/cuorewebpage/Model/Person.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="212" column="47" selection-start="7004" selection-end="7004" vertical-scroll-proportion="0.0" vertical-offset="3566" max-vertical-offset="4170">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="newsfeed_view.py" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/cuorewebpage/Views/newsfeed_view.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="15" column="27" selection-start="388" selection-end="388" vertical-scroll-proportion="0.36466774" vertical-offset="0" max-vertical-offset="617">
-              <folding>
-                <element signature="e#0#37#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="newsfeed.mako" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/cuorewebpage/templates/newsfeed.mako">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="45" column="33" selection-start="1537" selection-end="1537" vertical-scroll-proportion="-28.125" vertical-offset="0" max-vertical-offset="1035">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="development.ini" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../Cuore-Web-page-backup/development.ini">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1080">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="newsfeed_view.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../Cuore-Web-page-backup/cuorewebpage/Views/newsfeed_view.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="495">
-              <folding>
-                <element signature="e#0#37#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="registration.mako" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/cuorewebpage/templates/registration.mako">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="11" column="49" selection-start="451" selection-end="451" vertical-scroll-proportion="0.0" vertical-offset="495" max-vertical-offset="4710">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="admin.mako" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/cuorewebpage/templates/admin.mako">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="212" column="6" selection-start="8874" selection-end="8874" vertical-scroll-proportion="0.0" vertical-offset="315" max-vertical-offset="3735">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Login_View.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/cuorewebpage/Views/Login_View.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="840">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="__init__.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/cuorewebpage/__init__.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="23" column="13" selection-start="981" selection-end="981" vertical-scroll-proportion="0.0" vertical-offset="223" max-vertical-offset="855">
+            <state line="27" column="39" selection-start="842" selection-end="842" vertical-scroll-proportion="0.521875" vertical-offset="71" max-vertical-offset="810">
               <folding />
             </state>
           </provider>
@@ -153,22 +82,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/cuorewebpage/templates/settings.mako" />
-        <option value="$PROJECT_DIR$/cuorewebpage/templates/settings_admin.mako" />
-        <option value="$PROJECT_DIR$/cuorewebpage/templates/settings_form.mako" />
-        <option value="$PROJECT_DIR$/cuorewebpage/__init__.py" />
-        <option value="$PROJECT_DIR$/cuorewebpage/templates/directory.mako" />
-        <option value="$PROJECT_DIR$/cuorewebpage/templates/general_js.mako" />
-        <option value="$PROJECT_DIR$/cuorewebpage/templates/registration.mako" />
-        <option value="$PROJECT_DIR$/cuorewebpage/Views/Admin_View.py" />
-        <option value="/Library/Python/2.7/site-packages/py2neo/ogm.py" />
-        <option value="$PROJECT_DIR$/cuorewebpage/templates/admin.mako" />
-        <option value="$PROJECT_DIR$/cuorewebpage/lib/oneid.py" />
-        <option value="$PROJECT_DIR$/cuorewebpage/Model/Person.py" />
-        <option value="$PROJECT_DIR$/../Cuore-Web-page-backup/development.ini" />
-        <option value="$PROJECT_DIR$/../Cuore-Web-page-backup/cuorewebpage/Views/newsfeed_view.py" />
+        <option value="$PROJECT_DIR$/cuorewebpage/Views/Workspace_View.py" />
+        <option value="$PROJECT_DIR$/cuorewebpage/Views/test_view.py" />
+        <option value="$PROJECT_DIR$/cuorewebpage/Views/registration_settings.py" />
+        <option value="$PROJECT_DIR$/cuorewebpage/Views/Registration_View.py" />
+        <option value="$PROJECT_DIR$/cuorewebpage/Views/Profile_View.py" />
         <option value="$PROJECT_DIR$/cuorewebpage/Views/newsfeed_view.py" />
-        <option value="$PROJECT_DIR$/cuorewebpage/templates/newsfeed.mako" />
+        <option value="$PROJECT_DIR$/cuorewebpage/Views/Login_View.py" />
+        <option value="$PROJECT_DIR$/cuorewebpage/Views/Directory_View.py" />
+        <option value="$PROJECT_DIR$/cuorewebpage/Views/Blog_View.py" />
+        <option value="$PROJECT_DIR$/cuorewebpage/Views/Admin_View.py" />
+        <option value="$PROJECT_DIR$/cuorewebpage/templates/directory.mako" />
+        <option value="$PROJECT_DIR$/cuorewebpage/templates/settings.mako" />
+        <option value="$PROJECT_DIR$/cuorewebpage/templates/profile.mako" />
+        <option value="$PROJECT_DIR$/Util/database_config.py" />
+        <option value="$PROJECT_DIR$/cuorewebpage/templates/admin.mako" />
+        <option value="$PROJECT_DIR$/database_config.py" />
       </list>
     </option>
   </component>
@@ -202,6 +131,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -308,7 +238,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -644,7 +573,11 @@
       <created>1389248259842</created>
       <updated>1389248259842</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Fixed newsfeed pages to work">
+      <created>1389288956929</created>
+      <updated>1389288956929</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TodoView" selected-index="4">
@@ -671,7 +604,6 @@
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32998565" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32998565" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -682,11 +614,12 @@
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="true" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.19226119" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32998565" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32889965" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32998565" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32998565" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -711,7 +644,8 @@
     <MESSAGE value="Finished Admin Panel, updated structure" />
     <MESSAGE value="Merge remote-tracking branch 'origin/Intranet_Registration' into Intranet_Registration&#10;&#10;Conflicts:&#10;&#9;.idea/workspace.xml&#10;&#9;cuorewebpage/Views/Admin_View.py&#10;&#9;cuorewebpage/Views/Blog_View.py&#10;&#9;cuorewebpage/Views/Directory_View.py&#10;&#9;cuorewebpage/Views/Profile_View.py&#10;&#9;cuorewebpage/Views/Registration_View.py&#10;&#9;cuorewebpage/__init__.py&#10;&#9;cuorewebpage/templates/Admin.mako&#10;&#9;cuorewebpage/templates/Registration.mako&#10;" />
     <MESSAGE value="Implemented basic user group management at the department and title levels (except for deleting specific titles, that needs ajax to work)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Implemented basic user group management at the department and title levels (except for deleting specific titles, that needs ajax to work)" />
+    <MESSAGE value="Fixed newsfeed pages to work" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed newsfeed pages to work" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -719,111 +653,108 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/cuorewebpage/templates/general_js.mako">
+    <entry file="file://$PROJECT_DIR$/database_config.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="1" column="55" selection-start="74" selection-end="74" vertical-scroll-proportion="0.024350649" vertical-offset="0" max-vertical-offset="616" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/cuorewebpage/Views/Admin_View.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="25" column="95" selection-start="882" selection-end="882" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="450">
+        <state line="17" column="34" selection-start="580" selection-end="580" vertical-scroll-proportion="0.0" vertical-offset="255" max-vertical-offset="810">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file:///Library/Python/2.7/site-packages/py2neo/ogm.py">
+    <entry file="file://$PROJECT_DIR$/cuorewebpage/templates/nav_bar_fixed_top.mako">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="330" column="25" selection-start="12665" selection-end="12665" vertical-scroll-proportion="0.0" vertical-offset="4430" max-vertical-offset="5070" />
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="640">
+          <folding />
+        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/cuorewebpage/templates/profile.mako">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="227" column="0" selection-start="12990" selection-end="12990" vertical-scroll-proportion="0.5721393" vertical-offset="3060" max-vertical-offset="6420" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/cuorewebpage/templates/directory.mako">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="0" selection-start="186" selection-end="186" vertical-scroll-proportion="0.0" vertical-offset="90" max-vertical-offset="1860">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/cuorewebpage/templates/admin.mako">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="212" column="6" selection-start="8874" selection-end="8874" vertical-scroll-proportion="0.0" vertical-offset="315" max-vertical-offset="3735">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/cuorewebpage/lib/oneid.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="11" selection-start="95" selection-end="95" vertical-scroll-proportion="0.09375" vertical-offset="15" max-vertical-offset="1830" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/cuorewebpage/Views/Login_View.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="840">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/cuorewebpage/templates/registration.mako">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="49" selection-start="451" selection-end="451" vertical-scroll-proportion="0.0" vertical-offset="495" max-vertical-offset="4710">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../Cuore-Web-page-backup/development.ini">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1080">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../Cuore-Web-page-backup/cuorewebpage/Views/newsfeed_view.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="776">
-          <folding>
-            <element signature="e#0#37#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/cuorewebpage/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="23" column="13" selection-start="981" selection-end="981" vertical-scroll-proportion="0.0" vertical-offset="345" max-vertical-offset="885">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/cuorewebpage/Views/Registration_View.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="20" column="20" selection-start="505" selection-end="505" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1560">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/cuorewebpage/Model/Person.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="212" column="47" selection-start="7004" selection-end="7004" vertical-scroll-proportion="0.0" vertical-offset="3180" max-vertical-offset="4170">
+        <state line="15" column="35" selection-start="417" selection-end="422" vertical-scroll-proportion="0.33333334" vertical-offset="42" max-vertical-offset="6420">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/cuorewebpage/templates/newsfeed.mako">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="45" column="33" selection-start="1537" selection-end="1537" vertical-scroll-proportion="-28.125" vertical-offset="0" max-vertical-offset="1035">
+        <state line="12" column="30" selection-start="333" selection-end="335" vertical-scroll-proportion="0.30508474" vertical-offset="0" max-vertical-offset="1035">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/cuorewebpage/Views/newsfeed_view.py">
+    <entry file="file://$PROJECT_DIR$/cuorewebpage/templates/nav_bar.mako">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="27" selection-start="388" selection-end="388" vertical-scroll-proportion="0.36466774" vertical-offset="0" max-vertical-offset="617">
-          <folding>
-            <element signature="e#0#37#0" expanded="true" />
-          </folding>
+        <state line="13" column="46" selection-start="505" selection-end="507" vertical-scroll-proportion="0.33050847" vertical-offset="0" max-vertical-offset="1260">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cuorewebpage/templates/mytemplate.pt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="9" selection-start="7" selection-end="9" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1185">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cuorewebpage/templates/login.mako">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="10" column="12" selection-start="163" selection-end="165" vertical-scroll-proportion="0.2542373" vertical-offset="0" max-vertical-offset="590">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cuorewebpage/templates/nav_bar_side.mako">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="13" column="46" selection-start="505" selection-end="507" vertical-scroll-proportion="0.33050847" vertical-offset="0" max-vertical-offset="1275">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cuorewebpage/templates/workspace.mako">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="640">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cuorewebpage/templates/UIkit.mako">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="640">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cuorewebpage/templates/test.mako">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="640">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cuorewebpage/templates/tasks.mako">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="640">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cuorewebpage/templates/settings_form.mako">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="3" column="28" selection-start="58" selection-end="61" vertical-scroll-proportion="0.0779896" vertical-offset="0" max-vertical-offset="6060">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cuorewebpage/templates/admin.mako">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="26" column="34" selection-start="947" selection-end="953" vertical-scroll-proportion="0.33274022" vertical-offset="203" max-vertical-offset="3735">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/database_config.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="27" column="39" selection-start="842" selection-end="842" vertical-scroll-proportion="0.521875" vertical-offset="71" max-vertical-offset="810">
+          <folding />
         </state>
       </provider>
     </entry>

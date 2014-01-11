@@ -1,16 +1,13 @@
-from pyramid.response import Response
 from pyramid.view import view_config
 
 from pyramid_mailer import get_mailer
 from pyramid_mailer.message import Message
 import transaction
 
-import time
-
 from py2neo import neo4j, ogm
 from database_config import db_config
 
-from cuorewebpage.Model.Person import Person
+from cuorewebpage.Model.Person import User
 
 graph_db = neo4j.GraphDatabaseService(db_config['uri'])
 store = ogm.Store(graph_db)
@@ -32,19 +29,19 @@ def SubmitRegistration(request):
 
             # add updated info to database
             # Note: Either another unique identifier needs to be used or the admin panel shouldn't be allowed to change email
-            personNode = graph_db.get_indexed_node("People", "email", email)
+            userNode = graph_db.get_indexed_node("Users", "email", email)
             # if leo confirmed, update confirmation flags
-            confirmed=personNode.get_properties()["confirmed"]
+            confirmed=userNode.get_properties()["confirmed"]
             if(confirmed<2):
                 confirmed += 2
-            personNode.update_properties({"title":title, "email":email, "confirmed":confirmed})
+            userNode.update_properties({"title":title, "email":email, "confirmed":confirmed})
             titleNode = graph_db.get_or_create_indexed_node("Title", "name", title, {"name":title})
             departmentNode = graph_db.get_indexed_node("Department", "name", department)
-            graph_db.create((titleNode, "IS A", personNode), (departmentNode, "IN", titleNode))
+            graph_db.create((titleNode, "IS A", userNode), (departmentNode, "IN", titleNode))
             graph_db.get_indexed_node("Unconfirmed", "name", "unconfirmed")
-            graph_db.remove(personNode, "IS", unconfirmedNode)
+            graph_db.remove(userNode, "IS", unconfirmedNode)
             # after confirmed by Leo, send email to user
-            confirmationNumber=personNode.get_properties()["confirmationNumber"]
+            confirmationNumber=userNode.get_properties()["confirmationNumber"]
             mailer = get_mailer(request)
             message = Message(subject="Confirm your Cuore Intranet Registration",
                   sender = "kirby@cuore.io",                    # change to admin email later
@@ -66,11 +63,11 @@ def SubmitRegistration(request):
             # store confirmationNumber in db
             # create flags and set to not confirmed
             # create user node in database, put in temporary zone
-            person = Person(firstName, lastName, email, None, 0, confirmationNumber)
-            store.save_unique("People", "email", person.email, person)
+            user = User(firstName, lastName, email, None, 0, confirmationNumber)
+            store.save_unique("Users", "email", user.email, user)
             unconfirmedNode=graph_db.get_or_create_indexed_node("Unconfirmed", "name", "unconfirmed", {"name":"unconfirmed"})
-            personNode=graph_db.get_indexed_node("People", "email", person.email)
-            graph_db.create((personNode, "IS", unconfirmedNode))
+            userNode=graph_db.get_indexed_node("Users", "email", user.email)
+            graph_db.create((userNode, "IS", unconfirmedNode))
 
             # after registration, send email to Leo
             mailer=get_mailer(request)
@@ -90,22 +87,22 @@ def SubmitRegistration(request):
             zipcode = request.POST.getone('zipcode')
             about = request.POST.getone('about')
             # update info in database, need to pass in email, currently not implemented
-            # personNode = graph_db.get_indexed_node("People", "email", email)
-            # personNode.update_properties(properties='"phone":phone, "address":address, "city":city, "state":state, "zipcode":zipcode "about":about')
+            # userNode = graph_db.get_indexed_node("Users", "email", email)
+            # userNode.update_properties(properties='"phone":phone, "address":address, "city":city, "state":state, "zipcode":zipcode "about":about')
             print "updated"
     return {}
 
 @view_config(route_name="ConfirmRegistration", renderer="cuorewebpage:templates/Registration.mako")
 def ConfirmRegistration(request):
     email=request.GET.getone('email')
-    personNode = graph_db.get_indexed_node("People", "email", email)
+    userNode = graph_db.get_indexed_node("Users", "email", email)
     confirmationNumber=request.GET.getone('confirm')
     # check confirmationNumber against user's confirmationNumber
-    if confirmationNumber == personNode.get_properties()["confirmationNumber"]:
+    if confirmationNumber == userNode.get_properties()["confirmationNumber"]:
         # move from temp area of database to permanent area of database
-        confirmed=personNode.get_properties()["confirmed"]
+        confirmed=userNode.get_properties()["confirmed"]
         if(confirmed!=1 and confirmed!=3):
             confirmed += 1
-        personNode.update_properties({"confirmed":confirmed})
+        userNode.update_properties({"confirmed":confirmed})
         print "confirmed"
     return {}
