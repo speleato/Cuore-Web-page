@@ -5,7 +5,7 @@ from pyramid_mailer.message import Message
 import transaction
 
 from py2neo import neo4j, ogm
-from database_config import db_config
+from database_config import *
 
 from cuorewebpage.Model.Person import User
 
@@ -31,15 +31,15 @@ def registration_confirm(request):
 
     # add updated info to database
     # Note: Either another unique identifier needs to be used or the admin panel shouldn't be allowed to change email
-    userNode = graph_db.get_indexed_node("Users", "email", email)
+    userNode = graph_db.get_indexed_node(IND_USER, "email", email)
     # if leo confirmed, update confirmation flags
     confirmed=userNode.get_properties()["confirmed"]
     if(confirmed<2):
         confirmed += 2
         userNode.update_properties({"title":title, "email":email, "confirmed":confirmed})
-        titleNode = graph_db.get_or_create_indexed_node("Title", "name", title, {"name":title})
-        departmentNode = graph_db.get_indexed_node("Department", "name", department)
-        graph_db.create((titleNode, "IS A", userNode), (departmentNode, "IN", titleNode))
+        titleNode = graph_db.get_or_create_indexed_node(IND_TITLE, "name", title, {"name":title})
+        departmentNode = graph_db.get_indexed_node(IND_DEP, "name", department)
+        graph_db.create((titleNode, REL_HASUSER, userNode), (departmentNode, REL_HASTITLE, titleNode))
         # after confirmed by Leo, send email to user
         confirmationNumber=userNode.get_properties()["confirmationNumber"]
         mailer = get_mailer(request)
@@ -67,7 +67,7 @@ def registration_admin(request):
     # create flags and set to not confirmed
     # create user node in database, put in temporary zone
     user = User(first_name, last_name, email, None, 0, confirmationNumber)
-    store.save_unique("Users", "email", user.email, user)
+    store.save_unique(IND_USER, "email", user.email, user)
     # after registration, send email to Leo
     mailer=get_mailer(request)
     message = Message(subject="Registration by " + name,
@@ -92,7 +92,7 @@ def settings_edit(request):
     zipcode = request.POST.getone('zipcode')
     about = request.POST.getone('about')
     # update info in database, need to pass in email, currently not implemented
-    # userNode = graph_db.get_indexed_node("Users", "email", email)
+    # userNode = graph_db.get_indexed_node(IND_USER, "email", email)
     # userNode.update_properties(properties='"phone":phone, "address":address, "city":city, "state":state, "zipcode":zipcode "about":about')
     print "updated"
     return {}
@@ -100,7 +100,7 @@ def settings_edit(request):
 @view_config(route_name="Settings", match_param='action=admin', renderer="cuorewebpage:templates/settings_admin.mako")
 def settings_admin(request):
     email=request.GET.getone('email')
-    userNode = graph_db.get_indexed_node("Users", "email", email)
+    userNode = graph_db.get_indexed_node(IND_USER, "email", email)
     confirmationNumber=request.GET.getone('confirm')
     # check confirmationNumber against user's confirmationNumber
     if confirmationNumber == userNode.get_properties()["confirmationNumber"]:

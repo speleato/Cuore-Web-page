@@ -1,21 +1,8 @@
-#import sys
-
 from py2neo import neo4j, ogm
-from database_config import db_config
+from database_config import *
 
 graph_db = neo4j.GraphDatabaseService(db_config['uri'])
 store = ogm.Store(graph_db)
-
-# Newsfeed class keeps track of the number of posts in each department, used for pagination
-class Newsfeed(object):
-    def __init__(self, name=None, numPosts=0):
-        self.name=name
-        self.numPosts=numPosts
-
-    def __str__(self):
-        return self.name
-
-
 
 class Admin(object):
     def __init__(self, name=None, permissions=0):
@@ -39,19 +26,19 @@ class Company(object):
     # Arguments:
     # Returns: list of Department objects related to self
     def getAllDepartments(self):
-        return store.load_related(self, "DEPARTMENT", Department)
+        return store.load_related(self, REL_HASDEP, Department)
 
     # Function: getDepartment
     # Arguments: name of department to be returned (string)
     # Returns: requested Department object related to self
     def getDepartment(self, name):
-        return store.load_unique("Department", "name", name, Department)
+        return store.load_unique(IND_DEP, "name", name, Department)
 
     # Function: getNode
     # Arguments:
     # Returns: the neo4j node object of self (needed for graph_db.create function)
     def getNode(self):
-        return graph_db.get_indexed_node("Company", "name", self.name)
+        return graph_db.get_indexed_node(IND_COMP, "name", self.name)
 
     # Function: addDepartment
     # Arguments: name of the department (string)
@@ -63,8 +50,8 @@ class Company(object):
             newsfeed = Newsfeed(newDep.name, 0)
             store.relate(newDep, "NEWSFEED", newsfeed)
             store.save_unique("Newsfeed", "name", newDep.name, newsfeed)
-            store.save_unique("Department", "name", newDep.name, newDep)
-            graph_db.create((self.getNode(), "DEPARTMENT", newDep.getNode()))
+            store.save_unique(IND_DEP, "name", newDep.name, newDep)
+            graph_db.create((self.getNode(), REL_HASDEP, newDep.getNode()))
 
     # Function: removeDepartment
     # Arguments: name of the department (string)
@@ -95,19 +82,19 @@ class Department(object):
     # Arguments:
     # Returns: list of Title objects related to self
     def getAllTitles(self):
-        return store.load_related(self, "TITLE", Title)
+        return store.load_related(self, REL_HASTITLE, Title)
 
     # Function: getTitle
     # Arguments: name of Title (string)
     # Returns: requested related Title object
     def getTitle(self, name):
-        return store.load_unique("Title", "name", name, Title)
+        return store.load_unique(IND_TITLE, "name", name, Title)
 
     # Function: getNode
     # Arguments:
     # Returns: the neo4j node object of self (needed for graph_db.create function)
     def getNode(self):
-        return graph_db.get_indexed_node("Department", "name", self.name)
+        return graph_db.get_indexed_node(IND_DEP, "name", self.name)
 
     # Function: addTitle
     # Arguments: name of Title (string)
@@ -115,9 +102,9 @@ class Department(object):
     # Description: creates a related Title node in neo4j with the given name if it doesn't already exist
     def addTitle(self, name):
         newTitle = Title(name)
-        if not (store.load_indexed("Title", "name", newTitle.name, newTitle)):
-            store.save_unique("Title", "name", newTitle.name, newTitle)
-            graph_db.create((self.getNode(), "TITLE", newTitle.getNode()))
+        if not (store.load_indexed(IND_TITLE, "name", newTitle.name, newTitle)):
+            store.save_unique(IND_TITLE, "name", newTitle.name, newTitle)
+            graph_db.create((self.getNode(), REL_HASTITLE, newTitle.getNode()))
 
     # Function: removeTitle
     # Arguments: name of the title (string)
@@ -130,11 +117,14 @@ class Department(object):
             title.safeRemoveUser(i.email)
         store.delete(title)
 
-    # Function: getNewsfeed
+    # Function: getBlog
     # Arguments:
-    # Returns: Newsfeed object
-    def getNewsfeed(self):
-        return store.load_unique("Newsfeed", "name", self.name, Newsfeed)
+    # Returns: list of related blog nodes
+    def getBlog (self):
+        blogs = list()
+        for i in self.getNode().match_outgoing(REL_HASBLOG):
+            blogs.append(i.end_node)
+        return blogs
 
 
 
@@ -146,7 +136,6 @@ class Department(object):
 class Title(object):
     def __init__(self, name=None):
         self.name=name
-        #self.permissions=permissions
 
     def __str__(self):
         return self.name
@@ -155,22 +144,22 @@ class Title(object):
     # Arguments:
     # Returns: list of User objects related to self
     def getAllUsers(self):
-        return store.load_related(self, "USER", User)
+        return store.load_related(self, REL_HASUSER, User)
 
     # Function: getUser
     # Arguments: email of user (string)
     # Returns: requested related User object
     def getUser(self, email):
-        return store.load_unique("Users", "email", email, User)
+        return store.load_unique(IND_USER, "email", email, User)
 
     # Function: getNode
     # Arguments:
     # Returns: the neo4j node object of self (needed for graph_db.create function)
     def getNode(self):
-        return graph_db.get_indexed_node("Title", "name", self.name)
+        return graph_db.get_indexed_node(IND_TITLE, "name", self.name)
 
     #def addTitle(self, department, titleName):
-    #    title=store.load_unique("Department", "name", department, Department).getTitle(titleName)
+    #    title=store.load_unique(IND_DEP, "name", department, Department).getTitle(titleName)
     #    graph_db.create((user.getNode(), "UNASSIGNED", graph_db.get_or_create_indexed_node("Unassigned", "name", "unassigned")))
 
     # Function: safeRemoveUser
@@ -181,37 +170,38 @@ class Title(object):
     def safeRemoveUser(self, email):
         user=self.getUser(email)
         graph_db.create((user.getNode(), "UNASSIGNED", graph_db.get_or_create_indexed_node("Unassigned", "name", "unassigned")))
-        for i in user.getNode().match("TITLE"):
+        for i in user.getNode().match(REL_HASTITLE):
             i.delete()
 
 
 # The confirmed variable represents the level of confirmation similar to chmod. 1 means user confirmed, 2 means
 # Leo confirmed, and 3 means both confirmed
 class User(object):
-    def __init__(self, first_name=None, last_name=None, email=None, title=None, confirmed=0, confirmationNumber=None, department=None, phone=None, address=None, city=None, state=None, zipcode=None, about=None):
+    def __init__(self, userID=None, first_name=None, last_name=None, email=None, phone=None, address=None, city=None, state=None, zipcode=None, about=None, photo=None, req_title=None, req_dep=None):
+        self.userID = userID
         self.first_name = first_name
         self.last_name = last_name
         self.email = email
-        self.title = title
-        self.confirmed = confirmed
-        self.confirmationNumber = confirmationNumber
-        self.department = department
+        self.confirmed = 0
         self.phone = phone
         self.address = address
         self.city = city
         self.state = state
         self.zipcode = zipcode
         self.about = about
+        self.photo = photo
+        self.req_title = req_title
+        self.req_dep = req_dep
 
     def __str__(self):
         return self.first_name
 
     def submit_settings(self):
-        store.save_unique("Users", "email", self.email, self)
+        store.save_unique(IND_USER, "email", self.email, self)
         return self
 
     def getNode(self):
-        return graph_db.get_indexed_node("Users", "email", self.email)
+        return graph_db.get_indexed_node(IND_USER, "email", self.email)
 
     # Function: removeUser
     # Arguments:
@@ -219,6 +209,24 @@ class User(object):
     # Description: deletes user from neo4j db
     def removeUser(self):
         store.delete(self)
+
+    # Function: getTitles
+    # Arguments:
+    # Returns: list of titles nodes associated with self
+    def getTitles (self):
+        titles = list()
+        rels = self.getNode().match_incoming(REL_HASUSER)
+        for i in rels:
+            titles.append(i.start_node)
+        return titles
+
+    def getDepartments (self):
+        deps = list()
+        for i in self.getTitles():
+            rels = i.match_incoming(REL_HASTITLE)
+            for j in rels:
+                deps.append(j.start_node)
+        return deps
 
     def isAdmin(self):
         if store.load_related(self,"ADMIN", Admin):
@@ -229,20 +237,20 @@ class User(object):
 
 
 sandy = User("Sandy", "Siththanandan", "sandymeep@gmail.com", "Applications Developer", 3)
-store.save_unique("Users", "email", sandy.email, sandy)
+store.save_unique(IND_USER, "email", sandy.email, sandy)
 leo = User("Leo", "Schultz", "leo@cuore.io", "President", 3)
 leo.submit_settings()
 
 friends = store.load_related(sandy, "LIKES", User)
 print ("Sandy likes {0}".format(" and ".join(str(f) for f in friends)))
 
-me = store.load_unique("Users", "email", sandy.email, User)
+me = store.load_unique(IND_USER, "email", sandy.email, User)
 print me
 
-president = store.load_unique("Users", "email", leo.email, User)
+president = store.load_unique(IND_USER, "email", leo.email, User)
 print president
 
-#if store.load_unique("Users", "first_name", "george", User) = None:
+#if store.load_unique(IND_USER, "first_name", "george", User) = None:
 #    print me
 Kirby = User("Kirby", "Linvill", "kirby@cuore.io", "Applications Developer", 3)
 Kevin = User("Kevin", "Ryan", "kevincryan23@gmail.com", "Vice President", 3)
@@ -274,19 +282,19 @@ store.save_unique("Admin", "name", admin.name, admin)
 for i in range(0, len(departments)):
     dep = Department(departmentNames[i])
     newsfeed = Newsfeed(departmentNames[i], 0)
-    store.relate(cuore, "DEPARTMENT", dep)
+    store.relate(cuore, REL_HASDEP, dep)
     store.relate(dep, "NEWSFEED", newsfeed)
     for j in range(0, len(departments[i])):
         title = Title(departments[i][j][0])
-        store.relate(dep, "TITLE", title)
+        store.relate(dep, REL_HASTITLE, title)
         for k in range(1, len(departments[i][j])):
             employee = departments[i][j][k]
             print departments[i][j][k]
             print type(employee)
-            store.save_unique("Users", "email", employee.email, employee)
-            store.relate(title, "USER", employee)
-        store.save_unique("Title", "name", title.name, title)
+            store.save_unique(IND_USER, "email", employee.email, employee)
+            store.relate(title, REL_HASUSER, employee)
+        store.save_unique(IND_TITLE, "name", title.name, title)
     store.save_unique("Newsfeed", "name", departmentNames[i], newsfeed)
-    store.save_unique("Department", "name", departmentNames[i], dep)
+    store.save_unique(IND_DEP, "name", departmentNames[i], dep)
 store.relate(cuore, "ADMIN", admin)
-store.save_unique("Company", "name", "Cuore", cuore)
+store.save_unique(IND_COMP, "name", "Cuore", cuore)

@@ -33,6 +33,10 @@ REL_HASTASK			= "has_task"
 REL_HASFILE			= "has_file"
 REL_HASPROJECT		= "has_project"
 REL_HASPOST			= "has_post"
+REL_HASDEP          = "has_dep"
+REL_HASTITLE        = "has_title"
+REL_HASUSER         = "has_user"
+REL_HASBLOG         = "has_blog"
 
 #Label Constants
 LBL_CAL			= "Calendar"
@@ -47,3 +51,9 @@ LBL_PROJECT		= "Project"
 LBL_FILE		= "File"
 LBL_BLOG		= "Blog"
 LBL_POST		= "Post"
+
+#Index Constants (to be replaced by Label Constants at a later time)
+IND_COMP        = "Company"
+IND_DEP         = "Department"
+IND_TITLE       = "Title"
+IND_USER        = "Users"
