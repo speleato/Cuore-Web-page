@@ -24,7 +24,7 @@
     from py2neo import neo4j, ogm, cypher
     from database_config import db_config
 
-    from cuorewebpage.Model.Person import Person, Title, Department, Company
+    from cuorewebpage.Model.Person import User, Title, Department, Company
 
     graph_db = neo4j.GraphDatabaseService(db_config['uri'])
     store = ogm.Store(graph_db)
@@ -42,9 +42,9 @@
             %for j in titles:
                 <h3>${j.name}</h3>
                 <%
-                    persons = j.getAllPersons()
+                    users = j.getAllUsers()
                 %>
-                %for k in persons:
+                %for k in users:
                     <form action="/registration" method="post">
                         <input type="text" name="user" hidden value="${k.email}">
                         <input type="submit" value="Edit ${k.first_name} ${k.last_name}'s info">
@@ -52,11 +52,11 @@
                 %endfor
             %endfor
         %endfor
-        <h2>Unconfirmed People</h2>
+        <h2>Unconfirmed Users</h2>
         <%
             unconfirmed=[]
             for k in graph_db.get_or_create_indexed_node("Unconfirmed", "name", "unconfirmed").match("IS"):
-                unconfirmed.append(store.load(Person, k.start_node))
+                unconfirmed.append(store.load(User, k.start_node))
         %>
         %for k in unconfirmed:
             <form action="/registration" method="post">
@@ -64,11 +64,11 @@
                 <input type="submit" value="Confirm ${k.first_name} ${k.last_name}">
             </form>
         %endfor
-        <h2>Unassigned People</h2>
+        <h2>Unassigned Users</h2>
         <%
             unassigned=[]
             for k in graph_db.get_or_create_indexed_node("Unassigned", "name", "unassigned").match("UNASSIGNED"):
-                unassigned.append(store.load(Person, k.start_node))
+                unassigned.append(store.load(User, k.start_node))
         %>
         %for k in unassigned:
             <form action="/registration" method="post">
@@ -77,11 +77,11 @@
             </form>
         %endfor
     %elif request.POST.getone("searchType")=="Get All Unconfirmed":
-        <h2>Unconfirmed People</h2>
+        <h2>Unconfirmed Users</h2>
         <%
             unconfirmed=[]
             for k in graph_db.get_or_create_indexed_node("Unconfirmed", "name", "unconfirmed").match("IS"):
-                unconfirmed.append(store.load(Person, k.start_node))
+                unconfirmed.append(store.load(User, k.start_node))
         %>
         %for k in unconfirmed:
             <form action="/registration" method="post">
@@ -90,11 +90,11 @@
             </form>
         %endfor
     %elif request.POST.getone("searchType")=="Get All Unassigned":
-        <h2>Unassigned People</h2>
+        <h2>Unassigned Users</h2>
         <%
             unassigned=[]
             for k in graph_db.get_or_create_indexed_node("Unassigned", "name", "unassigned").match("UNASSIGNED"):
-                unassigned.append(store.load(Person, k.start_node))
+                unassigned.append(store.load(User, k.start_node))
         %>
         %for k in unassigned:
             <form action="/registration" method="post">
@@ -108,12 +108,12 @@
 
         query=strip(request.POST.getone('search'))
         if find(query,'@')!=-1:
-            nodes = store.load_indexed("People", "email", query, Person)
+            nodes = store.load_indexed("Users", "email", query, User)
         elif find(query, ' ')!=-1:
             session = cypher.Session("http://localhost:7474")
             tx = session.create_transaction()
             tx.append ('MATCH a WHERE a.first_name="'+query.split(' ')[0]+'" and a.last_name="'+query.split(' ')[1]+'" RETURN a')
-            nodes = [store.load(Person, tx.commit()[0][0].values[0])]
+            nodes = [store.load(User, tx.commit()[0][0].values[0])]
         else:
             nodes = store.load_indexed("Department", "name", query, Department)
             if not (nodes):
@@ -122,7 +122,7 @@
                     session = cypher.Session("http://localhost:7474")
                     tx = session.create_transaction()
                     tx.append ('MATCH a WHERE a.first_name="'+query+'" RETURN a')
-                    nodes = [store.load(Person, tx.commit()[0][0].values[0])]
+                    nodes = [store.load(User, tx.commit()[0][0].values[0])]
         %>
         %if not(nodes):
             <h2>No results found</h2>
@@ -135,9 +135,9 @@
                 %for j in title:
                     <h3>${j.name}</h3>
                     <%
-                    person = store.load_related(store.load_unique("Title", "name", j, Title), "IS A", Person)
+                    user = store.load_related(store.load_unique("Title", "name", j, Title), "IS A", User)
                     %>
-                    %for k in person:
+                    %for k in user:
                         <form action="/registration" method="post">
                             <input type="text" name="user" hidden value="${k.email}">
                             %if k.confirmed < 2:
@@ -153,9 +153,9 @@
             %for j in nodes:
                 <h2>${j.name}</h2>
                     <%
-                    person = store.load_related(store.load_unique("Title", "name", j, Title), "IS A", Person)
+                    user = store.load_related(store.load_unique("Title", "name", j, Title), "IS A", User)
                     %>
-                    %for k in person:
+                    %for k in user:
                         <form action="/registration" method="post">
                             <input type="text" name="user" hidden value="${k.email}">
                             %if k.confirmed < 2:
@@ -166,7 +166,7 @@
                         </form>
                     %endfor
             %endfor
-        %elif type(nodes[0])==Person:
+        %elif type(nodes[0])==User:
             %for k in nodes:
                 <form action="/registration" method="post">
                     <input type="text" name="user" hidden value="${k.email}">

@@ -3,7 +3,7 @@
 <%
     from py2neo import neo4j, ogm
     from database_config import db_config
-    from cuorewebpage.Model.Person import Company, Department, Title, Person
+    from cuorewebpage.Model.Person import Company, Department, Title, User
 
     graph_db = neo4j.GraphDatabaseService(db_config['uri'])
     store = ogm.Store(graph_db)
@@ -51,17 +51,17 @@
             <tbody>
     %for j in job_titles:
         <%
-        persons = j.getAllPersons()
+        users = j.getAllUsers()
         %>
-        %for k in persons:
-            <%doc>add link to person's profile, i think can be done using get
+        %for k in users:
+            <%doc>add link to user's profile, i think can be done using get
                   and then rendering the profile with the name as a parameter</%doc>
               <tr>
                 <td><a href="/profile?email=${k.email}"><strong>${k.first_name} ${k.last_name}</strong></a></td>
                 <td>${j.name}</td>
                 <td><a href="mailto:${k.email}">${k.email}</a></td>
               </tr>
-        %endfor <!-- end person's row -->
+        %endfor <!-- end user's row -->
     %endfor <!-- end of members under same job_title -->
             </tbody>
           </table>

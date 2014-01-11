@@ -5,7 +5,7 @@
     from py2neo import neo4j, ogm
     from database_config import db_config
 
-    from cuorewebpage.Model.Person import Person
+    from cuorewebpage.Model.Person import User
 
     graph_db = neo4j.GraphDatabaseService(db_config['uri'])
     store = ogm.Store(graph_db)
@@ -13,12 +13,12 @@
     email=request.GET.getone('email')
     print email
     print type(email)
-    person = store.load_unique("People", "email", email, Person)
+    user = store.load_unique("Users", "email", email, User)
 %>
 
 <!-- Kirby's original data access for reference
-<h2>${person.title}</h2>
-<h3>${person.email}</h3>
+<h2>${user.title}</h2>
+<h3>${user.email}</h3>
 -->
 
     <div id="main_container">
@@ -26,7 +26,7 @@
         <div class="span3">
           <div class="title">
             <div class="row-fluid legend">
-              <h1> ${person.first_name} ${person.last_name}</h1>
+              <h1> ${user.first_name} ${user.last_name}</h1>
             </div>
           </div>
           <!-- End .title -->
@@ -51,8 +51,8 @@
                 <ul class="unstyled">
                   <li class="location pull-left right_offset"><span class="muted"><i class="icon-map-marker"></i> Location:</span> London, UK</li>
                   <li class="location"><span class="muted"><i class="icon-globe"></i></span> Brighton Business School </li>
-                  <li class="title"><span class="muted"><i class="icon-globe"></i></span> ${person.title}</li>
-                  <li class="department"><span class="muted"><i class="icon-globe"></i></span> ${person.department}</li>
+                  <li class="title"><span class="muted"><i class="icon-globe"></i></span> ${user.title}</li>
+                  <li class="department"><span class="muted"><i class="icon-globe"></i></span> ${user.department}</li>
                 </ul>
               </div>
               <div class="span6">
@@ -81,11 +81,11 @@
             <strong>cuoretechnology, Inc.</strong><br>
             1144 Maryvale Dr.<br>
             Cheektowaga, NY 14225<br>
-            <abbr title="Phone">P:</abbr> ${person.phone}
+            <abbr title="Phone">P:</abbr> ${user.phone}
             </address>
             <address>
-            <strong>${person.first_name} ${person.last_name}</strong><br>
-            <a href="mailto:#">${person.email}</a>
+            <strong>${user.first_name} ${user.last_name}</strong><br>
+            <a href="mailto:#">${user.email}</a>
             </address>
             <hr>
             <h3><span>Other info</span></h3>

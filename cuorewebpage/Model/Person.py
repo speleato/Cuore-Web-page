@@ -1,4 +1,4 @@
-import sys
+#import sys
 
 from py2neo import neo4j, ogm
 from database_config import db_config
@@ -17,7 +17,13 @@ class Newsfeed(object):
 
 
 
+class Admin(object):
+    def __init__(self, name=None, permissions=0):
+        self.name=name
+        self.permissions=permissions
 
+    def __str__(self):
+        return self.name
 
 
 
@@ -120,8 +126,8 @@ class Department(object):
     #       an unassigned node)
     def removeTitle(self, name):
         title=self.getTitle(name)
-        for i in title.getAllPersons():
-            title.safeRemovePerson(i.email)
+        for i in title.getAllUsers():
+            title.safeRemoveUser(i.email)
         store.delete(title)
 
     # Function: getNewsfeed
@@ -145,17 +151,17 @@ class Title(object):
     def __str__(self):
         return self.name
 
-    # Function: getAllPersons
+    # Function: getAllUsers
     # Arguments:
-    # Returns: list of Person objects related to self
-    def getAllPersons(self):
-        return store.load_related(self, "PERSON", Person)
+    # Returns: list of User objects related to self
+    def getAllUsers(self):
+        return store.load_related(self, "USER", User)
 
-    # Function: getPerson
-    # Arguments: email of person (string)
-    # Returns: requested related Person object
-    def getPerson(self, email):
-        return store.load_unique("People", "email", email, Person)
+    # Function: getUser
+    # Arguments: email of user (string)
+    # Returns: requested related User object
+    def getUser(self, email):
+        return store.load_unique("Users", "email", email, User)
 
     # Function: getNode
     # Arguments:
@@ -165,23 +171,23 @@ class Title(object):
 
     #def addTitle(self, department, titleName):
     #    title=store.load_unique("Department", "name", department, Department).getTitle(titleName)
-    #    graph_db.create((person.getNode(), "UNASSIGNED", graph_db.get_or_create_indexed_node("Unassigned", "name", "unassigned")))
+    #    graph_db.create((user.getNode(), "UNASSIGNED", graph_db.get_or_create_indexed_node("Unassigned", "name", "unassigned")))
 
-    # Function: safeRemovePerson
-    # Arguments: email of the Person (string)
+    # Function: safeRemoveUser
+    # Arguments: email of the User (string)
     # Returns:
-    # Description: safely removes the the relationship between Person and selfin neo4j (attaches the people to an
+    # Description: safely removes the the relationship between User and selfin neo4j (attaches the people to an
     #       unassigned node)
-    def safeRemovePerson(self, email):
-        person=self.getPerson(email)
-        graph_db.create((person.getNode(), "UNASSIGNED", graph_db.get_or_create_indexed_node("Unassigned", "name", "unassigned")))
-        for i in person.getNode().match("TITLE"):
+    def safeRemoveUser(self, email):
+        user=self.getUser(email)
+        graph_db.create((user.getNode(), "UNASSIGNED", graph_db.get_or_create_indexed_node("Unassigned", "name", "unassigned")))
+        for i in user.getNode().match("TITLE"):
             i.delete()
 
 
-# The confirmed variable represents the level of confirmation similar to chmod. 1 means person confirmed, 2 means
+# The confirmed variable represents the level of confirmation similar to chmod. 1 means user confirmed, 2 means
 # Leo confirmed, and 3 means both confirmed
-class Person(object):
+class User(object):
     def __init__(self, first_name=None, last_name=None, email=None, title=None, confirmed=0, confirmationNumber=None, department=None, phone=None, address=None, city=None, state=None, zipcode=None, about=None):
         self.first_name = first_name
         self.last_name = last_name
@@ -201,38 +207,45 @@ class Person(object):
         return self.first_name
 
     def submit_settings(self):
-        store.save_unique("People", "email", self.email, self)
+        store.save_unique("Users", "email", self.email, self)
         return self
 
     def getNode(self):
-        return graph_db.get_indexed_node("People", "email", self.email)
+        return graph_db.get_indexed_node("Users", "email", self.email)
 
-    # Function: removePerson
+    # Function: removeUser
     # Arguments:
     # Returns:
-    # Description: deletes person from neo4j db
-    def removePerson(self):
+    # Description: deletes user from neo4j db
+    def removeUser(self):
         store.delete(self)
 
+    def isAdmin(self):
+        if store.load_related(self,"ADMIN", Admin):
+            return True
+        return False
 
-sandy = Person("Sandy", "Siththanandan", "sandymeep@gmail.com", "Applications Developer", 3)
-store.save_unique("People", "email", sandy.email, sandy)
-leo = Person("Leo", "Schultz", "leo@cuore.io", "President", 3)
+
+
+
+sandy = User("Sandy", "Siththanandan", "sandymeep@gmail.com", "Applications Developer", 3)
+store.save_unique("Users", "email", sandy.email, sandy)
+leo = User("Leo", "Schultz", "leo@cuore.io", "President", 3)
 leo.submit_settings()
 
-friends = store.load_related(sandy, "LIKES", Person)
+friends = store.load_related(sandy, "LIKES", User)
 print ("Sandy likes {0}".format(" and ".join(str(f) for f in friends)))
 
-me = store.load_unique("People", "email", sandy.email, Person)
+me = store.load_unique("Users", "email", sandy.email, User)
 print me
 
-president = store.load_unique("People", "email", leo.email, Person)
+president = store.load_unique("Users", "email", leo.email, User)
 print president
 
-#if store.load_unique("People", "first_name", "george", Person) = None:
+#if store.load_unique("Users", "first_name", "george", User) = None:
 #    print me
-Kirby = Person("Kirby", "Linvill", "kirby@cuore.io", "Applications Developer", 3)
-Kevin = Person("Kevin", "Ryan", "kevincryan23@gmail.com", "Vice President", 3)
+Kirby = User("Kirby", "Linvill", "kirby@cuore.io", "Applications Developer", 3)
+Kevin = User("Kevin", "Ryan", "kevincryan23@gmail.com", "Vice President", 3)
 #List of people in each position, first entry is the name of the position
 President = ["President", leo]
 Vice_President = ["Vice President", Kevin]
@@ -255,6 +268,9 @@ departmentNames = ["Business", "Applications", "Systems", "Hardware"]
 #Company node tying departments together
 cuore = Company("Cuore")
 
+admin = Admin("masterAdmin")
+store.save_unique("Admin", "name", admin.name, admin)
+
 for i in range(0, len(departments)):
     dep = Department(departmentNames[i])
     newsfeed = Newsfeed(departmentNames[i], 0)
@@ -267,9 +283,10 @@ for i in range(0, len(departments)):
             employee = departments[i][j][k]
             print departments[i][j][k]
             print type(employee)
-            store.save_unique("People", "email", employee.email, employee)
-            store.relate(title, "PERSON", employee)
+            store.save_unique("Users", "email", employee.email, employee)
+            store.relate(title, "USER", employee)
         store.save_unique("Title", "name", title.name, title)
     store.save_unique("Newsfeed", "name", departmentNames[i], newsfeed)
     store.save_unique("Department", "name", departmentNames[i], dep)
+store.relate(cuore, "ADMIN", admin)
 store.save_unique("Company", "name", "Cuore", cuore)

@@ -11,17 +11,17 @@
     #get info from database to use as defaults
     from py2neo import neo4j, ogm
     from database_config import db_config
-    from cuorewebpage.Model.Person import Person
+    from cuorewebpage.Model.Person import User
 
     graph_db = neo4j.GraphDatabaseService(db_config['uri'])
     store = ogm.Store(graph_db)
 
     if request.POST:
         email = request.POST.getone("user")
-        user=store.load_unique("People", "email", email, Person)
+        user=store.load_unique("People", "email", email, User)
     elif debug:
         email = "kirby@cuore.io"
-        user=store.load_unique("People", "email", email, Person)
+        user=store.load_unique("People", "email", email, User)
     else:
         user=UNDEFINED
 %>
