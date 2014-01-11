@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d07aedbd-ac1c-45a1-8b04-9994a637ff65" name="Default" comment="Added Admin Class">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/database_config.py" afterPath="$PROJECT_DIR$/database_config.py" />
+    <list default="true" id="d07aedbd-ac1c-45a1-8b04-9994a637ff65" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Cuore-Web-page.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -30,11 +29,22 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="database_config.py" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="database_config.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/database_config.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="5" column="44" selection-start="161" selection-end="161" vertical-scroll-proportion="0.112443775" vertical-offset="0" max-vertical-offset="945">
+            <state line="5" column="44" selection-start="161" selection-end="161" vertical-scroll-proportion="0.0" vertical-offset="75" max-vertical-offset="945">
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Registration_View.py" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/cuorewebpage/Views/Registration_View.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1530">
+              <folding>
+                <element signature="e#0#36#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -118,12 +128,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope">
-        <subPane subId="Default" />
-        <subPane subId="Problems" />
-        <subPane subId="Project Files" />
-        <subPane subId="Changed Files" />
-      </pane>
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -134,18 +138,24 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope">
+        <subPane subId="Default" />
+        <subPane subId="Problems" />
+        <subPane subId="Project Files" />
+        <subPane subId="Changed Files" />
+      </pane>
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="options.lastSelected" value="com.jetbrains.python.configuration.PythonSdkConfigurable" />
     <property name="recentsLimit" value="5" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Cuore-Web-page-backup/development.ini" />
+    <property name="options.lastSelected" value="com.jetbrains.python.configuration.PythonSdkConfigurable" />
     <property name="restartRequiresConfirmation" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Cuore-Web-page-backup/development.ini" />
     <property name="FullScreen" value="false" />
-    <property name="options.searchVisible" value="true" />
     <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
@@ -222,6 +232,22 @@
       <option name="USE_KEYWORD" value="false" />
       <method />
     </configuration>
+    <configuration default="true" type="Python.AppEngineServer" factoryName="App Engine server">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="Cuore-Web-page" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <option name="browserUrl" value="" />
+      <option name="additionalOptions" value="" />
+      <method />
+    </configuration>
     <configuration default="true" type="tests" factoryName="Nosetests">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -242,22 +268,6 @@
       <option name="USE_PATTERN" value="false" />
       <option name="PARAMS" value="" />
       <option name="USE_PARAM" value="false" />
-      <method />
-    </configuration>
-    <configuration default="true" type="Python.AppEngineServer" factoryName="App Engine server">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="Cuore-Web-page" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="launchJavascriptDebuger" value="false" />
-      <option name="browserUrl" value="" />
-      <option name="additionalOptions" value="" />
       <method />
     </configuration>
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
@@ -296,6 +306,9 @@
       <option name="CONFIGURATION_FILE" value="C:\Users\Kirby\PycharmProjects\Cuore-Web-page\development.ini" />
       <method />
     </configuration>
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true">
+      <method />
+    </configuration>
     <configuration default="true" type="tests" factoryName="Unittests">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -317,9 +330,6 @@
       <option name="PUREUNITTEST" value="true" />
       <option name="PARAMS" value="" />
       <option name="USE_PARAM" value="false" />
-      <method />
-    </configuration>
-    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true">
       <method />
     </configuration>
     <configuration default="true" type="tests" factoryName="Doctests">
@@ -384,8 +394,8 @@
       <method />
     </configuration>
     <list size="2">
-      <item index="0" class="java.lang.String" itemvalue="Python.__init__" />
-      <item index="1" class="java.lang.String" itemvalue="Pyramid server.Cuore-Web-Page" />
+      <item index="0" class="java.lang.String" itemvalue="Pyramid server.Cuore-Web-Page" />
+      <item index="1" class="java.lang.String" itemvalue="Python.__init__" />
     </list>
     <recent_temporary>
       <list size="1">
@@ -473,7 +483,11 @@
       <created>1389288956929</created>
       <updated>1389288956929</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="Updated User Class with necessary fields">
+      <created>1389483931307</created>
+      <updated>1389483931307</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TodoView" selected-index="4">
@@ -541,7 +555,8 @@
     <MESSAGE value="Merge remote-tracking branch 'origin/Intranet_Registration' into Intranet_Registration&#10;&#10;Conflicts:&#10;&#9;.idea/workspace.xml&#10;&#9;cuorewebpage/Views/Admin_View.py&#10;&#9;cuorewebpage/Views/Blog_View.py&#10;&#9;cuorewebpage/Views/Directory_View.py&#10;&#9;cuorewebpage/Views/Profile_View.py&#10;&#9;cuorewebpage/Views/Registration_View.py&#10;&#9;cuorewebpage/__init__.py&#10;&#9;cuorewebpage/templates/Admin.mako&#10;&#9;cuorewebpage/templates/Registration.mako&#10;" />
     <MESSAGE value="Implemented basic user group management at the department and title levels (except for deleting specific titles, that needs ajax to work)" />
     <MESSAGE value="Fixed newsfeed pages to work" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed newsfeed pages to work" />
+    <MESSAGE value="Updated User Class with necessary fields" />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated User Class with necessary fields" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -549,13 +564,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/database_config.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="27" column="39" selection-start="842" selection-end="842" vertical-scroll-proportion="0.0" vertical-offset="405" max-vertical-offset="945">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/database_config.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="17" column="34" selection-start="580" selection-end="580" vertical-scroll-proportion="0.0" vertical-offset="255" max-vertical-offset="810">
@@ -630,8 +638,17 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/database_config.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="44" selection-start="161" selection-end="161" vertical-scroll-proportion="0.112443775" vertical-offset="0" max-vertical-offset="945">
+        <state line="5" column="44" selection-start="161" selection-end="161" vertical-scroll-proportion="0.0" vertical-offset="75" max-vertical-offset="945">
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cuorewebpage/Views/Registration_View.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1530">
+          <folding>
+            <element signature="e#0#36#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
