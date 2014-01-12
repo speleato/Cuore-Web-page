@@ -7,8 +7,8 @@ from py2neo import neo4j, node
 #	2) 	getNode(self)									- Returns the Blog Node
 #	3) 	getName(self) 									- Returns name of blog
 #	4) 	setDescription(self, description)				- Takes description as a string
-#	5) 	setOwner(self, owner)							- owner is a node, Owner.getNode()
-#	6) 	getOwner(self)									- Returns a User Node
+#	5) 	setOwner(self, owner)							- owner is a node, Department.getNode()
+#	6) 	getOwner(self)									- Returns a Department Node
 #	7) 	addPost(self, post)								- Adds a Post node to the Blog
 #	8)	getPosts(self)									- Returns a list of Post Nodes
 # Constants: 
@@ -84,26 +84,26 @@ class Blog:
 
     #
     # Function	: setOwner
-    # Arguments	: (User Node) owner
+    # Arguments	: (Department Node) owner
     # Returns	: a 'Path' object containing nodes and relationships used
     #
     def setOwner(self, owner):
         global HAS_OWNER, LBL_USER
-        if LBL_USER in owner.get_labels():
-            return self.blogInstance.get_or_create_path(REL_HASOWNER, owner)
+        if LBL_DEPARTMENT in owner.get_labels():
+            return owner.get_or_create_path(REL_HASOWNER, self.blogInstance)
         else:
             raise Exception("The Node Provided is not a User")
 
     #
     # Function	: getOwner
     # Arguments	:
-    # Returns	: a Owner Node or None (if there is no node)
+    # Returns	: a Department Node or None (if there is no node)
     #
     def getOwner(self):
         global REL_HASOWNER
-        relationships = list(self.blogInstance.match_outgoing(REL_HASOWNER))
+        relationships = list(self.blogInstance.match_incoming(REL_HASOWNER))
         if len(relationships) != 0:
-            return relationships[0].end_node
+            return relationships[0].start_node
         else:
             return None
 
