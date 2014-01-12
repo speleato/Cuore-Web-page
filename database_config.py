@@ -58,10 +58,13 @@ LBL_FILE		= "File"
 LBL_BLOG		= "Blog"
 LBL_POST		= "Post"
 LBL_COMMENT     = "Comment"
-
+LBL_DEPARTMENT  = "Department"
+LBL_TITLES      = "Titles"
+LBL_COMPANY     = "Company"
 
 #Index Constants (to be replaced by Label Constants at a later time)
 IND_COMP        = "Company"
 IND_DEP         = "Department"
 IND_TITLE       = "Title"
 IND_USER        = "Users"
+
