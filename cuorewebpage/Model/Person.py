@@ -163,7 +163,7 @@ class Title(object):
 # The confirmed variable represents the level of confirmation similar to chmod. 1 means user confirmed, 2 means
 # Leo confirmed, and 3 means both confirmed
 class User(object):
-    def __init__(self, uid=None, first_name=None, last_name=None, email=None, phone=None, address=None, city=None, state=None, zipcode=None, about=None, photo=None, req_title=None, req_dep=None):
+    def __init__(self, uid=None, first_name=None, last_name=None, email=None, phone=None, address=None, city=None, state=None, zipcode=None, about=None, photo=None, equity_rate=None, req_title=None):
         self.uid = uid
         self.first_name = first_name
         self.last_name = last_name
@@ -176,8 +176,8 @@ class User(object):
         self.zipcode = zipcode
         self.about = about
         self.photo = photo
+        self.equity_rate = equity_rate
         self.req_title = req_title
-        self.req_dep = req_dep
 
     def __str__(self):
         return self.first_name
