@@ -17,7 +17,7 @@ import json
 #	13)	getOwner(self)									- Returns a User Node
 # Constants:
 
-class Post:
+class Comment:
     graph_db = None
     instance = None
 
