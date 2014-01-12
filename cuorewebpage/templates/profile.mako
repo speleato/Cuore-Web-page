@@ -3,7 +3,7 @@
 <%
     #get_info_from_db using ${email}
     from py2neo import neo4j, ogm
-    from database_config import db_config
+    from database_config import db_config, IND_USER
 
     from cuorewebpage.Model.Person import User
 
@@ -13,7 +13,7 @@
     email=request.GET.getone('email')
     print email
     print type(email)
-    user = store.load_unique("Users", "email", email, User)
+    user = store.load_unique(IND_USER, "email", email, User)
 %>
 
 <!-- Kirby's original data access for reference

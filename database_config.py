@@ -43,6 +43,8 @@ REL_HASDEP          = "has_dep"
 REL_HASTITLE        = "has_title"
 REL_HASUSER         = "has_user"
 REL_HASBLOG         = "has_blog"
+REL_UNASSIGNED      = "is_unassigned"
+REL_UNCONFIRMED     = "is_unconfirmed"
 
 #Label Constants
 LBL_CAL			= "Calendar"
@@ -68,4 +70,6 @@ IND_COMP        = "Company"
 IND_DEP         = "Department"
 IND_TITLE       = "Title"
 IND_USER        = "Users"
+IND_UNASSIGNED  = "Unassigned"
+IND_UNCONFIRMED = "Unconfirmed"
 

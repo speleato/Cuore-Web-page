@@ -155,7 +155,7 @@ class Title(object):
     #       unassigned node)
     def safeRemoveUser(self, email):
         user=self.getUser(email)
-        graph_db.create((user.getNode(), "UNASSIGNED", graph_db.get_or_create_indexed_node("Unassigned", "name", "unassigned")))
+        graph_db.create((user.getNode(), REL_UNASSIGNED, graph_db.get_or_create_indexed_node(IND_UNASSIGNED, "name", "unassigned")))
         for i in user.getNode().match(REL_HASTITLE):
             i.delete()
 
@@ -163,8 +163,8 @@ class Title(object):
 # The confirmed variable represents the level of confirmation similar to chmod. 1 means user confirmed, 2 means
 # Leo confirmed, and 3 means both confirmed
 class User(object):
-    def __init__(self, userID=None, first_name=None, last_name=None, email=None, phone=None, address=None, city=None, state=None, zipcode=None, about=None, photo=None, req_title=None, req_dep=None):
-        self.userID = userID
+    def __init__(self, uid=None, first_name=None, last_name=None, email=None, phone=None, address=None, city=None, state=None, zipcode=None, about=None, photo=None, req_title=None, req_dep=None):
+        self.uid = uid
         self.first_name = first_name
         self.last_name = last_name
         self.email = email

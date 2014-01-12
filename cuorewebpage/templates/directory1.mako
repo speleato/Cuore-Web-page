@@ -3,12 +3,12 @@
 <%
     from py2neo import neo4j, ogm
     from database_config import db_config
-    from cuorewebpage.Model.Person import Company, Department, Title, Person
+    from cuorewebpage.Model.Person import Company, Department, Title, Person, IND_COMP
 
     graph_db = neo4j.GraphDatabaseService(db_config['uri'])
     store = ogm.Store(graph_db)
 
-    departments = store.load_unique("Company", "name", "Cuore", Company).getAllDepartments()
+    departments = store.load_unique(IND_COMP, "name", "Cuore", Company).getAllDepartments()
 %>
 
 <div id="main_container">
