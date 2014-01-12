@@ -22,7 +22,7 @@
 <%
     #get_info_from_db using ${email}
     from py2neo import neo4j, ogm, cypher
-    from database_config import db_config
+    from database_config import *
 
     from cuorewebpage.Model.Person import User, Title, Department, Company
 
@@ -32,7 +32,7 @@
 %if request.POST:
     %if request.POST.getone("searchType")=="Get All":
         <%
-            departments = store.load_unique("Company", "name", "Cuore", Company).getAllDepartments()
+            departments = store.load_unique(IND_COMP, "name", "Cuore", Company).getAllDepartments()
         %>
         %for i in departments:
             <h2>${i.name}</h2>
@@ -108,16 +108,16 @@
 
         query=strip(request.POST.getone('search'))
         if find(query,'@')!=-1:
-            nodes = store.load_indexed("Users", "email", query, User)
+            nodes = store.load_indexed(IND_USER, "email", query, User)
         elif find(query, ' ')!=-1:
             session = cypher.Session("http://localhost:7474")
             tx = session.create_transaction()
             tx.append ('MATCH a WHERE a.first_name="'+query.split(' ')[0]+'" and a.last_name="'+query.split(' ')[1]+'" RETURN a')
             nodes = [store.load(User, tx.commit()[0][0].values[0])]
         else:
-            nodes = store.load_indexed("Department", "name", query, Department)
+            nodes = store.load_indexed(IND_DEP, "name", query, Department)
             if not (nodes):
-                nodes=store.load_indexed("Title", "name", query, Title)
+                nodes=store.load_indexed(IND_TITLE, "name", query, Title)
                 if not (nodes):
                     session = cypher.Session("http://localhost:7474")
                     tx = session.create_transaction()
@@ -130,12 +130,12 @@
             %for i in nodes:
                 <h2>${i.name}</h2>
                 <%
-                title = store.load_related(store.load_unique("Department", "name", i.name, Department), "IN", Title)
+                title = store.load_related(store.load_unique(IND_DEP, "name", i.name, Department), "IN", Title)
                 %>
                 %for j in title:
                     <h3>${j.name}</h3>
                     <%
-                    user = store.load_related(store.load_unique("Title", "name", j, Title), "IS A", User)
+                    user = store.load_related(store.load_unique(IND_TITLE, "name", j, Title), "IS A", User)
                     %>
                     %for k in user:
                         <form action="/registration" method="post">
@@ -153,7 +153,7 @@
             %for j in nodes:
                 <h2>${j.name}</h2>
                     <%
-                    user = store.load_related(store.load_unique("Title", "name", j, Title), "IS A", User)
+                    user = store.load_related(store.load_unique(IND_TITLE, "name", j, Title), "IS A", User)
                     %>
                     %for k in user:
                         <form action="/registration" method="post">
@@ -191,7 +191,7 @@
 
     <span>Add a Title to</span>
     <%
-        departments = store.load_unique("Company", "name", "Cuore", Company).getAllDepartments()
+        departments = store.load_unique(IND_COMP, "name", "Cuore", Company).getAllDepartments()
     %>
     <select name="addToDep">
     %for i in departments:

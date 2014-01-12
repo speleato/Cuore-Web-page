@@ -36,8 +36,8 @@ def SubmitRegistration(request):
             titleNode = graph_db.get_or_create_indexed_node(IND_TITLE, "name", title, {"name":title})
             departmentNode = graph_db.get_indexed_node(IND_DEP, "name", department)
             graph_db.create((titleNode, "IS A", userNode), (departmentNode, "IN", titleNode))
-            graph_db.get_indexed_node("Unconfirmed", "name", "unconfirmed")
-            graph_db.remove(userNode, "IS", unconfirmedNode)
+            unconfirmedNode = graph_db.get_indexed_node("Unconfirmed", "name", "unconfirmed")
+            graph_db.match(userNode, "IS", unconfirmedNode).delete()
             # after confirmed by Leo, send email to user
             confirmationNumber=userNode.get_properties()["confirmationNumber"]
             mailer = get_mailer(request)

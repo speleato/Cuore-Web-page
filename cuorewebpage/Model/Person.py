@@ -36,9 +36,6 @@ class Company(object):
     def addDepartment(self, name):
         newDep = Department(name)
         if not (self.getDepartment(name)):
-            newsfeed = Newsfeed(newDep.name, 0)
-            store.relate(newDep, "NEWSFEED", newsfeed)
-            store.save_unique("Newsfeed", "name", newDep.name, newsfeed)
             store.save_unique(IND_DEP, "name", newDep.name, newDep)
             graph_db.create((self.getNode(), REL_HASDEP, newDep.getNode()))
 

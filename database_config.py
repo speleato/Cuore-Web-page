@@ -39,6 +39,10 @@ REL_CREATEDBY		= "created_by"
 REL_INVITED			= "invited"
 REL_HASCOMMENT      = "has_comment"
 REL_HASWORKSPACE    = "has_workspace"
+REL_HASDEP          = "has_dep"
+REL_HASTITLE        = "has_title"
+REL_HASUSER         = "has_user"
+REL_HASBLOG         = "has_blog"
 
 #Label Constants
 LBL_CAL			= "Calendar"
@@ -54,3 +58,10 @@ LBL_FILE		= "File"
 LBL_BLOG		= "Blog"
 LBL_POST		= "Post"
 LBL_COMMENT     = "Comment"
+
+
+#Index Constants (to be replaced by Label Constants at a later time)
+IND_COMP        = "Company"
+IND_DEP         = "Department"
+IND_TITLE       = "Title"
+IND_USER        = "Users"
