@@ -46,7 +46,7 @@
                 %>
                 %for k in users:
                     <form action="/registration" method="post">
-                        <input type="text" name="user" hidden value="${k.email}">
+                        <input type="text" name="user" hidden value="${k.uid}">
                         <input type="submit" value="Edit ${k.first_name} ${k.last_name}'s info">
                     </form>
                 %endfor
@@ -60,7 +60,7 @@
         %>
         %for k in unconfirmed:
             <form action="/registration" method="post">
-                <input type="text" name="user" hidden value="${k.email}">
+                <input type="text" name="user" hidden value="${k.uid}">
                 <input type="submit" value="Confirm ${k.first_name} ${k.last_name}">
             </form>
         %endfor
@@ -72,7 +72,7 @@
         %>
         %for k in unassigned:
             <form action="/registration" method="post">
-                <input type="text" name="user" hidden value="${k.email}">
+                <input type="text" name="user" hidden value="${k.uid}">
                 <input type="submit" value="Assign ${k.first_name} ${k.last_name}">
             </form>
         %endfor
@@ -85,7 +85,7 @@
         %>
         %for k in unconfirmed:
             <form action="/registration" method="post">
-                <input type="text" name="user" hidden value="${k.email}">
+                <input type="text" name="user" hidden value="${k.uid}">
                 <input type="submit" value="Confirm ${k.first_name} ${k.last_name}">
             </form>
         %endfor
@@ -98,7 +98,7 @@
         %>
         %for k in unassigned:
             <form action="/registration" method="post">
-                <input type="text" name="user" hidden value="${k.email}">
+                <input type="text" name="user" hidden value="${k.uid}">
                 <input type="submit" value="Assign ${k.first_name} ${k.last_name}">
             </form>
         %endfor
@@ -139,7 +139,7 @@
                     %>
                     %for k in user:
                         <form action="/registration" method="post">
-                            <input type="text" name="user" hidden value="${k.email}">
+                            <input type="text" name="user" hidden value="${k.uid}">
                             %if k.confirmed < 2:
                                 <input type="submit" value="Confirm ${k.first_name} ${k.last_name}">
                             %else:
@@ -157,7 +157,7 @@
                     %>
                     %for k in user:
                         <form action="/registration" method="post">
-                            <input type="text" name="user" hidden value="${k.email}">
+                            <input type="text" name="user" hidden value="${k.uid}">
                             %if k.confirmed < 2:
                                 <input type="submit" value="Confirm ${k.first_name} ${k.last_name}">
                             %else:
@@ -169,7 +169,7 @@
         %elif type(nodes[0])==User:
             %for k in nodes:
                 <form action="/registration" method="post">
-                    <input type="text" name="user" hidden value="${k.email}">
+                    <input type="text" name="user" hidden value="${k.uid}">
                     %if k.confirmed < 2:
                         <input type="submit" value="Confirm ${k.first_name} ${k.last_name}">
                     %else:

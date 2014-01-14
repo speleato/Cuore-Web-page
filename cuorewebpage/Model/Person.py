@@ -1,5 +1,6 @@
 from py2neo import neo4j, ogm
 from database_config import *
+from cuorewebpage.lib.session import *
 
 graph_db = neo4j.GraphDatabaseService(db_config['uri'])
 store = ogm.Store(graph_db)
@@ -183,11 +184,11 @@ class User(object):
         return self.first_name
 
     def submit_settings(self):
-        store.save_unique(IND_USER, "email", self.email, self)
+        store.save_unique(IND_USER, "uid", self.uid, self)
         return self
 
     def getNode(self):
-        return graph_db.get_indexed_node(IND_USER, "email", self.email)
+        return graph_db.get_indexed_node(IND_USER, "uid", self.uid)
 
     # Function: removeUser
     # Arguments:
@@ -203,27 +204,43 @@ class User(object):
         titles = list()
         rels = self.getNode().match_incoming(REL_HASUSER)
         for i in rels:
-            titles.append(i.start_node)
+            titles.append(store.load(Title, i.start_node))
         return titles
 
     def getDepartments (self):
         deps = list()
         for i in self.getTitles():
-            rels = i.match_incoming(REL_HASTITLE)
+            rels = i.getNode().match_incoming(REL_HASTITLE)
             for j in rels:
-                deps.append(j.start_node)
+                deps.append(store.load(Department, j.start_node))
         return deps
 
     def isAdmin(self):
-        if store.load_related(self,"ADMIN", Admin):
-            return True
+        for i in self.getDepartments():
+            if i.name == "Admin":
+                return True
         return False
 
+# Function: getUser
+# Arguments: uid
+# Returns: User object from db with uid provided
+def getUser(uid):
+    return store.load_unique(IND_USER, "uid", uid, User)
+
+# Function: getCurrentUser
+# Arguments: request
+# Returns: User object of current user w/ uid if found, otherwise returns none
+def getCurrentUser(request):
+    if isUserLoggedOn(request):
+        return getUser(request.session["uid"])
+    return None
 
 
 
-sandy = User("Sandy", "Siththanandan", "sandymeep@gmail.com", "Applications Developer", 3)
-store.save_unique(IND_USER, "email", sandy.email, sandy)
+
+
+sandy = User(None, "Sandy", "Siththanandan", "sandymeep@gmail.com", "Applications Developer", 3)
+store.save_unique(IND_USER, "uid", sandy.uid, sandy)
 leo = User("Leo", "Schultz", "leo@cuore.io", "President", 3)
 leo.submit_settings()
 
@@ -238,7 +255,7 @@ print president
 
 #if store.load_unique(IND_USER, "first_name", "george", User) = None:
 #    print me
-Kirby = User("Kirby", "Linvill", "kirby@cuore.io", "Applications Developer", 3)
+Kirby = User(None, "Kirby", "Linvill", "kirby@cuore.io", "Applications Developer", 3)
 Kevin = User("Kevin", "Ryan", "kevincryan23@gmail.com", "Vice President", 3)
 #List of people in each position, first entry is the name of the position
 President = ["President", leo]
@@ -248,16 +265,18 @@ Applications_Developer = ["Applications Developer", Kirby, sandy]
 Web_Applications_Developer = ["Web Applications Developer"]
 Lead_Systems_Engineer = ["Lead Systems Engineer"]
 Lead_Hardware_Engineer = ["Lead Hardware Engineer"]
+Admin = ["Admin", Kirby]
 
 #Lists of titles in each department
 business = [President, Vice_President]
 applications = [Lead_Applications_Developer, Applications_Developer, Web_Applications_Developer]
 systems = [Lead_Systems_Engineer]
 hardware = [Lead_Hardware_Engineer]
+admin = [Admin]
 
 #List of departments containing the lists of titles in that department
-departments = [business, applications, systems, hardware]
-departmentNames = ["Business", "Applications", "Systems", "Hardware"]
+departments = [business, applications, systems, hardware, admin]
+departmentNames = ["Business", "Applications", "Systems", "Hardware", "Admin"]
 
 #Company node tying departments together
 cuore = Company("Cuore")
@@ -272,7 +291,7 @@ for i in range(0, len(departments)):
             employee = departments[i][j][k]
             print departments[i][j][k]
             print type(employee)
-            store.save_unique(IND_USER, "email", employee.email, employee)
+            store.save_unique(IND_USER, "uid", employee.uid, employee)
             store.relate(title, REL_HASUSER, employee)
         store.save_unique(IND_TITLE, "name", title.name, title)
     store.save_unique(IND_DEP, "name", departmentNames[i], dep)

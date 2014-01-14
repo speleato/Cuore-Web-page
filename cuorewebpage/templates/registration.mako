@@ -10,9 +10,9 @@
             </div>
             <div class="content">
               <form class="form-horizontal cmxform" id="validateForm" method="post"
-                    action="${request.route_url('Registration')}" accept-charset="utf-8"
+                    action="${request.route_url('SubmitRegistration')}" accept-charset="utf-8"
                     enctype="multipart/form-data" autocomplete="off">
-                <input id="first_name" name="first_name" type="hidden" required class="span12"/>
+                <input id="task" name="task" type="hidden" required class="span12"/>
                 <div class="form-row control-group row-fluid">
                   <label class="control-label span3" for="normal-field">First Name</label>
                   <div class="controls span9">
@@ -28,7 +28,7 @@
                 <div class="form-row control-group row-fluid">
                   <label class="control-label span3">Email Address</label>
                   <div class="controls span9">
-                    <input id="cemail" type="email" name="email" required class="row-fluid"/>
+                    <input id="email" type="email" name="email" required class="row-fluid"/>
                   </div>
                 </div>
                 <div class="form-row control-group row-fluid">

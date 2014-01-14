@@ -36,10 +36,11 @@ def registration_confirm(request):
     confirmed=userNode.get_properties()["confirmed"]
     if(confirmed<2):
         confirmed += 2
-        userNode.update_properties({"title":title, "email":email, "confirmed":confirmed})
-        titleNode = graph_db.get_or_create_indexed_node(IND_TITLE, "name", title, {"name":title})
-        departmentNode = graph_db.get_indexed_node(IND_DEP, "name", department)
-        graph_db.create((titleNode, REL_HASUSER, userNode), (departmentNode, REL_HASTITLE, titleNode))
+        userNode.update_properties({"email":email, "confirmed":confirmed})
+        if (confirmed==3):
+            titleNode = graph_db.get_or_create_indexed_node(IND_TITLE, "name", title, {"name":title})
+            departmentNode = graph_db.get_indexed_node(IND_DEP, "name", department)
+            graph_db.create((titleNode, REL_HASUSER, userNode), (departmentNode, REL_HASTITLE, titleNode))
         # after confirmed by Leo, send email to user
         confirmationNumber=userNode.get_properties()["confirmationNumber"]
         mailer = get_mailer(request)
@@ -60,19 +61,15 @@ def registration_admin(request):
     name=first_name + " " + last_name
     email=request.POST.getone('email')
 
-    # generates a unique user ID for confirmation
-    import uuid
-    confirmationNumber=str(uuid.uuid4())
-    # store confirmationNumber in db
     # create flags and set to not confirmed
     # create user node in database, put in temporary zone
-    user = User(first_name, last_name, email, None, 0, confirmationNumber)
+    user = User(first_name, last_name, email)
     store.save_unique(IND_USER, "email", user.email, user)
     # after registration, send email to Leo
     mailer=get_mailer(request)
     message = Message(subject="Registration by " + name,
                       sender="kjlinvill@gmail.com",      # change to cuore mail server later
-                      recipients=["kirby@cuore.io"],  # change to leo when rolled out
+                      recipients=["kirby@cuore.io"],  # change to leo or admin when rolled out
                       body=name + " has registered for the Cuore Intranet with the email "
                              + email + ". Click here to confirm " + name
                              + "'s registration: " + "link_to_admin_panel")
