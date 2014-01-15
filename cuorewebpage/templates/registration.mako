@@ -12,67 +12,160 @@
               <form class="form-horizontal cmxform" id="validateForm" method="post"
                     action="${request.route_url('SubmitRegistration')}" accept-charset="utf-8"
                     enctype="multipart/form-data" autocomplete="off">
-                <input id="task" name="task" type="hidden" required class="span12"/>
-                <div class="form-row control-group row-fluid">
-                  <label class="control-label span3" for="normal-field">First Name</label>
-                  <div class="controls span9">
-                    <input id="first_name" name="first_name" type="text" required class="span12"/>
-                  </div>
-                </div>
-                <div class="form-row control-group row-fluid">
-                  <label class="control-label span3" for="normal-field">Last Name</label>
-                  <div class="controls span9">
-                    <input id="last_name" name="last_name" type="text" required class="span12"/>
-                  </div>
-                </div>
-                <div class="form-row control-group row-fluid">
-                  <label class="control-label span3">Email Address</label>
-                  <div class="controls span9">
-                    <input id="email" type="email" name="email" required class="row-fluid"/>
-                  </div>
-                </div>
-                <div class="form-row control-group row-fluid">
-                  <label class="control-label span3">Phone</label>
-                  <div class="controls span9">
-                    <input id="phone" name="phone" type="tel" required class="span12"/>
-                  </div>
-                </div>
-                <div class="form-row control-group row-fluid">
-                  <label class="control-label span3">Address</label>
-                  <div class="controls span9">
-                    <input id="street_address" name="street_address" type="text" required class="span12"/>
-                  </div>
-                </div>
-                <div class="form-row control-group row-fluid">
-                  <label class="control-label span3">City</label>
-                  <div class="controls span9">
-                    <input id="city" name="city" type="text" required class="span12"/>
-                  </div>
-                </div>
-                <div class="form-row control-group row-fluid">
-                  <label class="control-label span3">State</label>
-                  <div class="controls span9">
-                    <input id="state" name="state" type="text" required class="span12"/>
-                  </div>
-                </div>
-                <div class="form-row control-group row-fluid">
-                  <label class="control-label span3">Zip Code</label>
-                  <div class="controls span9">
-                    <input id="zip_code" name="zip_code" minlength="5" type="text" required class="row-fluid"/>
-                  </div>
-                </div>
-              <div class="form-row control-group row-fluid">
-                  <label class="control-label span3">Profile Image</label>
-                  <div class="controls span9">
-                      <input id="profile_image" name="profile_image" type="file" class="row-fluid"/>
-                  </div>
-              </div>
-                <div class="form-actions row-fluid">
-                  <div class="span7 offset3">
-                    <button type="submit" class="btn btn-primary">Save changes</button>
-                    <button type="button" class="btn btn-secondary">Cancel</button>
-                  </div>
-                </div>
+                <input id="task" name="task" type="hidden" required class="span12" value="${view}"/>
+                %if view=="create":
+                    <div class="form-row control-group row-fluid">
+                      <label class="control-label span3" for="normal-field">First Name</label>
+                      <div class="controls span9">
+                        <input id="first_name" name="first_name" type="text" required class="span12"/>
+                      </div>
+                    </div>
+                    <div class="form-row control-group row-fluid">
+                      <label class="control-label span3" for="normal-field">Last Name</label>
+                      <div class="controls span9">
+                        <input id="last_name" name="last_name" type="text" required class="span12"/>
+                      </div>
+                    </div>
+                    <div class="form-row control-group row-fluid">
+                      <label class="control-label span3">Email Address</label>
+                      <div class="controls span9">
+                        <input id="email" type="email" name="email" required class="row-fluid"/>
+                      </div>
+                    </div>
+                    <div class="form-row control-group row-fluid">
+                      <label class="control-label span3">Phone</label>
+                      <div class="controls span9">
+                        <input id="phone" name="phone" type="tel" required class="span12"/>
+                      </div>
+                    </div>
+                    <div class="form-row control-group row-fluid">
+                      <label class="control-label span3">Address</label>
+                      <div class="controls span9">
+                        <input id="street_address" name="street_address" type="text" required class="span12"/>
+                      </div>
+                    </div>
+                    <div class="form-row control-group row-fluid">
+                      <label class="control-label span3">City</label>
+                      <div class="controls span9">
+                        <input id="city" name="city" type="text" required class="span12"/>
+                      </div>
+                    </div>
+                    <div class="form-row control-group row-fluid">
+                      <label class="control-label span3">State</label>
+                      <div class="controls span9">
+                        <input id="state" name="state" type="text" required class="span12"/>
+                      </div>
+                    </div>
+                    <div class="form-row control-group row-fluid">
+                      <label class="control-label span3">Zip Code</label>
+                      <div class="controls span9">
+                        <input id="zip_code" name="zip_code" minlength="5" type="text" required class="row-fluid"/>
+                      </div>
+                    </div>
+                    <div class="form-row control-group row-fluid">
+                      <label class="control-label span3">Desired Department and Title</label>
+                      <div class="controls span9">
+                        <select data-placeholder="Click Here to Select" class="chzn-select" name="req_title">
+                          <option value=""></option>
+                          %for i in departments:
+                              <optgroup label="${i['department']}">
+                                  %for j in i['titles']:
+                                      <option value="${j.name}">${j.name}</option>
+                                  %endfor
+                              </optgroup>
+                          %endfor
+                          <optgroup label="Other">
+                              <option value="other">Other</option>
+                          </optgroup>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-row control-group row-fluid">
+                        <label class="control-label span3">Profile Image</label>
+                        <div class="controls span9">
+                            <input id="profile_image" name="profile_image" type="file" class="row-fluid"/>
+                        </div>
+                    </div>
+                    <div class="form-actions row-fluid">
+                      <div class="span7 offset3">
+                        <button type="submit" class="btn btn-primary">Submit Registration</button>
+                        <button type="button" class="btn btn-secondary">Cancel</button>
+                      </div>
+                    </div>
+                %elif view=="edit":
+                    <div class="form-row control-group row-fluid">
+                      <label class="control-label span3">Email Address</label>
+                      <div class="controls span9">
+                        <input id="email" type="email" name="email" value="${user.email}" required class="row-fluid"/>
+                      </div>
+                    </div>
+                    <div class="form-row control-group row-fluid">
+                      <label class="control-label span3">Phone</label>
+                      <div class="controls span9">
+                        <input id="phone" name="phone" type="tel" value="${user.phone}" required class="span12"/>
+                      </div>
+                    </div>
+                    <div class="form-row control-group row-fluid">
+                      <label class="control-label span3">Address</label>
+                      <div class="controls span9">
+                        <input id="street_address" name="street_address" type="text" value="${user.address}" required class="span12"/>
+                      </div>
+                    </div>
+                    <div class="form-row control-group row-fluid">
+                      <label class="control-label span3">City</label>
+                      <div class="controls span9">
+                        <input id="city" name="city" type="text" value="${user.city}" required class="span12"/>
+                      </div>
+                    </div>
+                    <div class="form-row control-group row-fluid">
+                      <label class="control-label span3">State</label>
+                      <div class="controls span9">
+                        <input id="state" name="state" type="text" value="${user.state}" required class="span12"/>
+                      </div>
+                    </div>
+                    <div class="form-row control-group row-fluid">
+                      <label class="control-label span3">Zip Code</label>
+                      <div class="controls span9">
+                        <input id="zip_code" name="zip_code" minlength="5" type="text" value="${user.zipcode}" required class="row-fluid"/>
+                      </div>
+                    </div>
+                    <div class="form-row control-group row-fluid">
+                        <label class="control-label span3">Profile Image</label>
+                        <div class="controls span9">
+                            <div class="input-append row-fluid">
+                            <input id="profile_image" name="profile_image" type="file" class="spa1n6 fileinput"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row control-group row-fluid">
+                        <label class="control-label span3" for="elastic-textarea">About</label>
+                        <div class="controls span9">
+                            <textarea rows="3" class="row-fluid autogrow" id="elastic-textarea" name="about" placeholder="Write a little bit about yourself">${user.about}</textarea>
+                        </div>
+                    </div>
+                    <div class="form-actions row-fluid">
+                      <div class="span7 offset3">
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                        <button type="button" class="btn btn-secondary">Cancel</button>
+                      </div>
+                    </div>
+
+
+                %elif view=="admin":
+                    <input id="uid" hidden value=${user.uid}/>
+                    <div class="form-row control-group row-fluid">
+                      <label class="control-label span3">Email Address</label>
+                      <div class="controls span9">
+                        <input id="email" type="email" name="email" required class="row-fluid"/>
+                      </div>
+                    </div>
+                    <div class="form-actions row-fluid">
+                      <div class="span7 offset3">
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                        <button type="button" class="btn btn-secondary">Cancel</button>
+                      </div>
+                    </div>
+                %endif
               </form>
             </div>
           </div>

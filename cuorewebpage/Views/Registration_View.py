@@ -20,6 +20,10 @@ def Registration(request):
     if isUserLoggedOn(request):
         ctx = {}
         ctx['section'] = 'Registration'
+        departments = list()
+        for i in getCompany().getAllDepartments():
+            departments.append({"department":i.name, "titles":i.getAllTitles()})
+        ctx['departments'] = departments
         if not getCurrentUser(request):
             ctx['view'] = 'create'
         elif getCurrentUser(request).isAdmin():
@@ -44,13 +48,13 @@ def SubmitRegistration(request):
         return redirectUser(request)
     if request.POST:
         if request.POST.getone('task') == "admin":
-            title=re.escape(request.POST.getone('title'))
-            email=re.escape(request.POST.getone('email'))
-            department=re.escape(request.POST.getone('department'))
+            title=re.sub("[^A-Za-z0-9,.\-()] ", "", request.POST.getone('title'))
+            email=re.sub("[^A-Za-z0-9.@!#$%&'*+\-/=?^_`{|}~]", "", request.POST.getone('email'))
+            department=re.sub("[^A-Za-z0-9,.\-()]", "", request.POST.getone('department'))
+            uid=request.POST.getone('uid')
 
             # add updated info to database
-            # Note: Either another unique identifier needs to be used or the admin panel shouldn't be allowed to change email
-            userNode = graph_db.get_indexed_node(IND_USER, "email", email)
+            userNode = graph_db.get_indexed_node(IND_USER, "uid", uid)
             # if leo confirmed, update confirmation flags
             confirmed=userNode.get_properties()["confirmed"]
             if(confirmed<2):
@@ -73,14 +77,22 @@ def SubmitRegistration(request):
             mailer.send(message)
             transaction.commit()
         elif request.POST.getone('task') == "create":
-            firstName=re.escape(request.POST.getone('firstName'))
-            lastName=re.escape(request.POST.getone('lastName'))
-            name=firstName + " " + lastName
-            email=re.escape(request.POST.getone('email'))
+            first_name=re.sub("[^A-Za-z0-9,.\-()]", "", request.POST.getone('first_name'))
+            last_name=re.sub("[^A-Za-z0-9,.\-()]", "", request.POST.getone('last_name'))
+            name=first_name + " " + last_name
+            email=re.sub("[^A-Za-z0-9.@!#$%&'*+\-/=?^_`{|}~]", "", request.POST.getone('email'))
+            phone=re.sub("[^0-9\-() ]", "", request.POST.getone('phone'))
+            address = re.sub("[^A-Za-z0-9,.\-() ]", "", request.POST.getone('street_address'))
+            city = re.sub("[^A-Za-z0-9,.\-() ]", "", request.POST.getone('city'))
+            state = re.sub("[^A-Za-z0-9,.\-() ]", "", request.POST.getone('state'))
+            zipcode = re.sub("[^A-Za-z0-9,.\-() ]", "", request.POST.getone('zip_code'))
+            about = re.sub("[^A-Za-z0-9,.\-() ]", "", request.POST.getone('about'))
+            req_title = request.POST.getone('req_title')
+            uid = request.session["uid"]
 
             # create flags and set to not confirmed
             # create user node in database, put in temporary zone
-            user = User(firstName, lastName, email)
+            user = User(uid, first_name, last_name, email, 0, phone, address, city, state, zipcode, about, req_title)
             store.save_unique(IND_USER, "uid", user.uid, user)
             unconfirmedNode=graph_db.get_or_create_indexed_node("Unconfirmed", "name", "unconfirmed", {"name":"unconfirmed"})
             userNode=graph_db.get_indexed_node(IND_USER, "uid", user.uid)
@@ -98,21 +110,22 @@ def SubmitRegistration(request):
             transaction.commit()
         elif request.POST.getone('task') == "edit":
             # reg-ex, remove non-digit characters
-            phone=re.sub("[^0-9]", "", request.POST.getone('phone'))
-            address = re.escape(request.POST.getone('address'))
-            city = re.escape(request.POST.getone('city'))
-            state = re.escape(request.POST.getone('state'))
-            zipcode = re.escape(request.POST.getone('zipcode'))
-            about = re.escape(request.POST.getone('about'))
-            # update info in database, need to pass in email, currently not implemented
-            # userNode = graph_db.get_indexed_node(IND_USER, "email", email)
-            # userNode.update_properties(properties='"phone":phone, "address":address, "city":city, "state":state, "zipcode":zipcode "about":about')
+            email=re.sub("[^A-Za-z0-9.@!#$%&'*+\-/=?^_`{|}~]", "", request.POST.getone('email'))
+            phone=re.sub("[^0-9\-() ]", "", request.POST.getone('phone'))
+            address = re.sub("[^A-Za-z0-9,.\-() ]", "", request.POST.getone('street_address'))
+            city = re.sub("[^A-Za-z0-9,.\-() ]", "", request.POST.getone('city'))
+            state = re.sub("[^A-Za-z0-9,.\-() ]", "", request.POST.getone('state'))
+            zipcode = re.sub("[^A-Za-z0-9,.\-() ]", "", request.POST.getone('zip_code'))
+            about = re.sub("[^A-Za-z0-9,.!?\-() ]", "", request.POST.getone('about'))
+            photo = request.POST.getone('profile_image')
+            # update info in database
+            getCurrentUser(request).getNode().update_properties({"email":email, "phone":phone, "address":address, "city":city, "state":state, "zipcode":zipcode, "photo":photo, "about":about})
     return {}
 
 @view_config(route_name="ConfirmRegistration", renderer="cuorewebpage:templates/Registration.mako")
 def ConfirmRegistration(request):
     #email=request.GET.getone('email')
-    userNode = graph_db.get_indexed_node(IND_USER, "email", email)
+    userNode = graph_db.get_indexed_node(IND_USER, "uid", uid)
     # move from temp area of database to permanent area of database
     confirmed=userNode.get_properties()["confirmed"]
     if(confirmed!=1 and confirmed!=3):

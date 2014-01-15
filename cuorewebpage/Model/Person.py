@@ -235,6 +235,9 @@ def getCurrentUser(request):
         return getUser(request.session["uid"])
     return None
 
+def getCompany():
+    return store.load_unique(IND_COMP, "name", "Cuore", Company)
+
 
 
 
