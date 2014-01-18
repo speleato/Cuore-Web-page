@@ -72,4 +72,5 @@ IND_TITLE       = "Title"
 IND_USER        = "Users"
 IND_UNASSIGNED  = "Unassigned"
 IND_UNCONFIRMED = "Unconfirmed"
+IND_BLOG        = "Blog"
 

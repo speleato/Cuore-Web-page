@@ -1,8 +1,9 @@
 from database_config import *
 from py2neo import neo4j, node
 import json
-
-# Class  : Blog
+import datetime
+from webhelpers.text import urlify
+# Class  : Post
 # Methods:
 #	1) 	db_init(self) 									- Private
 #	2) 	getNode(self)									- Returns the Blog Node
@@ -52,20 +53,16 @@ class Post:
             tempPost, = self.graph_db.create({"name": Name})
             tempPost.add_labels(LBL_POST)
 
-        else:
-            raise Exception("Name or URI not specified")
+#        else:
+#            raise Exception("Name or URI not specified")
 
         self.postInstance = tempPost
 
-        if Content is not None:
+        if Content is not None and Owner is not None:
             self.postInstance["content"] = Content
+            self.setOwner(Owner)
 
-        if Owner is not None:
-            global HAS_OWNER, LBL_USER
-            if LBL_USER in Owner.get_labels():
-                self.postInstance.get_or_create_path(REL_CREATEDBY, Owner)
-            else:
-                raise Exception("The Node Provided is not a User")
+#        self.postInstance['sTime'] = time
 
     #
     # Function	: getName
@@ -148,8 +145,10 @@ class Post:
     def setOwner(self, owner):
         global REL_CREATEDBY, LBL_USER
         if LBL_USER in owner.get_labels():
-            return self.postInstance.get_or_create_path(REL_CREATEDBY, owner)
+            print "--------HERE WE GO SETTING THE OWNER NOW"
+            return self.postInstance.create_path(REL_CREATEDBY, owner)
         else:
+            print "NOWPE THIS IS NO USER SO WE CANNOT SET OWNER"
             raise Exception("The Node Provided is not a User")
 
     #

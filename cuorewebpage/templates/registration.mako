@@ -9,11 +9,11 @@
               <h4> <span>Registration</span> </h4>
             </div>
             <div class="content">
-              <form class="form-horizontal cmxform" id="validateForm" method="post"
-                    action="${request.route_url('SubmitRegistration')}" accept-charset="utf-8"
-                    enctype="multipart/form-data" autocomplete="off">
-                <input id="task" name="task" type="hidden" required class="span12" value="${view}"/>
                 %if view=="create":
+                <form class="form-horizontal cmxform" id="validateForm" method="post"
+                      action="${request.route_url('Registration', action='create')}" accept-charset="utf-8"
+                      enctype="multipart/form-data" autocomplete="off">
+                    <input id="task" name="task" type="hidden" required class="span12" value="${view}"/>
                     <div class="form-row control-group row-fluid">
                       <label class="control-label span3" for="normal-field">First Name</label>
                       <div class="controls span9">
@@ -86,6 +86,12 @@
                             <input id="profile_image" name="profile_image" type="file" class="row-fluid"/>
                         </div>
                     </div>
+                    <div class="form-row control-group row-fluid">
+                      <label class="control-label span3" for="elastic-textarea">About</label>
+                      <div class="controls span9">
+                          <textarea rows="5" class="row-fluid autogrow" id="elastic-textarea" name="about" placeholder="Write a little bit about yourself"></textarea>
+                      </div>
+                    </div>
                     <div class="form-actions row-fluid">
                       <div class="span7 offset3">
                         <button type="submit" class="btn btn-primary">Submit Registration</button>
@@ -93,6 +99,10 @@
                       </div>
                     </div>
                 %elif view=="edit":
+                    <form class="form-horizontal cmxform" id="validateForm" method="post"
+                          action="${request.route_url('Registration', action='edit')}" accept-charset="utf-8"
+                          enctype="multipart/form-data" autocomplete="off">
+                        <input id="task" name="task" type="hidden" required class="span12" value="${view}"/>
                     <div class="form-row control-group row-fluid">
                       <label class="control-label span3">Email Address</label>
                       <div class="controls span9">

@@ -1,4 +1,3 @@
-## head.mako
     <meta charset="utf-8">
     <title> - Cuore</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">

@@ -16,10 +16,12 @@ from py2neo import neo4j, node
 class Blog:
     graph_db = None
     blogInstance = None
+    index = None
 
     def db_init(self):
         if self.graph_db is None:
             self.graph_db = neo4j.GraphDatabaseService(db_config['uri'])
+            self.index = self.graph_db.get_or_create_index(neo4j.Node, IND_BLOG)
 
     #
     # Function	: getNode
@@ -42,6 +44,7 @@ class Blog:
 
         elif Name is not None:
             tempBlog, = self.graph_db.create({"name": Name})
+#            tempBlog, = self.index.create("name", Name, {"name": Name})
             tempBlog.add_labels(LBL_BLOG)
 
         else:
@@ -50,13 +53,12 @@ class Blog:
         self.blogInstance = tempBlog
 
         if Owner is not None:
-            if LBL_USER in Owner.get_labels():
+            if LBL_DEPARTMENT in Owner.get_labels():
                 self.blogInstance.get_or_create_path(REL_HASOWNER, Owner)
             else:
-                raise Exception("The Node Provided is not a User")
+                raise Exception("The Node Provided is not a Department")
 
 
-    #
     # Function	: getName
     # Arguments	:
     # Returns	: name of blog
@@ -92,7 +94,7 @@ class Blog:
         if LBL_DEPARTMENT in owner.get_labels():
             return owner.get_or_create_path(REL_HASOWNER, self.blogInstance)
         else:
-            raise Exception("The Node Provided is not a User")
+            raise Exception("The Node Provided is not a Department")
 
     #
     # Function	: getOwner

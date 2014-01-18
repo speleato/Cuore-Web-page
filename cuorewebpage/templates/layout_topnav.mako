@@ -1,4 +1,4 @@
-## layout_sidebar_default.mako
+# layout_topnav.mako
 <%inherit file="cuorewebpage:templates/base.mako"/>
 <%block name="html_tag">
 <html lang="en" xmlns:og="http://ogp.me/ns#" xmlns:fb="https://www.facebook.com/2008/fbml" class="" >

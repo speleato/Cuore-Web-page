@@ -240,6 +240,7 @@ def getCompany():
 
 
 
+"""
 
 
 sandy = User(None, "Sandy", "Siththanandan", "sandymeep@gmail.com", "Applications Developer", 3)
@@ -256,8 +257,6 @@ print me
 president = store.load_unique(IND_USER, "email", leo.email, User)
 print president
 
-#if store.load_unique(IND_USER, "first_name", "george", User) = None:
-#    print me
 Kirby = User(None, "Kirby", "Linvill", "kirby@cuore.io", "Applications Developer", 3)
 Kevin = User("Kevin", "Ryan", "kevincryan23@gmail.com", "Vice President", 3)
 #List of people in each position, first entry is the name of the position
@@ -299,3 +298,5 @@ for i in range(0, len(departments)):
         store.save_unique(IND_TITLE, "name", title.name, title)
     store.save_unique(IND_DEP, "name", departmentNames[i], dep)
 store.save_unique(IND_COMP, "name", "Cuore", cuore)
+"""
+

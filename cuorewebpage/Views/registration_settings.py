@@ -7,7 +7,7 @@ import transaction
 from py2neo import neo4j, ogm
 from database_config import *
 
-from cuorewebpage.Model.Person import User
+from cuorewebpage.Model.User import User
 
 graph_db = neo4j.GraphDatabaseService(db_config['uri'])
 store = ogm.Store(graph_db)

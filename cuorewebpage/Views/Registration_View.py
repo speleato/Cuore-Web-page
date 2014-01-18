@@ -10,13 +10,22 @@ from database_config import *
 
 from cuorewebpage.lib.session import *
 
-from cuorewebpage.Model.Person import *
+from cuorewebpage.Model.Person import getCompany, getCurrentUser, getUser
+from cuorewebpage.Model.User import User
+#from cuorewebpage.Model.Company import *
 
 graph_db = neo4j.GraphDatabaseService(db_config['uri'])
 store = ogm.Store(graph_db)
 
+ADMIN_EMAIL = "slhsith@gmail.com"
+REGISTRATION_EMAIL_SERVER = "slhsith@gmail.com"
+REGISTRATION_EMAIL_RECIPIENTS = "sandymeep@gmail.com"
+
 @view_config(route_name='Registration', renderer='cuorewebpage:templates/registration.mako')
 def Registration(request):
+    print "==========================================================================="
+    print request.session['uid']
+    print "==========================================================================="
     if isUserLoggedOn(request):
         ctx = {}
         ctx['section'] = 'Registration'
@@ -24,16 +33,21 @@ def Registration(request):
         for i in getCompany().getAllDepartments():
             departments.append({"department":i.name, "titles":i.getAllTitles()})
         ctx['departments'] = departments
+        ctx['user'] = getCurrentUser(request)
         if not getCurrentUser(request):
+            print "------------------> create"
             ctx['view'] = 'create'
         elif getCurrentUser(request).isAdmin():
             if request.POST:
+                print "------------------> admin"
                 ctx['view'] = 'admin'
                 ctx['user'] = getUser(request.POST.getone('user'))
             else:
+                print "------------------> admin_edit"
                 ctx['view'] = 'edit'
                 ctx['user'] = getCurrentUser(request)
         else:
+            print "------------------> user_edit"
             ctx['view'] = 'edit'
             ctx['user'] = getCurrentUser(request)
         return ctx
@@ -41,7 +55,7 @@ def Registration(request):
         return redirectUser(request)
 
 
-@view_config(route_name='SubmitRegistration', renderer='cuorewebpage:templates/Registration.mako')
+@view_config(route_name='Registration_Action', match_param="action=submit", renderer='cuorewebpage:templates/Registration.mako')
 def SubmitRegistration(request):
     #parameters = Model.process_business_logic()
     if not isUserLoggedOn(request):
@@ -69,7 +83,7 @@ def SubmitRegistration(request):
             confirmationNumber=userNode.get_properties()["confirmationNumber"]
             mailer = get_mailer(request)
             message = Message(subject="Confirm your Cuore Intranet Registration",
-                  sender = "kirby@cuore.io",                    # change to admin email later
+                  sender = ADMIN_EMAIL,                    # change to admin email later
                   recipients = [email],
                   body = "You have been added to the Cuore intranet as a " + title + " in the "
                        + department + " department. Click on this link to confirm your"
@@ -92,17 +106,18 @@ def SubmitRegistration(request):
 
             # create flags and set to not confirmed
             # create user node in database, put in temporary zone
-            user = User(uid, first_name, last_name, email, 0, phone, address, city, state, zipcode, about, req_title)
-            store.save_unique(IND_USER, "uid", user.uid, user)
+            user = User(uid=uid, first_name=first_name, last_name=last_name, email=email, confirmed=0,
+                        phone=phone, address=address, city=city, state=state, zipcode=zipcode, about=about, req_title=req_title)
+#            store.save_unique(IND_USER, "uid", user.uid, user)
             unconfirmedNode=graph_db.get_or_create_indexed_node("Unconfirmed", "name", "unconfirmed", {"name":"unconfirmed"})
-            userNode=graph_db.get_indexed_node(IND_USER, "uid", user.uid)
-            graph_db.create((userNode, "IS", unconfirmedNode))
+#            userNode=graph_db.get_indexed_node(IND_USER, "uid", user.uid)
+            graph_db.create((user.getNode(), REL_UNCONFIRMED, unconfirmedNode))
 
             # after registration, send email to Leo
             mailer=get_mailer(request)
             message = Message(subject="Registration by " + name,
-                              sender="kjlinvill@gmail.com",      # change to cuore mail server later
-                              recipients=["kirby@cuore.io"],  # change to leo when rolled out
+                              sender=REGISTRATION_EMAIL_SERVER,      # change to cuore mail server later
+                              recipients=[REGISTRATION_EMAIL_RECIPIENTS],  # change to leo when rolled out
                               body=name + " has registered for the Cuore Intranet with the email "
                                      + email + ". Click here to confirm " + name
                                      + "'s registration: " + "link_to_admin_panel")
@@ -122,10 +137,10 @@ def SubmitRegistration(request):
             getCurrentUser(request).getNode().update_properties({"email":email, "phone":phone, "address":address, "city":city, "state":state, "zipcode":zipcode, "photo":photo, "about":about})
     return {}
 
-@view_config(route_name="ConfirmRegistration", renderer="cuorewebpage:templates/Registration.mako")
+@view_config(route_name="Registration_Action", match_param="action=confirm", renderer="cuorewebpage:templates/Registration.mako")
 def ConfirmRegistration(request):
     #email=request.GET.getone('email')
-    userNode = graph_db.get_indexed_node(IND_USER, "uid", uid)
+    userNode = graph_db.get_indexed_node(IND_USER, "uid", request.session['uid'])
     # move from temp area of database to permanent area of database
     confirmed=userNode.get_properties()["confirmed"]
     if(confirmed!=1 and confirmed!=3):

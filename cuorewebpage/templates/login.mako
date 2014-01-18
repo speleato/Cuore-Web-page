@@ -1,11 +1,8 @@
 <%inherit file="base.mako"/>
-
-<%block name="head">
-        ${parent.head()}
-<!-- Include OneID javascript API -->
-<script src="//api.oneid.com/js/oneid.js"></script>
-</%block>
-
+<%block name="html_tag"><html class="no-js login" lang="en"> </%block>
+<%block name="head">${parent.head()}
+    <!-- Include OneID javascript API -->
+    <script src="//api.oneid.com/js/oneid.js"></script></%block>
 <div id="login_page">
   <!-- Login page -->
   <div id="login">
@@ -13,7 +10,7 @@
       <div class="span5"> <img src="img/thumbnail_george2.jpg" /> </div>
       <div class="span7">
         <div class="title">
-          <span class="name">George</span>
+          <span class="name"></span>
           <span class="subtitle">Locked</span>
         </div>
           <div id="oneid-signin-button"></div>
@@ -31,8 +28,8 @@
 <!-- End #loading -->
 
 <%block name="javascript">
-        <!-- Le javascript
-    ================================================== -->
+<!-- Le javascript
+     ========================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
 
 <!-- Flip effect on login screen -->
@@ -118,7 +115,7 @@
         Page.init();
 
       });
-    </script>
+</script>
 <script type='text/javascript'>
 
     $(window).load(function() {
@@ -141,18 +138,18 @@
         window.location = newLocation;
         }
       });
-    </script>
-    <script type="text/javascript">
-        OneID.init({
-         buttons: {
-           "signin #oneid-signin-button": [{
-             challenge: {
-               "request_method": "POST",
-               "callback": "/dashboard",
-               "attr": "email name"
-             }
-           }]
+</script>
+<script type="text/javascript">
+    OneID.init({
+     buttons: {
+       "signin #oneid-signin-button": [{
+         challenge: {
+           "request_method": "POST",
+           "callback": "/dashboard",
+           "attr": "email name"
          }
-        });
-  </script>
+       }]
+     }
+    });
+</script>
 </%block>

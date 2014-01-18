@@ -5,7 +5,9 @@ import re
 from py2neo import neo4j, ogm
 from database_config import *
 
-from cuorewebpage.Model.Person import Company, Department
+from cuorewebpage.Model.Person import *
+from cuorewebpage.Model.Company import Company
+from cuorewebpage.Model.Department import Department
 from cuorewebpage.lib.session import *
 
 graph_db = neo4j.GraphDatabaseService(db_config['uri'])
