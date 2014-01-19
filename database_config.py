@@ -68,4 +68,5 @@ IND_COMP        = "Company"
 IND_DEP         = "Department"
 IND_TITLE       = "Title"
 IND_USER        = "Users"
+IND_FILE        = "Files"
 

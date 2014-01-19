@@ -10,8 +10,7 @@ def main(global_config, **settings):
     # configuration setup
     config = Configurator(settings=settings, session_factory=session_factory)
 
-    #ROUTES
-
+    #ROUTE
     #tree = ET.parse('Routing/routes.xml')
     #root = tree.getroot()
     #for child in root.findall('route'):
@@ -31,6 +30,9 @@ def main(global_config, **settings):
     config.add_route('Newsfeed', '/newsfeed')
     config.add_route('Blog', '/blog')
     config.add_route('Files', '/files')
+    config.add_route('FileUpload', '/files/upload')
+    config.add_route('FileDownload', '/files/download')
+    config.add_route('FileDelete', '/files/delete')
     config.add_route('Workspace', '/workspace')
     config.add_route('Calendar', '/calendar')
     config.add_route('Tasks', '/tasks')
