@@ -36,20 +36,23 @@ class Calendar:
     # Arguments	: Uri of Existing Task Node OR Name of Task
     #
     def __init__(self, URI=None, Name=None, Owner=None):
-        global LBL_CALENDAR
+        global LBL_CAL
         self.db_init()
         tempCal = None
         if URI is not None:
             self.calInstance = neo4j.Node(URI)
 
-        elif Name is not None and Owner is not None:
+        elif Name is not None:
             tempCal, = self.graph_db.create({"name": Name})
-            tempCal.add_labels(LBL_CALENDAR)
+            tempCal.add_labels(LBL_CAL)
             self.calInstance = tempCal
-            self.addOwner(Owner)
 
         else:
             raise Exception("Name/Owner or URI not specified")
+
+        if Owner is not None:
+            self.addOwner(Owner)
+
 
     #
     # Function	: getName

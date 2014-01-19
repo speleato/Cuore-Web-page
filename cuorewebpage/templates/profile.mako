@@ -1,25 +1,20 @@
 <%inherit file="cuorewebpage:templates/layout_sidebar_default.mako"/>
 
-<%
-    #get_info_from_db using ${email}
+<%doc>
+    #get_info_from_db using ${uid}
     from py2neo import neo4j, ogm
-    from database_config import db_config
+    from database_config import db_config, IND_USER
 
     from cuorewebpage.Model.Person import User
 
     graph_db = neo4j.GraphDatabaseService(db_config['uri'])
     store = ogm.Store(graph_db)
 
-    email=request.GET.getone('email')
-    print email
-    print type(email)
-    user = store.load_unique("Users", "email", email, User)
-%>
-
-<!-- Kirby's original data access for reference
-<h2>${user.title}</h2>
-<h3>${user.email}</h3>
--->
+    uid=request.GET.getone('uid')
+    print uid
+    print type(uid)
+    user = store.load_unique(IND_USER, "uid", uid, User)
+</%doc>
 
     <div id="main_container">
       <div class="row-fluid">
@@ -49,10 +44,10 @@
             <div class="row-fluid ">
               <div class="span6 spacer">
                 <ul class="unstyled">
-                  <li class="location pull-left right_offset"><span class="muted"><i class="icon-map-marker"></i> Location:</span> London, UK</li>
-                  <li class="location"><span class="muted"><i class="icon-globe"></i></span> Brighton Business School </li>
-                  <li class="title"><span class="muted"><i class="icon-globe"></i></span> ${user.title}</li>
-                  <li class="department"><span class="muted"><i class="icon-globe"></i></span> ${user.department}</li>
+                  <li class="location pull-left right_offset"><span class="muted"><i class="icon-map-marker"></i> Location:</span> ${user.city}, ${user.state}</li>
+                  <li class="location"><span class="muted"><i class="icon-globe"></i></span> </li>
+                  <li class="title"><span class="muted"><i class="icon-globe"></i></span> ${user.req_title}</li>
+<%doc><!--                  <li class="department"><span class="muted"><i class="icon-globe"></i></span> ${user.req_department}</li>--></%doc>
                 </ul>
               </div>
               <div class="span6">
@@ -68,9 +63,7 @@
           <div class="content spacer-big">
             <h3><span>About Me</span></h3>
             <hr>
-            <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed blandit, dolor at molestie bibendum, diam est imperdiet libero, vel malesuada augue metus ultricies velit. In semper, neque vel luctus ullamcorper, lectus ligula faucibus risus, eget ultrices nisl magna eu ligula. Proin ipsum metus, varius sit amet dapibus id, dapibus vel felis. Duis eu odio mauris. Maecenas pulvinar dignissim arcu, quis elementum erat volutpat ac. Ut et neque a justo scelerisque pellentesque. Maecenas ut quam vitae mi condimentum iaculis at sed erat.</p>
-            <p> In sit amet urna turpis, sit amet pretium nisi. Maecenas quam sem, aliquam nec vehicula sed, fringilla nec leo. Phasellus nec orci orci, vestibulum rutrum urna. Maecenas aliquam ipsum ut purus posuere suscipit. Vivamus posuere gravida metus. Aliquam erat volutpat. Suspendisse euismod pellentesque leo et imperdiet.</p>
-            <p> In sit amet urna turpis, sit amet pretium nisi. Maecenas quam sem, aliquam nec vehicula sed, fringilla nec leo. Phasellus nec orci orci, vestibulum rutrum urna. Maecenas aliquam ipsum ut purus posuere suscipit. Vivamus posuere gravida metus. Aliquam erat volutpat. Suspendisse euismod pellentesque leo et imperdiet.</p>
+<%doc>            <p> ${user.about} </p></%doc>
             <hr>
             <blockquote>
               <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>

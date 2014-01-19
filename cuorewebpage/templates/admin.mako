@@ -22,7 +22,7 @@
 <%
     #get_info_from_db using ${email}
     from py2neo import neo4j, ogm, cypher
-    from database_config import *
+    from database_config import db_config, IND_COMP, IND_DEP, IND_TITLE, IND_USER, IND_UNASSIGNED, IND_UNCONFIRMED, REL_HASTITLE, REL_UNCONFIRMED, REL_UNASSIGNED
 
     from cuorewebpage.Model.Person import User, Title, Department, Company
 
@@ -46,7 +46,7 @@
                 %>
                 %for k in users:
                     <form action="/registration" method="post">
-                        <input type="text" name="user" hidden value="${k.email}">
+                        <input type="text" name="user" hidden value="${k.uid}">
                         <input type="submit" value="Edit ${k.first_name} ${k.last_name}'s info">
                     </form>
                 %endfor
@@ -55,24 +55,24 @@
         <h2>Unconfirmed Users</h2>
         <%
             unconfirmed=[]
-            for k in graph_db.get_or_create_indexed_node("Unconfirmed", "name", "unconfirmed").match("IS"):
+            for k in graph_db.get_or_create_indexed_node(IND_UNCONFIRMED, "name", "unconfirmed").match(REL_UNCONFIRMED):
                 unconfirmed.append(store.load(User, k.start_node))
         %>
         %for k in unconfirmed:
             <form action="/registration" method="post">
-                <input type="text" name="user" hidden value="${k.email}">
+                <input type="text" name="user" hidden value="${k.uid}">
                 <input type="submit" value="Confirm ${k.first_name} ${k.last_name}">
             </form>
         %endfor
         <h2>Unassigned Users</h2>
         <%
             unassigned=[]
-            for k in graph_db.get_or_create_indexed_node("Unassigned", "name", "unassigned").match("UNASSIGNED"):
+            for k in graph_db.get_or_create_indexed_node(IND_UNASSIGNED, "name", "unassigned").match(REL_UNASSIGNED):
                 unassigned.append(store.load(User, k.start_node))
         %>
         %for k in unassigned:
             <form action="/registration" method="post">
-                <input type="text" name="user" hidden value="${k.email}">
+                <input type="text" name="user" hidden value="${k.uid}">
                 <input type="submit" value="Assign ${k.first_name} ${k.last_name}">
             </form>
         %endfor
@@ -80,12 +80,12 @@
         <h2>Unconfirmed Users</h2>
         <%
             unconfirmed=[]
-            for k in graph_db.get_or_create_indexed_node("Unconfirmed", "name", "unconfirmed").match("IS"):
+            for k in graph_db.get_or_create_indexed_node(IND_UNCONFIRMED, "name", "unconfirmed").match(REL_UNCONFIRMED):
                 unconfirmed.append(store.load(User, k.start_node))
         %>
         %for k in unconfirmed:
             <form action="/registration" method="post">
-                <input type="text" name="user" hidden value="${k.email}">
+                <input type="text" name="user" hidden value="${k.uid}">
                 <input type="submit" value="Confirm ${k.first_name} ${k.last_name}">
             </form>
         %endfor
@@ -93,12 +93,12 @@
         <h2>Unassigned Users</h2>
         <%
             unassigned=[]
-            for k in graph_db.get_or_create_indexed_node("Unassigned", "name", "unassigned").match("UNASSIGNED"):
+            for k in graph_db.get_or_create_indexed_node(IND_UNASSIGNED, "name", "unassigned").match(REL_UNASSIGNED):
                 unassigned.append(store.load(User, k.start_node))
         %>
         %for k in unassigned:
             <form action="/registration" method="post">
-                <input type="text" name="user" hidden value="${k.email}">
+                <input type="text" name="user" hidden value="${k.uid}">
                 <input type="submit" value="Assign ${k.first_name} ${k.last_name}">
             </form>
         %endfor
@@ -130,16 +130,16 @@
             %for i in nodes:
                 <h2>${i.name}</h2>
                 <%
-                title = store.load_related(store.load_unique(IND_DEP, "name", i.name, Department), "IN", Title)
+                title = store.load_related(store.load_unique(IND_DEP, "name", i.name, Department), REL_HASTITLE, Title)
                 %>
                 %for j in title:
                     <h3>${j.name}</h3>
                     <%
-                    user = store.load_related(store.load_unique(IND_TITLE, "name", j, Title), "IS A", User)
+                    user = store.load_related(store.load_unique(IND_TITLE, "name", j, Title), REL_HASUSER, User)
                     %>
                     %for k in user:
                         <form action="/registration" method="post">
-                            <input type="text" name="user" hidden value="${k.email}">
+                            <input type="text" name="user" hidden value="${k.uid}">
                             %if k.confirmed < 2:
                                 <input type="submit" value="Confirm ${k.first_name} ${k.last_name}">
                             %else:
@@ -153,11 +153,11 @@
             %for j in nodes:
                 <h2>${j.name}</h2>
                     <%
-                    user = store.load_related(store.load_unique(IND_TITLE, "name", j, Title), "IS A", User)
+                    user = store.load_related(store.load_unique(IND_TITLE, "name", j, Title), REL_HASUSER, User)
                     %>
                     %for k in user:
                         <form action="/registration" method="post">
-                            <input type="text" name="user" hidden value="${k.email}">
+                            <input type="text" name="user" hidden value="${k.uid}">
                             %if k.confirmed < 2:
                                 <input type="submit" value="Confirm ${k.first_name} ${k.last_name}">
                             %else:
@@ -169,7 +169,7 @@
         %elif type(nodes[0])==User:
             %for k in nodes:
                 <form action="/registration" method="post">
-                    <input type="text" name="user" hidden value="${k.email}">
+                    <input type="text" name="user" hidden value="${k.uid}">
                     %if k.confirmed < 2:
                         <input type="submit" value="Confirm ${k.first_name} ${k.last_name}">
                     %else:

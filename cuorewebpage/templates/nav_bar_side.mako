@@ -37,6 +37,7 @@
                             <li><a href="${request.route_url('Files')}">Files</a></li>
                             <li><a href="${request.route_url('Calendar')}">Calendar</a></li>
                             <li><a href="${request.route_url('Tasks')}">Tasks</a></li>
+                            <li><a href="${request.route_url('Blog')}">Blog</a></li>
                         </ul>
                     <li class="color_13">
                         <a class="widgets" href="${request.route_url('IdeaCenter')}">

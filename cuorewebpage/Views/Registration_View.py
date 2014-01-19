@@ -3,31 +3,74 @@ from pyramid.view import view_config
 from pyramid_mailer import get_mailer
 from pyramid_mailer.message import Message
 import transaction
+import re
 
 from py2neo import neo4j, ogm
 from database_config import *
 
-from cuorewebpage.Model.Person import User
+from cuorewebpage.lib.session import *
+
+from cuorewebpage.Model.Person import getCompany, getCurrentUser, getUser
+from cuorewebpage.Model.User import User
+#from cuorewebpage.Model.Company import *
 
 graph_db = neo4j.GraphDatabaseService(db_config['uri'])
 store = ogm.Store(graph_db)
 
-@view_config(route_name='Registration', renderer='cuorewebpage:templates/Registration.mako')
-def Registration(request):
-    return {}
+ADMIN_EMAIL = "slhsith@gmail.com"
+REGISTRATION_EMAIL_SERVER = "slhsith@gmail.com"
+REGISTRATION_EMAIL_RECIPIENTS = "sandymeep@gmail.com"
 
-@view_config(route_name='SubmitRegistration', renderer='cuorewebpage:templates/Registration.mako')
+@view_config(route_name='Registration', renderer='cuorewebpage:templates/registration.mako')
+def Registration(request):
+    print "==========================================================================="
+    print request.session['uid']
+    print getCurrentUser(request)
+#    print getCurrentUser(request)['last_name']
+    print "==========================================================================="
+    if isUserLoggedOn(request):
+        ctx = {}
+        ctx['section'] = 'Registration'
+        departments = list()
+        for i in getCompany().getAllDepartments():
+            departments.append({"department":i.name, "titles":i.getAllTitles()})
+        ctx['departments'] = departments
+        ctx['user'] = getCurrentUser(request)
+        if not getCurrentUser(request):
+            print "------------------> create"
+            ctx['view'] = 'create'
+        elif getCurrentUser(request).isAdmin():
+            if request.POST:
+                print "------------------> admin"
+                ctx['view'] = 'admin'
+                ctx['user'] = getUser(request.POST.getone('user'))
+            else:
+                print "------------------> admin_edit"
+                ctx['view'] = 'edit'
+                ctx['user'] = getCurrentUser(request)
+        else:
+            print "------------------> user_edit"
+            ctx['view'] = 'edit'
+            ctx['user'] = getCurrentUser(request)
+        return ctx
+    else:
+        return redirectUser(request)
+
+
+@view_config(route_name='Registration_Action', match_param="action=submit", renderer='cuorewebpage:templates/Registration.mako')
 def SubmitRegistration(request):
     #parameters = Model.process_business_logic()
+    if not isUserLoggedOn(request):
+        return redirectUser(request)
     if request.POST:
         if request.POST.getone('task') == "admin":
-            title=request.POST.getone('title')
-            email=request.POST.getone('email')
-            department=request.POST.getone('department')
+            title=re.sub("[^A-Za-z0-9,.\-()] ", "", request.POST.getone('title'))
+            email=re.sub("[^A-Za-z0-9.@!#$%&'*+\-/=?^_`{|}~]", "", request.POST.getone('email'))
+            department=re.sub("[^A-Za-z0-9,.\-()]", "", request.POST.getone('department'))
+            uid=request.POST.getone('uid')
 
             # add updated info to database
-            # Note: Either another unique identifier needs to be used or the admin panel shouldn't be allowed to change email
-            userNode = graph_db.get_indexed_node(IND_USER, "email", email)
+            userNode = graph_db.get_indexed_node(IND_USER, "uid", uid)
             # if leo confirmed, update confirmation flags
             confirmed=userNode.get_properties()["confirmed"]
             if(confirmed<2):
@@ -42,7 +85,7 @@ def SubmitRegistration(request):
             confirmationNumber=userNode.get_properties()["confirmationNumber"]
             mailer = get_mailer(request)
             message = Message(subject="Confirm your Cuore Intranet Registration",
-                  sender = "kirby@cuore.io",                    # change to admin email later
+                  sender = ADMIN_EMAIL,                    # change to admin email later
                   recipients = [email],
                   body = "You have been added to the Cuore intranet as a " + title + " in the "
                        + department + " department. Click on this link to confirm your"
@@ -50,45 +93,56 @@ def SubmitRegistration(request):
             mailer.send(message)
             transaction.commit()
         elif request.POST.getone('task') == "create":
-            firstName=request.POST.getone('firstName')
-            lastName=request.POST.getone('lastName')
-            name=firstName + " " + lastName
-            email=request.POST.getone('email')
+            first_name=re.sub("[^A-Za-z0-9,.\-()]", "", request.POST.getone('first_name'))
+            last_name=re.sub("[^A-Za-z0-9,.\-()]", "", request.POST.getone('last_name'))
+            name=first_name + " " + last_name
+            email=re.sub("[^A-Za-z0-9.@!#$%&'*+\-/=?^_`{|}~]", "", request.POST.getone('email'))
+            phone=re.sub("[^0-9\-() ]", "", request.POST.getone('phone'))
+            address = re.sub("[^A-Za-z0-9,.\-() ]", "", request.POST.getone('street_address'))
+            city = re.sub("[^A-Za-z0-9,.\-() ]", "", request.POST.getone('city'))
+            state = re.sub("[^A-Za-z0-9,.\-() ]", "", request.POST.getone('state'))
+            zipcode = re.sub("[^A-Za-z0-9,.\-() ]", "", request.POST.getone('zip_code'))
+            about = re.sub("[^A-Za-z0-9,.\-() ]", "", request.POST.getone('about'))
+            req_title = request.POST.getone('req_title')
+            uid = request.session["uid"]
 
             # create flags and set to not confirmed
             # create user node in database, put in temporary zone
-            user = User(firstName, lastName, email)
-            store.save_unique(IND_USER, "email", user.email, user)
+            user = User(uid=uid, first_name=first_name, last_name=last_name, email=email, confirmed=0,
+                        phone=phone, address=address, city=city, state=state, zipcode=zipcode, about=about, req_title=req_title)
+#            store.save_unique(IND_USER, "uid", user.uid, user)
             unconfirmedNode=graph_db.get_or_create_indexed_node("Unconfirmed", "name", "unconfirmed", {"name":"unconfirmed"})
-            userNode=graph_db.get_indexed_node(IND_USER, "email", user.email)
-            graph_db.create((userNode, "IS", unconfirmedNode))
+#            userNode=graph_db.get_indexed_node(IND_USER, "uid", user.uid)
+            graph_db.create((user.getNode(), REL_UNCONFIRMED, unconfirmedNode))
 
             # after registration, send email to Leo
             mailer=get_mailer(request)
             message = Message(subject="Registration by " + name,
-                              sender="kjlinvill@gmail.com",      # change to cuore mail server later
-                              recipients=["kirby@cuore.io"],  # change to leo when rolled out
+                              sender=REGISTRATION_EMAIL_SERVER,      # change to cuore mail server later
+                              recipients=[REGISTRATION_EMAIL_RECIPIENTS],  # change to leo when rolled out
                               body=name + " has registered for the Cuore Intranet with the email "
                                      + email + ". Click here to confirm " + name
                                      + "'s registration: " + "link_to_admin_panel")
             mailer.send(message)
             transaction.commit()
         elif request.POST.getone('task') == "edit":
-            phone = request.POST.getone('phone')
-            address = request.POST.getone('address')
-            city = request.POST.getone('city')
-            state = request.POST.getone('state')
-            zipcode = request.POST.getone('zipcode')
-            about = request.POST.getone('about')
-            # update info in database, need to pass in email, currently not implemented
-            # userNode = graph_db.get_indexed_node(IND_USER, "email", email)
-            # userNode.update_properties(properties='"phone":phone, "address":address, "city":city, "state":state, "zipcode":zipcode "about":about')
+            # reg-ex, remove non-digit characters
+            email=re.sub("[^A-Za-z0-9.@!#$%&'*+\-/=?^_`{|}~]", "", request.POST.getone('email'))
+            phone=re.sub("[^0-9\-() ]", "", request.POST.getone('phone'))
+            address = re.sub("[^A-Za-z0-9,.\-() ]", "", request.POST.getone('street_address'))
+            city = re.sub("[^A-Za-z0-9,.\-() ]", "", request.POST.getone('city'))
+            state = re.sub("[^A-Za-z0-9,.\-() ]", "", request.POST.getone('state'))
+            zipcode = re.sub("[^A-Za-z0-9,.\-() ]", "", request.POST.getone('zip_code'))
+            about = re.sub("[^A-Za-z0-9,.!?\-() ]", "", request.POST.getone('about'))
+            photo = request.POST.getone('profile_image')
+            # update info in database
+            getCurrentUser(request).getNode().update_properties({"email":email, "phone":phone, "address":address, "city":city, "state":state, "zipcode":zipcode, "photo":photo, "about":about})
     return {}
 
-@view_config(route_name="ConfirmRegistration", renderer="cuorewebpage:templates/Registration.mako")
+@view_config(route_name="Registration_Action", match_param="action=confirm", renderer="cuorewebpage:templates/Registration.mako")
 def ConfirmRegistration(request):
     #email=request.GET.getone('email')
-    userNode = graph_db.get_indexed_node(IND_USER, "email", email)
+    userNode = graph_db.get_indexed_node(IND_USER, "uid", request.session['uid'])
     # move from temp area of database to permanent area of database
     confirmed=userNode.get_properties()["confirmed"]
     if(confirmed!=1 and confirmed!=3):
