@@ -9,11 +9,11 @@
               <h4> <span>Registration</span> </h4>
             </div>
             <div class="content">
-              <form class="form-horizontal cmxform" id="validateForm" method="post"
-                    action="${request.route_url('SubmitRegistration')}" accept-charset="utf-8"
-                    enctype="multipart/form-data" autocomplete="off">
-                <input id="task" name="task" type="hidden" required class="span12" value="${view}"/>
                 %if view=="create":
+                <form class="form-horizontal cmxform" id="validateForm" method="post"
+                      action="${request.route_url('Registration', action='create')}" accept-charset="utf-8"
+                      enctype="multipart/form-data" autocomplete="off">
+                    <input id="task" name="task" type="hidden" required class="span12" value="${view}"/>
                     <div class="form-row control-group row-fluid">
                       <label class="control-label span3" for="normal-field">First Name</label>
                       <div class="controls span9">
@@ -99,6 +99,10 @@
                       </div>
                     </div>
                 %elif view=="edit":
+                    <form class="form-horizontal cmxform" id="validateForm" method="post"
+                          action="${request.route_url('Registration', action='edit')}" accept-charset="utf-8"
+                          enctype="multipart/form-data" autocomplete="off">
+                        <input id="task" name="task" type="hidden" required class="span12" value="${view}"/>
                     <div class="form-row control-group row-fluid">
                       <label class="control-label span3">Email Address</label>
                       <div class="controls span9">
@@ -307,7 +311,6 @@ $().ready(function() {
     topicInputs.attr("disabled", !this.checked);
   });
 });
-
 
 //Forms
  $(document).ready(function () {
