@@ -81,7 +81,7 @@ def SubmitRegistration(request):
             last_name=re.sub("[^A-Za-z0-9,.\-()]", "", request.POST.getone('last_name'))
             name=first_name + " " + last_name
             email=re.sub("[^A-Za-z0-9.@!#$%&'*+\-/=?^_`{|}~]", "", request.POST.getone('email'))
-            phone=re.sub("[^0-9\-() ]", "", request.POST.getone('phone'))
+            phone=re.sub("[^0-9\-()+ ]", "", request.POST.getone('phone'))
             address = re.sub("[^A-Za-z0-9,.\-() ]", "", request.POST.getone('street_address'))
             city = re.sub("[^A-Za-z0-9,.\-() ]", "", request.POST.getone('city'))
             state = re.sub("[^A-Za-z0-9,.\-() ]", "", request.POST.getone('state'))
@@ -89,6 +89,8 @@ def SubmitRegistration(request):
             about = re.sub("[^A-Za-z0-9,.\-() ]", "", request.POST.getone('about'))
             req_title = request.POST.getone('req_title')
             uid = request.session["uid"]
+
+            print request.POST
 
             # create flags and set to not confirmed
             # create user node in database, put in temporary zone
@@ -111,7 +113,7 @@ def SubmitRegistration(request):
         elif request.POST.getone('task') == "edit":
             # reg-ex, remove non-digit characters
             email=re.sub("[^A-Za-z0-9.@!#$%&'*+\-/=?^_`{|}~]", "", request.POST.getone('email'))
-            phone=re.sub("[^0-9\-() ]", "", request.POST.getone('phone'))
+            phone=re.sub("[^0-9\-()+ ]", "", request.POST.getone('phone'))
             address = re.sub("[^A-Za-z0-9,.\-() ]", "", request.POST.getone('street_address'))
             city = re.sub("[^A-Za-z0-9,.\-() ]", "", request.POST.getone('city'))
             state = re.sub("[^A-Za-z0-9,.\-() ]", "", request.POST.getone('state'))

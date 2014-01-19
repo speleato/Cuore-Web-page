@@ -33,9 +33,9 @@
                       </div>
                     </div>
                     <div class="form-row control-group row-fluid">
-                      <label class="control-label span3">Phone</label>
+                      <label class="control-label span3" for="mask-phone">Phone <span class="help-block">(999) 999-9999</span> </label>
                       <div class="controls span9">
-                        <input id="phone" name="phone" type="tel" required class="span12"/>
+                        <input id="mask-phone" name="phone" type="text" tabindex="3" required class="row-fluid"/>
                       </div>
                     </div>
                     <div class="form-row control-group row-fluid">
@@ -86,6 +86,12 @@
                             <input id="profile_image" name="profile_image" type="file" class="row-fluid"/>
                         </div>
                     </div>
+                    <div class="form-row control-group row-fluid">
+                        <label class="control-label span3" for="elastic-textarea">About</label>
+                        <div class="controls span9">
+                            <textarea rows="3" class="row-fluid autogrow" id="elastic-textarea" name="about" placeholder="Write a little bit about yourself">${user.about}</textarea>
+                        </div>
+                    </div>
                     <div class="form-actions row-fluid">
                       <div class="span7 offset3">
                         <button type="submit" class="btn btn-primary">Submit Registration</button>
@@ -100,9 +106,9 @@
                       </div>
                     </div>
                     <div class="form-row control-group row-fluid">
-                      <label class="control-label span3">Phone</label>
+                      <label class="control-label span3" for="mask-phone">Phone <span class="help-block">(999) 999-9999</span> </label>
                       <div class="controls span9">
-                        <input id="phone" name="phone" type="tel" value="${user.phone}" required class="span12"/>
+                        <input id="mask-phone" name="phone" type="text" tabindex="3" required class="row-fluid"/>
                       </div>
                     </div>
                     <div class="form-row control-group row-fluid">
@@ -301,6 +307,7 @@ $().ready(function() {
     topicInputs.attr("disabled", !this.checked);
   });
 });
+
 
 //Forms
  $(document).ready(function () {
