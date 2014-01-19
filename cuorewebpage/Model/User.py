@@ -3,9 +3,9 @@ from pyramid import request
 
 from database_config import *
 from cuorewebpage.lib.session import *
-from Department import Department
-from Title import Title
-from Blog import Blog
+from cuorewebpage.Model.Department import Department
+from cuorewebpage.Model.Title import Title
+from cuorewebpage.Model.Blog import Blog
 
 # Class  : User
 # Methods:
