@@ -10,12 +10,15 @@ from Blog import Blog
 # Class  : User
 # Methods:
 #	1) 	db_init(self) 									- Private
-#	2) 	getNode(self)									- Returns the Blog Node
-#	3) 	getName(self) 									- Returns name of blog
-#	4) 	setDescription(self, description)				- Takes description as a string
-#   5)  getDescription(self)                            - Returns description
-#   6)  setContent(self, content)                       - Takes content in as a string
-#   7)  getContent(self)                                - Returns content as a string
+#	1) 	__init__(self) 									- Constructor
+#	1) 	__str__(self) 									- for Print, returns name of User
+#	2) 	getNode(self)									- Returns the User Node
+#	3) 	getName(self) 									- Returns first name of User
+#	4) 	...getters and setters for the various properties...
+#       ...
+#       ...
+#       ...
+#       ...
 
 # Constants:
 # The confirmed variable represents the level of confirmation similar to chmod. 1 means user confirmed, 2 means
@@ -95,91 +98,61 @@ class User:
     def getNode(self):
         return self.userInstance
 
-    # Function  : getUser
-    # Arguments : uid
-    # Returns   : User object from db with uid provided
-    def getUser(self, uid):
-        global IND_USER
-        self.userInstance = self.store.load_unique(IND_USER, "uid", uid, User)
-        return self.userInstance
-
-    # Function  : getCurrentUser
-    # Arguments : request
-    # Returns   : User object of current user w/ uid if found, otherwise returns none
-    def getCurrentUser(self, request):
-        if isUserLoggedOn(request):
-            return self.getUser(request.session['uid'])
-        return None
-    #
     # Function  : getUID
     # Arguments :
     # Returns   : uid of user
-    #
     def getUID(self):
         if self.userInstance is not None:
             return self.userInstance['UID']
         else:
             return None
 
-    #
     # Function  : setFirstName
     # Arguments : (String) first_name
-    #
     def setFirstName(self, first_name):
         self.userInstance['first_name'] = first_name
 
-    #
     # Function  : getFirstName
     # Arguments :
     # Returns   : (String) first_name
-    #
     def getFirstName(self):
         return self.userInstance['first_name']
 
-    #
     # Function  : setLastName
     # Arguments : (String) last_name
-    #
     def setLastName(self, last_name):
         self.userInstance['last_name'] = last_name
 
-    #
     # Function  : getLastName
     # Arguments :
     # Returns   : (String) last_name
-    #
     def getLastName(self):
         return self.userInstance['last_name']
 
-    #
     # Function  : getFullName
     # Arguments :
     # Returns   : (String) first_name + last_name
-    #
     def getFullName(self):
-        full_name = self.userInstance['first_name'] + self.userInstance['last_name']
+        full_name = self.userInstance['first_name'] + " " + self.userInstance['last_name']
         return full_name
 
-    #
     # Function  : setEmail
     # Arguments : (String) email
-    #
     def setEmail(self, email):
         self.userInstance['email'] = email
-    #
-    # Function  : getLastName
+
+    # Function  : getEmail
     # Arguments :
-    # Returns   : (String) last_name
-    #
+    # Returns   : (String) email
     def getEmail(self):
         return self.userInstance['email']
 
-    # Function: removeUser
-    # Arguments:
-    # Returns:
-    # Description: deletes user from neo4j db
+    # Function  : removeUser
+    # Arguments :
+    # Returns   :
+    # Descript: : deletes user from neo4j db
     def removeUser(self):
-        store.delete(self)
+        self.store.delete(self)
 
     # Function  : setTitle
     # Arguments : (Title Node) job_title
@@ -197,25 +170,13 @@ class User:
     def getTitles(self):
         global REL_HASUSER
         titles = list()
-        for rels in list(self.getNode().match_incoming(REL_HASUSER)):
+        for rels in list(self.userInstance.match_incoming(REL_HASUSER)):
             titles.append(rels.start_node)
-        return titles
-
-    # Function  : getDepartments
-    # Arguments :
-    # Returns   : list of department nodes associated with self
-    def getDepartments(self):
-        global REL_HASTITLE
-        deps = list()
-        for title in self.getTitles():
-            for rels in list(title.getNode().match_incoming(REL_HASTITLE)):
-#                deps.append(self.store.load(Department, j.start_node))
-                 deps.append(rels.start_node)
-        return deps
+        return titles[0]
 
     # Function  : getDepBlog
     # Arguments :
-    # Returns   : blog node associated with user's department
+    # Returns   : list of blog nodes associated with user's departments
     def getBlog(self):
         global REL_HASBLOG
         blogs = list()
@@ -223,13 +184,14 @@ class User:
                 blogs.append(dep.getBlog())
         return blogs
 
-
     def isAdmin(self):
         for i in self.getDepartments():
             if i.getName() == "Admin":
                 return True
         return False
 
+
+# ---------------------------- NON MEMBER FUNCTIONS -------------------------
 
 # Function: getUser
 # Arguments: uid
@@ -244,6 +206,27 @@ def getUser(uid):
 # Returns: User object of current user w/ uid if found, otherwise returns none
 def getCurrentUser(request):
     if isUserLoggedOn(request):
-        return getUser(request.session["uid"])
+#        return getUser(request.session["uid"])
+        graph_db = neo4j.GraphDatabaseService(db_config['uri'])
+        store = ogm.Store(graph_db)
+        return store.load_unique(IND_USER, "uid", request.session['uid'], User)
     return None
 
+# Function: getUserBlog
+# Arguments: request
+# Returns: Blog object of current user (just the first one found at this point,
+#          for the purpose of keeping it simple and getting the functionality working!
+def getUserBlog(request):
+    if isUserLoggedOn(request):
+        user = User(uid=request.session['uid'])
+        title = Title(user.getTitles())
+        department = Department(title.getDepartments()[0])
+        blog = Blog(department.getBlog()[0])
+        print "==========================================================================="
+        print "USER:        " + user.getFullName()
+        print "TITLE:       " + title.getName()
+        print "DEPARTMENT:  " + department.getName()
+        print "BLOG:        " + blog.getName()
+        print "==========================================================================="
+        return blog
+    return None

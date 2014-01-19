@@ -1,5 +1,6 @@
 from database_config import *
 from py2neo import neo4j, node
+from Post import Post
 
 # Class  : Blog
 # Methods:
@@ -43,8 +44,8 @@ class Blog:
             tempBlog = neo4j.Node(URI)
 
         elif Name is not None:
-            tempBlog, = self.graph_db.create({"name": Name})
-#            tempBlog, = self.index.create("name", Name, {"name": Name})
+#            tempBlog, = self.graph_db.create({"name": Name})
+            tempBlog = self.graph_db.get_or_create_indexed_node(IND_BLOG, "name", Name, {"name": Name})
             tempBlog.add_labels(LBL_BLOG)
 
         else:
@@ -124,7 +125,7 @@ class Blog:
     #
     # Function	: getPosts
     # Arguments	:
-    # Returns	: a list of Owner Nodes
+    # Returns	: a list of Post Nodes
     #
     def getPosts(self):
         global REL_HASPOST
@@ -132,3 +133,18 @@ class Blog:
         for relationship in list(self.blogInstance.match_outgoing(REL_HASPOST)):
             posts.append(relationship.end_node)
         return posts
+
+    #
+    # Function	: all
+    # Arguments	:
+    # Returns	: every entry in the blog as a list of tuples
+    #             [ (name, content, time, tags), (name, content, time, tags), ...]
+    #
+    def all(self):
+        global REL_HASPOST
+        posts = list()
+        for relationship in list(self.blogInstance.match_outgoing(REL_HASPOST)):
+            post = Post(relationship.end_node)
+            posts.append(post)
+        return posts
+

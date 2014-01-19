@@ -54,6 +54,8 @@ class Department(object):
     def __str__(self):
         return self.deptInstance['name']
 
+    def getName(self):
+        return self.deptInstance['name']
     # Function  : getAllTitles
     # Arguments :
     # Returns   : list of Title objects related to self
@@ -104,9 +106,10 @@ class Department(object):
     # Arguments:
     # Returns: list of related blog nodes
     def getBlog (self):
+        global REL_HASOWNER
         blogs = list()
-        for i in self.getNode().match_outgoing(REL_HASBLOG):
-            blogs.append(i.end_node)
+        for rel in list(self.deptInstance.match_incoming(REL_HASOWNER)):
+            blogs.append(rel.start_node)
         return blogs
 
 

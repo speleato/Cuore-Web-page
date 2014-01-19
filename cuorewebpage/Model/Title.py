@@ -44,7 +44,7 @@ class Title(object):
 
     # Function	: getNode
     # Arguments	:
-    # Returns	: userInstance Node
+    # Returns	: titleInstance Node
     def getNode(self):
         return self.titleInstance
 
@@ -54,11 +54,29 @@ class Title(object):
     def getAllUsers(self):
         return self.store.load_related(self, REL_HASUSER, User)
 
-    # Function: getUser
-    # Arguments: uid of user (string)
-    # Returns: requested related User object
-    def getUser(self, uid):
-        return self.store.load_unique(IND_USER, "uid", uid, User)
+    #
+    # Function	: setDept
+    # Arguments	: (Department Node) dept
+    # Returns	: a 'Path' object containing nodes and relationships used
+    #
+    def setDepartment(self, dept):
+        global REL_HASTITLE, LBL_DEPARTMENT
+        if LBL_DEPARTMENT in dept.get_labels():
+            return dept.get_or_create_path(REL_HASTITLE, self.titleInstance)
+        else:
+            raise Exception("The Node Provided is not a Department")
+
+    #
+    # Function	: getDepartments
+    # Arguments	:
+    # Returns	: a list of Department objects related to self
+    #
+    def getDepartments(self):
+        global REL_HASTITLE
+        deps = list()
+        for rels in list(self.titleInstance.match_incoming(REL_HASTITLE)):
+            deps.append(rels.start_node)
+        return deps
 
     #def addTitle(self, department, titleName):
     #    title=store.load_unique(IND_DEPT, "name", department, Department).getTitle(titleName)

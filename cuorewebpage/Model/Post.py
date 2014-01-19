@@ -1,8 +1,12 @@
-from database_config import *
 from py2neo import neo4j, node
 import json
 import datetime
 from webhelpers.text import urlify
+from webhelpers.date import time_ago_in_words
+from webhelpers.paginate import PageURL_WebOb, Page
+
+from database_config import *
+
 # Class  : Post
 # Methods:
 #	1) 	db_init(self) 									- Private
@@ -42,7 +46,7 @@ class Post:
     # Function	: Constructor
     # Arguments	: Uri of Existing Blog Node OR Name of Blog
     #
-    def __init__(self, URI=None, Name=None, Content=None, Owner=None):
+    def __init__(self, URI=None, Name=None, Content=None, Owner=None):#, Blog=None):
         global LBL_POST
         self.db_init()
         tempPost = None
@@ -61,8 +65,20 @@ class Post:
         if Content is not None and Owner is not None:
             self.postInstance["content"] = Content
             self.setOwner(Owner)
+#            self.setBlog(Blog)
 
 #        self.postInstance['sTime'] = time
+
+    #
+    # Function	: __str__
+    # Arguments	:
+    # Returns	: name of blog
+    #
+    def __str__(self):
+        if self.postInstance is not None:
+            return self.postInstance["name"]
+        else:
+            return None
 
     #
     # Function	: getName
@@ -146,9 +162,8 @@ class Post:
         global REL_CREATEDBY, LBL_USER
         if LBL_USER in owner.get_labels():
             print "--------HERE WE GO SETTING THE OWNER NOW"
-            return self.postInstance.create_path(REL_CREATEDBY, owner)
+            return self.postInstance.get_or_create_path(REL_CREATEDBY, owner)
         else:
-            print "NOWPE THIS IS NO USER SO WE CANNOT SET OWNER"
             raise Exception("The Node Provided is not a User")
 
     #
@@ -164,6 +179,30 @@ class Post:
         else:
             return None
 
+    #
+    # Function	: setBlog
+    # Arguments	: (Blog Node) blog
+    # Returns	: a 'Path' object containing nodes and relationships used
+    #
+    def setBlog(self, blog):
+        global REL_HASPOST, LBL_BLOG
+        if LBL_BLOG in blog.get_labels():
+            return blog.get_or_create_path(REL_HASPOST, self.postInstance)
+        else:
+            raise Exception("The Node Provided is not a Blog")
+
+    #
+    # Function	: getBlog
+    # Arguments	:
+    # Returns	: a related Blog Node or None (if there is no node)
+    #
+    def getBlog(self):
+        global REL_HASPOST
+        relationships = list(self.postInstance.match_incoming(REL_HASPOST))
+        if len(relationships) != 0:
+            return relationships[0].start_node
+        else:
+            return None
     #
     # Function  : addComment
     # Arguments : (Comment Node) comment
@@ -187,3 +226,25 @@ class Post:
         for relationships in list(self.postInstance.match_outgoing(REL_HASCOMMENT)):
             comments.append(relationships.end_node)
         return comments
+
+    #
+    # Function  : slug
+    # Arguments :
+    # Returns   : nice slugs for use in URLs - post title "Foo Bar Baz" becomes "Foo-Bar-Baz"
+    #             non-latin chars approximated to closest counterparts
+    #
+    def slug(self):
+        return urlify(self.getName())
+
+    @classmethod
+    def all(cls, self):
+        return self.getBlog().getPosts()
+
+    #
+    # Function  : get_paginator
+    # Arguments :
+    # Returns   : paginator able to return only entries from specific 'page' of resultset
+    @classmethod
+    def get_paginator(cls, request, page=1):
+        page_url = PageURL_WebOb(request)
+        return Page(Post.all(), page, url=page_url, items_per_page=5)

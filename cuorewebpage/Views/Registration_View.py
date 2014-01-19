@@ -25,6 +25,8 @@ REGISTRATION_EMAIL_RECIPIENTS = "sandymeep@gmail.com"
 def Registration(request):
     print "==========================================================================="
     print request.session['uid']
+    print getCurrentUser(request)
+#    print getCurrentUser(request)['last_name']
     print "==========================================================================="
     if isUserLoggedOn(request):
         ctx = {}

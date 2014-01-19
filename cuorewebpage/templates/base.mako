@@ -7,5 +7,5 @@
 <%block name="head"><%include file="cuorewebpage:templates/head.mako"/></%block>
 </head>
 
-<%block name="body_tag"><body></%block> ${next.body()} </body>
+<%block name="body_tag"><body></%block>${next.body()}</body>
 </html>
