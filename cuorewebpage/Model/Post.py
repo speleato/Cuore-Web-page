@@ -161,7 +161,7 @@ class Post:
     def setOwner(self, owner):
         global REL_CREATEDBY, LBL_USER
         if LBL_USER in owner.get_labels():
-            print "--------HERE WE GO SETTING THE OWNER NOW"
+            #print "--------HERE WE GO SETTING THE OWNER NOW"
             return self.postInstance.get_or_create_path(REL_CREATEDBY, owner)
         else:
             raise Exception("The Node Provided is not a User")

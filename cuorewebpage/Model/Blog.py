@@ -1,6 +1,5 @@
 from database_config import *
 from py2neo import neo4j, node
-from Post import Post
 
 # Class  : Blog
 # Methods:
