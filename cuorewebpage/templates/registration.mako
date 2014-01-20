@@ -106,7 +106,7 @@
                     <div class="form-row control-group row-fluid">
                       <label class="control-label span3">Email Address</label>
                       <div class="controls span9">
-                        <input id="email" type="email" name="email" value="${user.email}" required class="row-fluid"/>
+                        <input id="email" type="email" name="email" value="${user.getEmail()}" required class="row-fluid"/>
                       </div>
                     </div>
                     <div class="form-row control-group row-fluid">
@@ -118,25 +118,25 @@
                     <div class="form-row control-group row-fluid">
                       <label class="control-label span3">Address</label>
                       <div class="controls span9">
-                        <input id="street_address" name="street_address" type="text" value="${user.address}" required class="span12"/>
+                        <input id="street_address" name="street_address" type="text" value="${user.getAddress()}" required class="span12"/>
                       </div>
                     </div>
                     <div class="form-row control-group row-fluid">
                       <label class="control-label span3">City</label>
                       <div class="controls span9">
-                        <input id="city" name="city" type="text" value="${user.city}" required class="span12"/>
+                        <input id="city" name="city" type="text" value="${user.getCity()}" required class="span12"/>
                       </div>
                     </div>
                     <div class="form-row control-group row-fluid">
                       <label class="control-label span3">State</label>
                       <div class="controls span9">
-                        <input id="state" name="state" type="text" value="${user.state}" required class="span12"/>
+                        <input id="state" name="state" type="text" value="${user.getState()}" required class="span12"/>
                       </div>
                     </div>
                     <div class="form-row control-group row-fluid">
                       <label class="control-label span3">Zip Code</label>
                       <div class="controls span9">
-                        <input id="zip_code" name="zip_code" minlength="5" type="text" value="${user.zipcode}" required class="row-fluid"/>
+                        <input id="zip_code" name="zip_code" minlength="5" type="text" value="${user.getZipcode()}" required class="row-fluid"/>
                       </div>
                     </div>
                     <div class="form-row control-group row-fluid">
@@ -150,7 +150,7 @@
                     <div class="form-row control-group row-fluid">
                         <label class="control-label span3" for="elastic-textarea">About</label>
                         <div class="controls span9">
-                            <textarea rows="3" class="row-fluid autogrow" id="elastic-textarea" name="about" placeholder="Write a little bit about yourself">${user.about}</textarea>
+                            <textarea rows="3" class="row-fluid autogrow" id="elastic-textarea" name="about" placeholder="Write a little bit about yourself">${user.getAbout()}</textarea>
                         </div>
                     </div>
                     <div class="form-actions row-fluid">
@@ -164,11 +164,11 @@
                           action="${request.route_url('Registration_Action', action='submit')}" accept-charset="utf-8"
                           enctype="multipart/form-data" autocomplete="off">
                         <input id="task" name="task" type="hidden" required class="span12" value="${view}"/>
-                    <input id="uid" hidden value=${user.uid}/>
+                    <input id="uid" hidden value=${user.getUID()}/>
                     <div class="form-row control-group row-fluid">
                       <label class="control-label span3">Email Address</label>
                       <div class="controls span9">
-                        <input id="email" type="email" name="email" required class="row-fluid"/>
+                        <input id="email" type="email" name="email" value="${user.getEmail()}" required class="row-fluid"/>
                       </div>
                     </div>
                     <div class="form-actions row-fluid">

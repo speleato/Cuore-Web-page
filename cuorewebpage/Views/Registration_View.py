@@ -13,7 +13,7 @@ import os
 from cuorewebpage.lib.session import *
 
 from cuorewebpage.Model.Person import getCompany, getCurrentUser, getUser
-from cuorewebpage.Model.User import User
+from cuorewebpage.Model.User import *
 from cuorewebpage.Model.Company import *
 from cuorewebpage.Model.Department import *
 
@@ -151,6 +151,7 @@ def SubmitRegistration(request):
             state = re.sub("[^A-Za-z0-9,.\-() ]", "", request.POST.getone('state'))
             zipcode = re.sub("[^A-Za-z0-9,.\-() ]", "", request.POST.getone('zip_code'))
             about = re.sub("[^A-Za-z0-9,.!?\-() ]", "", request.POST.getone('about'))
+            photo = ""
             if request.POST.getone('profile_image') != "":
                 ext = os.path.splitext(request.POST.getone('profile_image').filename)[-1].lower()
                 photo = "cuorewebpage/Profile_Pictures/" + getCurrentUser(request).uid + "/profile_picture" + ext
