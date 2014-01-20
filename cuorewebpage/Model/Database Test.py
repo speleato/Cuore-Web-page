@@ -15,8 +15,8 @@ __author__ = 'vincente'
 #create Company
 mDept       = Department(name="Applications")
 mTitle      = Title(name="Applications Developer", dept=mDept.getNode())
-mUser       = User(first_name="Vincente", last_name="Ciancio", email="vciancio@socaldevs.com")
-mUser2      = User(first_name="Billy", last_name="bob", email="billybob@myspace.com")
+mUser       = User(uid=0, first_name="Vincente", last_name="Ciancio", email="vciancio@socaldevs.com")
+mUser2      = User(uid=1, first_name="Billy", last_name="bob", email="billybob@myspace.com")
 mBlog       = Blog(Name="Applications Blog")
 mPost1      = Post(Name="Getting Stuff Done!", Content="We are making a lot of progress!")
 mComment    = Comment(Name="Good Job!", Content="Good Job Guys!")

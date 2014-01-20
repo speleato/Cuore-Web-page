@@ -8,11 +8,14 @@ import re
 from py2neo import neo4j, ogm
 from database_config import *
 
+import os
+
 from cuorewebpage.lib.session import *
 
 from cuorewebpage.Model.Person import getCompany, getCurrentUser, getUser
 from cuorewebpage.Model.User import User
-#from cuorewebpage.Model.Company import *
+from cuorewebpage.Model.Company import *
+from cuorewebpage.Model.Department import *
 
 graph_db = neo4j.GraphDatabaseService(db_config['uri'])
 store = ogm.Store(graph_db)
@@ -23,16 +26,18 @@ REGISTRATION_EMAIL_RECIPIENTS = "sandymeep@gmail.com"
 
 @view_config(route_name='Registration', renderer='cuorewebpage:templates/registration.mako')
 def Registration(request):
-    print "==========================================================================="
-    print request.session['uid']
-    print getCurrentUser(request)
-#    print getCurrentUser(request)['last_name']
-    print "==========================================================================="
+    '''if getCurrentUser(request):
+        print "==========================================================================="
+        print request.session['uid']
+        print getCurrentUser(request)
+        #    print getCurrentUser(request)['last_name']
+        print "==========================================================================="
+    '''
     if isUserLoggedOn(request):
         ctx = {}
         ctx['section'] = 'Registration'
         departments = list()
-        for i in getCompany().getAllDepartments():
+        for i in getAllDepartments():#getCompany().getAllDepartments():
             departments.append({"department":i.name, "titles":i.getAllTitles()})
         ctx['departments'] = departments
         ctx['user'] = getCurrentUser(request)
@@ -106,6 +111,19 @@ def SubmitRegistration(request):
             req_title = request.POST.getone('req_title')
             uid = request.session["uid"]
 
+            ext = os.path.splitext(request.POST.getone('profile_image').filename)[-1].lower()
+            photo = "cuorewebpage/Profile_Pictures/" + getCurrentUser(request).uid + "/profile_picture" + ext
+
+
+            dir = os.path.dirname(photo)
+            try:
+                os.stat(dir)
+            except:
+                os.mkdir(dir)
+            f = open(photo, 'w')
+            f.write(request.POST.getone('profile_image').value)
+            f.close()
+
             print request.POST
 
             # create flags and set to not confirmed
@@ -136,8 +154,19 @@ def SubmitRegistration(request):
             state = re.sub("[^A-Za-z0-9,.\-() ]", "", request.POST.getone('state'))
             zipcode = re.sub("[^A-Za-z0-9,.\-() ]", "", request.POST.getone('zip_code'))
             about = re.sub("[^A-Za-z0-9,.!?\-() ]", "", request.POST.getone('about'))
-            photo = request.POST.getone('profile_image')
-            # update info in database
+
+            ext = os.path.splitext(request.POST.getone('profile_image').filename)[-1].lower()
+            photo = "cuorewebpage/Profile_Pictures/" + getCurrentUser(request).uid + "/profile_picture" + ext
+
+            dir = os.path.dirname(photo)
+            try:
+                os.stat(dir)
+            except:
+                os.mkdir(dir)
+            f = open(photo, 'w')
+            f.write(request.POST.getone('profile_image').value)
+            f.close()
+
             getCurrentUser(request).getNode().update_properties({"email":email, "phone":phone, "address":address, "city":city, "state":state, "zipcode":zipcode, "photo":photo, "about":about})
     return {}
 

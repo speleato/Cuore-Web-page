@@ -11,7 +11,7 @@
             <div class="content">
                 %if view=="create":
                 <form class="form-horizontal cmxform" id="validateForm" method="post"
-                      action="${request.route_url('Registration', action='create')}" accept-charset="utf-8"
+                      action="${request.route_url('Registration_Action', action='submit')}" accept-charset="utf-8"
                       enctype="multipart/form-data" autocomplete="off">
                     <input id="task" name="task" type="hidden" required class="span12" value="${view}"/>
                     <div class="form-row control-group row-fluid">
@@ -89,7 +89,7 @@
                     <div class="form-row control-group row-fluid">
                         <label class="control-label span3" for="elastic-textarea">About</label>
                         <div class="controls span9">
-                            <textarea rows="3" class="row-fluid autogrow" id="elastic-textarea" name="about" placeholder="Write a little bit about yourself">${user.about}</textarea>
+                            <textarea rows="3" class="row-fluid autogrow" id="elastic-textarea" name="about" placeholder="Write a little bit about yourself"></textarea>
                         </div>
                     </div>
                     <div class="form-actions row-fluid">
@@ -100,7 +100,7 @@
                     </div>
                 %elif view=="edit":
                     <form class="form-horizontal cmxform" id="validateForm" method="post"
-                          action="${request.route_url('Registration', action='edit')}" accept-charset="utf-8"
+                          action="${request.route_url('Registration_Action', action='submit')}" accept-charset="utf-8"
                           enctype="multipart/form-data" autocomplete="off">
                         <input id="task" name="task" type="hidden" required class="span12" value="${view}"/>
                     <div class="form-row control-group row-fluid">
@@ -159,9 +159,11 @@
                         <button type="button" class="btn btn-secondary">Cancel</button>
                       </div>
                     </div>
-
-
                 %elif view=="admin":
+                    <form class="form-horizontal cmxform" id="validateForm" method="post"
+                          action="${request.route_url('Registration_Action', action='submit')}" accept-charset="utf-8"
+                          enctype="multipart/form-data" autocomplete="off">
+                        <input id="task" name="task" type="hidden" required class="span12" value="${view}"/>
                     <input id="uid" hidden value=${user.uid}/>
                     <div class="form-row control-group row-fluid">
                       <label class="control-label span3">Email Address</label>
