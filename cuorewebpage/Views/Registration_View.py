@@ -110,21 +110,18 @@ def SubmitRegistration(request):
             about = re.sub("[^A-Za-z0-9,.\-() ]", "", request.POST.getone('about'))
             req_title = request.POST.getone('req_title')
             uid = request.session["uid"]
+            if request.POST.getone('profile_image') != "":
+                ext = os.path.splitext(request.POST.getone('profile_image').filename)[-1].lower()
+                photo = "cuorewebpage/Profile_Pictures/" + getCurrentUser(request).uid + "/profile_picture" + ext
 
-            ext = os.path.splitext(request.POST.getone('profile_image').filename)[-1].lower()
-            photo = "cuorewebpage/Profile_Pictures/" + getCurrentUser(request).uid + "/profile_picture" + ext
-
-
-            dir = os.path.dirname(photo)
-            try:
-                os.stat(dir)
-            except:
-                os.mkdir(dir)
-            f = open(photo, 'w')
-            f.write(request.POST.getone('profile_image').value)
-            f.close()
-
-            print request.POST
+                dir = os.path.dirname(photo)
+                try:
+                    os.stat(dir)
+                except:
+                    os.mkdir(dir)
+                f = open(photo, 'w')
+                f.write(request.POST.getone('profile_image').value)
+                f.close()
 
             # create flags and set to not confirmed
             # create user node in database, put in temporary zone
@@ -154,18 +151,18 @@ def SubmitRegistration(request):
             state = re.sub("[^A-Za-z0-9,.\-() ]", "", request.POST.getone('state'))
             zipcode = re.sub("[^A-Za-z0-9,.\-() ]", "", request.POST.getone('zip_code'))
             about = re.sub("[^A-Za-z0-9,.!?\-() ]", "", request.POST.getone('about'))
+            if request.POST.getone('profile_image') != "":
+                ext = os.path.splitext(request.POST.getone('profile_image').filename)[-1].lower()
+                photo = "cuorewebpage/Profile_Pictures/" + getCurrentUser(request).uid + "/profile_picture" + ext
 
-            ext = os.path.splitext(request.POST.getone('profile_image').filename)[-1].lower()
-            photo = "cuorewebpage/Profile_Pictures/" + getCurrentUser(request).uid + "/profile_picture" + ext
-
-            dir = os.path.dirname(photo)
-            try:
-                os.stat(dir)
-            except:
-                os.mkdir(dir)
-            f = open(photo, 'w')
-            f.write(request.POST.getone('profile_image').value)
-            f.close()
+                dir = os.path.dirname(photo)
+                try:
+                    os.stat(dir)
+                except:
+                    os.mkdir(dir)
+                f = open(photo, 'w')
+                f.write(request.POST.getone('profile_image').value)
+                f.close()
 
             getCurrentUser(request).getNode().update_properties({"email":email, "phone":phone, "address":address, "city":city, "state":state, "zipcode":zipcode, "photo":photo, "about":about})
     return {}
