@@ -1,5 +1,6 @@
 from py2neo import neo4j, ogm, node, rel
 from pyramid import request
+from cuorewebpage.Model.Calendar import Calendar
 
 from database_config import *
 from cuorewebpage.lib.session import *
@@ -190,6 +191,16 @@ class User:
                 return True
         return False
 
+    # Function : getCalendar
+    # Arguments :
+    # Returns : a Calendar Object
+    def getCalendar(self):
+        global REL_HASCALENDAR
+        relationship = (list(self.userInstance.match_outgoing(REL_HASCALENDAR)))[0]
+        if relationship is not None:
+            return Calendar(relationship.end_node)
+        else:
+            return None
 
 # ---------------------------- NON MEMBER FUNCTIONS -------------------------
 

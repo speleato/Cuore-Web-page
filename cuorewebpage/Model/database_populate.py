@@ -1,5 +1,8 @@
 from py2neo import neo4j, ogm, node, rel
+from cuorewebpage.Model.Calendar import Calendar
+from cuorewebpage.Model.Event import Event
 
+from datetime import datetime
 from database_config import *
 from Person import getCurrentUser, getUser
 from Company import Company
@@ -38,7 +41,7 @@ users = dict(
                confirmed=3, req_title="Applications Developer", phone="6502695948", city="SF", state="CA", zipcode="94112").getNode(),
     kirby=User(uid="2", first_name="Kirby", last_name="Linvill", email="kirby@cuore.io", confirmed=3,
                req_title="Applications Developer", ).getNode(),
-    vincente=User(uid="3", first_name="Vincente", last_name="Ciancio", email="vincente@cuore.io", confirmed=3,
+    vincente=User(uid="ENIFCyZRQceEalwDDBI8nA==", first_name="Vincente", last_name="Ciancio", email="vincente@cuore.io", confirmed=3,
                   req_title="Applications Developer", ).getNode(),
     sergio=User(uid="4", first_name="Sergio", last_name="Peleo", email="sergio@cuore.io", confirmed=3,
                 req_title="Lead Applications Developer", ).getNode(),
@@ -68,10 +71,14 @@ hw_blog = Blog(Name="Hardware", Owner=departments[2])
 sys_blog = Blog(Name="Systems", Owner=departments[3])
 adm_blog = Blog(Name="Admin", Owner=departments[4])
 
-
-
-
-
+for key in users.keys():
+    mUser = User(users[key])
+    app_calendar= Calendar(Name=(mUser.getFullName() + "'s Calendar"), Owner=mUser.getNode())
+    app_calendar.setDescription("Calendar which outlines all of the tasks that are assigned to" + mUser.getFirstName())
+    event_stime = (datetime(2014, 1, 19)-datetime(1970,1,1)).total_seconds()
+    event_etime = (datetime(2014, 1, 19)-datetime(1970,1,1)).total_seconds()
+    app_hack_event = Event(Name="Applications Hack Event", Owner=mUser.getNode(), sTime=event_stime, eTime=event_etime)
+    app_calendar.addEvent(app_hack_event.getNode())
 
 """
 sandy = User(uid="0", first_name="sandy")

@@ -127,3 +127,4 @@ class Calendar:
         for relationship in list(self.calInstance.match_outgoing(REL_HASEVENT)):
             events.append(relationship.end_node)
         return events
+

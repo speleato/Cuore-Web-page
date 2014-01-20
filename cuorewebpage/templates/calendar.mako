@@ -5,7 +5,7 @@
     <div class="span8">
       <div class="box color_13 paint_hover">
         <div class="title">
-          <h4> <span>Calendar</span> </h4>
+          <h4> <span> ${calendar.getName()} </span> </h4>
         </div>
         <div class="content top ">
           <div id='calendar'> </div>
@@ -20,45 +20,29 @@
           <h4> <span>About</span> </h4>
         </div>
         <div class="content ">
-          <p> FullCalendar is a jQuery plugin that provides a full-sized, drag & drop calendar like the one below. It uses AJAX to fetch events on-the-fly for each month and is easily configured to use your own feed format (an extension is provided for Google Calendar). It is visually customizable and exposes hooks for user-triggered events (like clicking or dragging an event). It is open source and dual licensed under the MIT or GPL Version 2 licenses. </p>
+          <p> ${calendar.getDescription()} </p>
         </div>
       </div>
       <!-- End .box -->
       <div class="row-fluid box color_24 paint">
         <div class="title">
-          <h4> <span>Draggable Events</span> </h4>
+          <h4> <span>Events</span> </h4>
         </div>
         <div class="content">
           <div id="external-events">
-            <div class="external-event ui-draggable" style="position: relative; "> Annual Conference </div>
-            <div class="external-event ui-draggable" style="position: relative; "> Visit to Bender </div>
-            <div class="external-event ui-draggable" style="position: relative; "> Dive & Travel Expo </div>
-            <div class="external-event ui-draggable" style="position: relative; "> Envato Monthly Meetup </div>
-            <div class="external-event ui-draggable" style="position: relative; "> <i class="icon-heart"></i> <strong>Buy Start Template</strong> </div>
-            <p>
-            <div class="controls">
-              <label class="checkbox ">
-                <input type="checkbox" id="drop-remove" checked>
-                remove after drop
-              </label>
-            </div>
-            </p>
+            <div class="external-event ui-draggable" style="position: relative; "> ${'event_1'} </div>
           </div>
         </div>
       </div>
       <!-- End .box -->
       <div class="row-fluid box paint">
         <div class="title">
-          <h4> <span>Other Events</span> </h4>
+          <h4> <span>Tasks</span> </h4>
         </div>
         <div class="content top">
           <div id="external-events">
-            <div class="external-event ui-draggable" style="position: relative; "> Have fun today </div>
-            <div class="external-event ui-draggable" style="position: relative; "> Go to sleep </div>
-            <div class="external-event ui-draggable" style="position: relative; "> Free day </div>
-            <div class="external-event ui-draggable" style="position: relative; "> Meeting </div>
-            <div class="external-event ui-draggable" style="position: relative; "> Birthday party </div>
-            <p>
+            <div class="external-event ui-draggable" style="position: relative; "> ${'task_1'}</div>
+            <p> </p>
                <div class="controls">
                 <label class="checkbox ">
                   <input type="checkbox" id="drop-remove">
@@ -186,50 +170,12 @@ $(document).ready(function() {
         }
       },
       events: [
-        {
-          title: 'All Day Event',
-          start: new Date(y, m, 1)
-        },
-        {
-          title: 'Long Event',
-          start: new Date(y, m, d+5),
-          end: new Date(y, m, d+7)
-        },
-        {
-          id: 999,
-          title: 'Repeating Event',
-          start: new Date(y, m, d-3, 16, 0),
-          allDay: false
-        },
-        {
-          id: 999,
-          title: 'Repeating Event',
-          start: new Date(y, m, d+4, 16, 0),
-          allDay: false
-        },
-        {
-          title: 'Meeting',
-          start: new Date(y, m, d, 10, 30),
-          allDay: false
-        },
-        {
-          title: 'Lunch',
-          start: new Date(y, m, d, 12, 0),
-          end: new Date(y, m, d, 14, 0),
-          allDay: false
-        },
-        {
-          title: 'Birthday Party',
-          start: new Date(y, m, d+1, 19, 0),
-          end: new Date(y, m, d+1, 22, 30),
-          allDay: false
-        },
-        {
-          title: 'Click for PixelGrade',
-          start: new Date(y, m, 28),
-          end: new Date(y, m, 29),
-          url: 'http://pixelgrade.com/'
-        }
+        % for event in events:
+            {
+            title: '${event.getName()}',
+            start: new Date(y, m, 1)
+            }
+        % endfor
       ]
     });
   });
