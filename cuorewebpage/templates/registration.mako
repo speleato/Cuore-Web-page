@@ -11,7 +11,7 @@
             <div class="content">
                 %if view=="create":
                 <form class="form-horizontal cmxform" id="validateForm" method="post"
-                      action="${request.route_url('Registration', action='create')}" accept-charset="utf-8"
+                      action="${request.route_url('Registration_Action', action='submit')}" accept-charset="utf-8"
                       enctype="multipart/form-data" autocomplete="off">
                     <input id="task" name="task" type="hidden" required class="span12" value="${view}"/>
                     <div class="form-row control-group row-fluid">
@@ -33,9 +33,9 @@
                       </div>
                     </div>
                     <div class="form-row control-group row-fluid">
-                      <label class="control-label span3">Phone</label>
+                      <label class="control-label span3" for="mask-phone">Phone <span class="help-block">(999) 999-9999</span> </label>
                       <div class="controls span9">
-                        <input id="phone" name="phone" type="tel" required class="span12"/>
+                        <input id="mask-phone" name="phone" type="text" tabindex="3" required class="row-fluid"/>
                       </div>
                     </div>
                     <div class="form-row control-group row-fluid">
@@ -70,7 +70,7 @@
                           %for i in departments:
                               <optgroup label="${i['department']}">
                                   %for j in i['titles']:
-                                      <option value="${j.name}">${j.name}</option>
+                                      <option value="${j['name']}">${j['name']}</option>
                                   %endfor
                               </optgroup>
                           %endfor
@@ -87,10 +87,10 @@
                         </div>
                     </div>
                     <div class="form-row control-group row-fluid">
-                      <label class="control-label span3" for="elastic-textarea">About</label>
-                      <div class="controls span9">
-                          <textarea rows="5" class="row-fluid autogrow" id="elastic-textarea" name="about" placeholder="Write a little bit about yourself"></textarea>
-                      </div>
+                        <label class="control-label span3" for="elastic-textarea">About</label>
+                        <div class="controls span9">
+                            <textarea rows="3" class="row-fluid autogrow" id="elastic-textarea" name="about" placeholder="Write a little bit about yourself"></textarea>
+                        </div>
                     </div>
                     <div class="form-actions row-fluid">
                       <div class="span7 offset3">
@@ -100,43 +100,43 @@
                     </div>
                 %elif view=="edit":
                     <form class="form-horizontal cmxform" id="validateForm" method="post"
-                          action="${request.route_url('Registration', action='edit')}" accept-charset="utf-8"
+                          action="${request.route_url('Registration_Action', action='submit')}" accept-charset="utf-8"
                           enctype="multipart/form-data" autocomplete="off">
                         <input id="task" name="task" type="hidden" required class="span12" value="${view}"/>
                     <div class="form-row control-group row-fluid">
                       <label class="control-label span3">Email Address</label>
                       <div class="controls span9">
-                        <input id="email" type="email" name="email" value="${user.email}" required class="row-fluid"/>
+                        <input id="email" type="email" name="email" value="${user.getEmail()}" required class="row-fluid"/>
                       </div>
                     </div>
                     <div class="form-row control-group row-fluid">
-                      <label class="control-label span3">Phone</label>
+                      <label class="control-label span3" for="mask-phone">Phone <span class="help-block">(999) 999-9999</span> </label>
                       <div class="controls span9">
-                        <input id="phone" name="phone" type="tel" value="${user.phone}" required class="span12"/>
+                        <input id="mask-phone" name="phone" type="text" tabindex="3" required class="row-fluid"/>
                       </div>
                     </div>
                     <div class="form-row control-group row-fluid">
                       <label class="control-label span3">Address</label>
                       <div class="controls span9">
-                        <input id="street_address" name="street_address" type="text" value="${user.address}" required class="span12"/>
+                        <input id="street_address" name="street_address" type="text" value="${user.getAddress()}" required class="span12"/>
                       </div>
                     </div>
                     <div class="form-row control-group row-fluid">
                       <label class="control-label span3">City</label>
                       <div class="controls span9">
-                        <input id="city" name="city" type="text" value="${user.city}" required class="span12"/>
+                        <input id="city" name="city" type="text" value="${user.getCity()}" required class="span12"/>
                       </div>
                     </div>
                     <div class="form-row control-group row-fluid">
                       <label class="control-label span3">State</label>
                       <div class="controls span9">
-                        <input id="state" name="state" type="text" value="${user.state}" required class="span12"/>
+                        <input id="state" name="state" type="text" value="${user.getState()}" required class="span12"/>
                       </div>
                     </div>
                     <div class="form-row control-group row-fluid">
                       <label class="control-label span3">Zip Code</label>
                       <div class="controls span9">
-                        <input id="zip_code" name="zip_code" minlength="5" type="text" value="${user.zipcode}" required class="row-fluid"/>
+                        <input id="zip_code" name="zip_code" minlength="5" type="text" value="${user.getZipcode()}" required class="row-fluid"/>
                       </div>
                     </div>
                     <div class="form-row control-group row-fluid">
@@ -150,7 +150,7 @@
                     <div class="form-row control-group row-fluid">
                         <label class="control-label span3" for="elastic-textarea">About</label>
                         <div class="controls span9">
-                            <textarea rows="3" class="row-fluid autogrow" id="elastic-textarea" name="about" placeholder="Write a little bit about yourself">${user.about}</textarea>
+                            <textarea rows="3" class="row-fluid autogrow" id="elastic-textarea" name="about" placeholder="Write a little bit about yourself">${user.getAbout()}</textarea>
                         </div>
                     </div>
                     <div class="form-actions row-fluid">
@@ -159,14 +159,16 @@
                         <button type="button" class="btn btn-secondary">Cancel</button>
                       </div>
                     </div>
-
-
                 %elif view=="admin":
-                    <input id="uid" hidden value=${user.uid}/>
+                    <form class="form-horizontal cmxform" id="validateForm" method="post"
+                          action="${request.route_url('Registration_Action', action='submit')}" accept-charset="utf-8"
+                          enctype="multipart/form-data" autocomplete="off">
+                        <input id="task" name="task" type="hidden" required class="span12" value="${view}"/>
+                    <input id="uid" hidden value=${user.getUID()}/>
                     <div class="form-row control-group row-fluid">
                       <label class="control-label span3">Email Address</label>
                       <div class="controls span9">
-                        <input id="email" type="email" name="email" required class="row-fluid"/>
+                        <input id="email" type="email" name="email" value="${user.getEmail()}" required class="row-fluid"/>
                       </div>
                     </div>
                     <div class="form-actions row-fluid">

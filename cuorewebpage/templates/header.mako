@@ -4,7 +4,11 @@
       <div class="top_right">
         <ul class="nav nav_menu">
           <li class="dropdown"> <a class="dropdown-toggle administrator" id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="/page.html">
+<<<<<<< HEAD
             ##<div class="title"><span class="name">${user.first_name}</span><span class="subtitle">${user.req_title}</span></div>
+=======
+      <%doc><div class="title"><span class="name">${user.first_name}</span><span class="subtitle">${user.req_title}</span></div></%doc>
+>>>>>>> 170f0799b9f7576685c9c15e05956dcb971cb205
             <span class="icon"><img src="img/thumbnail_george.jpg"></span></a>
             <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
               <li><a href="profile.html"><i class=" icon-user"></i> My Profile</a></li>
