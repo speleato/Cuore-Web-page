@@ -7,7 +7,6 @@ from cuorewebpage.lib.session import *
 graph_db = neo4j.GraphDatabaseService(db_config['uri'])
 store = ogm.Store(graph_db)
 
-@view_config(route_name="Test", renderer="cuorewebpage:templates/test.mako")
 def Test(request):
     if isUserLoggedOn(request):
         return {}

@@ -11,7 +11,13 @@
 </div>
 <!-- End #container -->
 </div>
-
+<div id="fileUploader">
+    <form action="files/upload" method="post" accept-charset="utf-8" enctype="multipart/form-data">
+        <label for="file">File</label>
+        <input id="file" name="file" type="file" value="" />
+        <input type="submit" value="submit" />
+    </form>
+</div>
 <%block name="footer">
 ${parent.footer()}
 <div class="background_changer dropdown">
