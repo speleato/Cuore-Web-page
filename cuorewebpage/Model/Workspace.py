@@ -110,7 +110,7 @@ class Workspace:
     #
     def addOwner(self, owner):
         global REL_HASWORKSPACE, LBL_USER
-        if len(list(self.workspace.match_incoming(REL_HASWORKSPACE))) == 0:
+        if len(list(self.workspaceInstance.match_incoming(REL_HASWORKSPACE))) == 0:
             if LBL_USER in owner.get_labels():
                 return owner.get_or_create_path(REL_HASWORKSPACE, self.workspaceInstance)
             else:

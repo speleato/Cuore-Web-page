@@ -1,7 +1,7 @@
 from database_config import *
-from py2neo import neo4j, node
-from time import *
-
+from py2neo import neo4j, node, ogm
+import time
+from Person import Title
 # Class  : File
 # Methods:
 #	1) 	db_init(self) 									- Private
@@ -26,6 +26,7 @@ STS_IN_PROG = "In_Progress"
 class File:
     graph_db = None
     FileInstance = None
+    store = None
 
     #
     # Function	: Constructor
@@ -37,20 +38,20 @@ class File:
         tempFile = None
         if URI is not None:
             tempFile = neo4j.Node(URI)
-
         elif Name is not None and Body is not None:
-            tempFile, = self.graph_db.create({"name": Name, "file": Body})
+            bytes = str.encode(Body)
+            print type(bytes)
+            tempFile, = self.graph_db.create({"name": Name, "file": bytes})
             tempFile.add_labels(LBL_FILE)
-
         else:
             raise Exception("Name/Status or URI not specified")
-
         self.FileInstance = tempFile
 
 
     def db_init(self):
         if self.graph_db is None:
             self.graph_db = neo4j.GraphDatabaseService(db_config['uri'])
+            self.store = ogm.Store(self.graph_db)
 
     #
     # Function	: getNode
@@ -71,7 +72,6 @@ class File:
         else:
             return None
 
-
     #
     # Function 	: getFiles
     # Arguments :
@@ -84,12 +84,13 @@ class File:
             files.append(relationship.end_node)
         return files
 
+
     #
     # Function 	: setFiles
     # Arguments :
-    # Returns 	: a list of File Nodes
+    # Returns 	: stores a file in the database
     #
-    def setFile(self):
+    def storeFile(self):
         global REL_HASFILE
         currentTime = time.strftime("%c")
         files = list()
@@ -133,6 +134,18 @@ class File:
     #
     def setLastModified(self):
         self.FileInstance["Modification"] = time.strftime("%c")
+
+
+    #
+    # Function	: getCreation
+    # Arguments	:
+    #
+    def assignToDepartment(self, department):
+        global REL_HASFILE, LBL_FILE
+        if LBL_FILE in department.get_labels():
+            return self.FileInstance.get_or_create_path(REL_HASFILE, department)
+        else:
+            raise Exception("The Node Provided is not a User")
 
 
     # Clears the entire DB for dev purposes

@@ -21,7 +21,7 @@
         page=1
 
     #get number of total pages of posts
-    numPages=int(ceil(float(graph_db.get_or_create_indexed_node("Newsfeed", "name", viewDepartment)["numPosts"])/15))+1
+    numPages=1          #int(ceil(float(graph_db.get_or_create_indexed_node("Newsfeed", "name", viewDepartment)["numPosts"])/15))+1
 
     session = cypher.Session("http://localhost:7474")
     tx = session.create_transaction()
@@ -50,6 +50,11 @@
             <a href="/newsfeed?page=${i}">${i}</a>
         %endif
     %endfor
+</div>
+<div>
+    #here is where each of the newsfeeds will go
+    <p>NEWSFEED 1</p>
+    <p>NEWSFEED 2</p>
 </div>
 <form action="/newsfeed" method="post">
     <input type="hidden" name="author" value=${author}>

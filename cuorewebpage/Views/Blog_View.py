@@ -18,31 +18,13 @@ from cuorewebpage.Model.Post import *
 
 @view_config(route_name='Blog', renderer='cuorewebpage:templates/blog.mako')
 def blog_list_view(request):
+    print "this is starting to get to my nerves"
     if isUserLoggedOn(request):
         ctx = {}
         ctx['section'] = 'Blog'
         ctx['user'] = getCurrentUser(request)
         ctx['blog'] = getUserBlog(request)
-        post_nodes = getUserBlog(request).getPosts() # A LIST OF NODES (one 'object', the list)
-        ctx['posts'] = list()
-
-        for p in post_nodes: # for each item in that list
-            print "------------- POST -----------------"
-            name = Post(p).getName()
-            content = Post(p).getContent()
-            print name + ": " + content
-#            ctx['posts'].append({"name":name, "content":content})
-            ctx['posts'].append(Post(p))
-#            print ctx['posts'][0]['name']
-#            print ctx['posts'][0]['content']
-
-            print "------------------------------------"
-
-#        for post in ctx['blog'].getPosts():
-#            ctx['posts'].append(Post(post))
-#        page = int(request.params.get('page', 1))
-#        ctx['paginator'] = Post.get_paginator(request, page)
-
+        ctx['posts'] = getUserBlog(request).getPosts() # A LIST OF NODES (one 'object', the list)
         return ctx
     else:
         return redirectUser(request)

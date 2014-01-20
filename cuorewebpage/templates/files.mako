@@ -17,6 +17,11 @@
         <input id="file" name="file" type="file" value="" />
         <input type="submit" value="submit" />
     </form>
+    <div>
+        %for i in range(1, len(department)):
+            <input type="radio" name="departments" value="${department[i]}">${department[i]}</i>
+        %endfor
+    </div>
 </div>
 <%block name="footer">
 ${parent.footer()}

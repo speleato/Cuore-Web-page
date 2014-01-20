@@ -43,7 +43,8 @@ class User:
         global LBL_USER, IND_USER
         self.db_init()
         tempUser = None
-
+        uid = 0
+        print uid
         if URI is not None:
             tempUser = neo4j.Node(URI)
 
