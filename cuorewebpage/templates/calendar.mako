@@ -1,4 +1,5 @@
 <%inherit file="layout_sidebar_default.mako"/>
+<% from datetime import datetime %>
 
 <div id="main_container">
   <div class="row-fluid">
@@ -30,7 +31,11 @@
         </div>
         <div class="content">
           <div id="external-events">
-            <div class="external-event ui-draggable" style="position: relative; "> ${'event_1'} </div>
+            %for event in events:
+                % if event.getStartTime() > (datetime.now()-datetime(1970,1,1)).total_seconds():
+                    <div class="external-event" style="position: relative; "> ${event.getName()} </div>
+                % endif
+            %endfor
           </div>
         </div>
       </div>
@@ -41,14 +46,11 @@
         </div>
         <div class="content top">
           <div id="external-events">
-            <div class="external-event ui-draggable" style="position: relative; "> ${'task_1'}</div>
+            %for task in tasks:
+                <div class="external-event ui-draggable" style="position: relative; "> ${task.getName()}</div>
+            %endfor
             <p> </p>
-               <div class="controls">
-                <label class="checkbox ">
-                  <input type="checkbox" id="drop-remove">
-                  remove after drop
-                </label>
-            </div>
+          </div>
             </p>
           </div>
         </div>
@@ -147,6 +149,20 @@ $(document).ready(function() {
             },
             true // make the event "stick"
           );
+          jQuery.ajax(
+            {
+                url       : '/calendar',
+                data      : {'title':title,'sTime':start.getTime(), 'eTime':end.getTime()},
+                type      : 'POST',
+                success   : function(data)
+            {
+            /*
+             when the mako template is rendered by your view then the result will
+             be passed to this function in the variable data
+            */
+            }
+            }
+          );
         }
         calendar.fullCalendar('unselect');
       },
@@ -169,12 +185,22 @@ $(document).ready(function() {
           $(this).remove();
         }
       },
+      <% from datetime import datetime %>
       events: [
+        <% counter = 0 %>
         % for event in events:
+            <% sTime = datetime.fromtimestamp(event.getStartTime()) %>
+            <% eTime = datetime.fromtimestamp(event.getEndTime()) %>
             {
             title: '${event.getName()}',
-            start: new Date(y, m, 1)
+            start: new Date(${sTime.year}, ${sTime.month-1}, ${sTime.day})
+            //end  : new Date(${eTime.year}, ${eTime.month-1}, ${eTime.day})
+            % if counter == len(events)-1:
             }
+            % else:
+            },
+            % endif
+            <% counter+=1 %>
         % endfor
       ]
     });

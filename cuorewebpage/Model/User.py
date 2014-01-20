@@ -1,6 +1,7 @@
 from py2neo import neo4j, ogm, node, rel
 from pyramid import request
 from cuorewebpage.Model.Calendar import Calendar
+from cuorewebpage.Model.Workspace import Workspace
 
 from database_config import *
 from cuorewebpage.lib.session import *
@@ -199,6 +200,16 @@ class User:
         relationship = (list(self.userInstance.match_outgoing(REL_HASCALENDAR)))[0]
         if relationship is not None:
             return Calendar(relationship.end_node)
+        else:
+            return None
+    # Function  : getWorkspace
+    # Arguments :
+    # Returns   : a Workspace Object
+    def getWorkspace(self):
+        global REL_HASWORKSPACE
+        relationship = (list(self.userInstance.match_outgoing(REL_HASWORKSPACE)))[0]
+        if relationship is not None:
+            return Workspace(relationship.end_node)
         else:
             return None
 

@@ -3,6 +3,9 @@ from cuorewebpage.Model.Calendar import Calendar
 from cuorewebpage.Model.Event import Event
 
 from datetime import datetime
+from cuorewebpage.Model.Project import Project
+from cuorewebpage.Model.Task import Task, STS_OPEN, STS_IN_PROG
+from cuorewebpage.Model.Workspace import Workspace
 from database_config import *
 from Person import getCurrentUser, getUser
 from Company import Company
@@ -73,12 +76,21 @@ adm_blog = Blog(Name="Admin", Owner=departments[4])
 
 for key in users.keys():
     mUser = User(users[key])
-    app_calendar= Calendar(Name=(mUser.getFullName() + "'s Calendar"), Owner=mUser.getNode())
+
+    app_calendar    = Calendar(Name=(mUser.getFirstName() + "'s Calendar"), Owner=mUser.getNode())
+    event_stime     = (datetime(2014, 1, 19)-datetime(1970,1,1)).total_seconds()
+    event_etime     = (datetime(2014, 1, 19)-datetime(1970,1,1)).total_seconds()
+    app_hack_event  = Event(Name="Applications Hack Event", Owner=mUser.getNode(), sTime=event_stime, eTime=event_etime)
+
+    workspace   = Workspace(Name=(mUser.getFirstName() + "'s Workspace"))
+    project     = Project(Name="Intranet Project")
+    task1       = Task(Name="Finish the Intranet", Status=STS_IN_PROG)
+
     app_calendar.setDescription("Calendar which outlines all of the tasks that are assigned to" + mUser.getFirstName())
-    event_stime = (datetime(2014, 1, 19)-datetime(1970,1,1)).total_seconds()
-    event_etime = (datetime(2014, 1, 19)-datetime(1970,1,1)).total_seconds()
-    app_hack_event = Event(Name="Applications Hack Event", Owner=mUser.getNode(), sTime=event_stime, eTime=event_etime)
     app_calendar.addEvent(app_hack_event.getNode())
+    workspace.addProject(project.getNode())
+    workspace.addOwner(mUser.getNode())
+    project.addTask(task1.getNode())
 
 """
 sandy = User(uid="0", first_name="sandy")
