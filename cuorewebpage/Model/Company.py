@@ -99,5 +99,5 @@ class Company(object):
         self.store.delete(dep)
 
 def getCompany():
-    company = store.load_unique(IND_COMP, "name", "cuore", Company)
-    return company.getNode()
+    company = Company(Name="Cuore")#store.load_unique(IND_COMP, "name", "Cuore", Company)
+    return company

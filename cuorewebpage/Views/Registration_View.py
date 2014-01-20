@@ -37,8 +37,8 @@ def Registration(request):
         ctx = {}
         ctx['section'] = 'Registration'
         departments = list()
-        for i in getAllDepartments():#getCompany().getAllDepartments():
-            departments.append({"department":i.name, "titles":i.getAllTitles()})
+        for i in getCompany().getAllDepartments():
+            departments.append({"department":i["name"], "titles":Department(i).getAllTitles()})
         ctx['departments'] = departments
         ctx['user'] = getCurrentUser(request)
         if not getCurrentUser(request):

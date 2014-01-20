@@ -70,7 +70,7 @@
                           %for i in departments:
                               <optgroup label="${i['department']}">
                                   %for j in i['titles']:
-                                      <option value="${j.name}">${j.name}</option>
+                                      <option value="${j['name']}">${j['name']}</option>
                                   %endfor
                               </optgroup>
                           %endfor
