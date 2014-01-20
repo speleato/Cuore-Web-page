@@ -4,8 +4,8 @@ from cuorewebpage.Model.Calendar import Calendar
 
 from database_config import *
 from cuorewebpage.lib.session import *
-from cuorewebpage.Model.Department import Department
-from cuorewebpage.Model.Title import Title
+from cuorewebpage.Model.Department import *
+from cuorewebpage.Model.Title import *
 from cuorewebpage.Model.Blog import Blog
 
 # Class  : User
@@ -148,6 +148,66 @@ class User:
     def getEmail(self):
         return self.userInstance['email']
 
+    # Function  : getPhone
+    # Arguments :
+    # Returns   : (String) phone
+    def getPhone(self):
+        return self.userInstance['phone']
+
+    # Function  : getAddress
+    # Arguments :
+    # Returns   : (String) address
+    def getAddress(self):
+        return self.userInstance['address']
+
+    # Function  : getCity
+    # Arguments :
+    # Returns   : (String) city
+    def getCity(self):
+        return self.userInstance['city']
+
+    # Function  : getState
+    # Arguments :
+    # Returns   : (String) state
+    def getState(self):
+        return self.userInstance['state']
+
+    # Function  : getZipcode
+    # Arguments :
+    # Returns   : (String) zipcode
+    def getZipcode(self):
+        return self.userInstance['zipcode']
+
+    # Function  : getAbout
+    # Arguments :
+    # Returns   : (String) about
+    def getAbout(self):
+        return self.userInstance['about']
+
+    # Function  : getPhoto
+    # Arguments :
+    # Returns   : (String) profile picture url
+    def getPhoto(self):
+        return self.userInstance['photo']
+
+    # Function  : getReqTitle
+    # Arguments :
+    # Returns   : (String) requested title
+    def getReqTitle(self):
+        return self.userInstance['req_title']
+
+    # Function  : getReqDept
+    # Arguments :
+    # Returns   : (String) requested department
+    def getReqDept(self):
+        return self.userInstance['req_dept']
+
+     # Function  : getConfirmed
+    # Arguments :
+    # Returns   : (Number (probably integer?)) confirmation status
+    def getConfirmed(self):
+        return self.userInstance['confirmed']
+
     # Function  : removeUser
     # Arguments :
     # Returns   :
@@ -173,7 +233,17 @@ class User:
         titles = list()
         for rels in list(self.userInstance.match_incoming(REL_HASUSER)):
             titles.append(rels.start_node)
-        return titles[0]
+        return titles
+
+    # Function  : getTitles
+    # Arguments :
+    # Returns   : list of department nodes associated w/ self
+    def getDepartments(self):
+        departments = list()
+        for i in self.getTitles():
+            for j in Title(URI=i).getDepartments():
+                departments.append(j)
+        return departments
 
     # Function  : getDepBlog
     # Arguments :
@@ -187,7 +257,7 @@ class User:
 
     def isAdmin(self):
         for i in self.getDepartments():
-            if i.getName() == "Admin":
+            if Department(i).getName() == "Admin" or Department(i).getName() == "admin":
                 return True
         return False
 
@@ -218,9 +288,10 @@ def getUser(uid):
 def getCurrentUser(request):
     if isUserLoggedOn(request):
 #        return getUser(request.session["uid"])
-        graph_db = neo4j.GraphDatabaseService(db_config['uri'])
-        store = ogm.Store(graph_db)
-        return store.load_unique(IND_USER, "uid", request.session['uid'], User)
+        #graph_db = neo4j.GraphDatabaseService(db_config['uri'])
+        #store = ogm.Store(graph_db)
+        #return store.load_unique(IND_USER, "uid", request.session['uid'], User)
+        return User(uid=request.session['uid'])
     return None
 
 # Function: getUserBlog
