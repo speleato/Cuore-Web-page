@@ -45,7 +45,6 @@ class User:
         global LBL_USER, IND_USER
         self.db_init()
         tempUser = None
-        print uid
         if URI is not None:
             tempUser = neo4j.Node(URI)
 
@@ -315,6 +314,17 @@ def getUserBlog(request):
         title = Title(user.getTitles()[0])
         department = Department(title.getDepartments()[0])
         blog = Blog(department.getBlog()[0])
+    return None
+
+
+
+
+
+
+
+
+
+"""
         print "==========================================================================="
         print "USER:        " + user.getFullName()
         print "TITLE:       " + title.getName()
@@ -322,4 +332,4 @@ def getUserBlog(request):
         print "BLOG:        " + blog.getName()
         print "==========================================================================="
         return blog
-    return None
+"""

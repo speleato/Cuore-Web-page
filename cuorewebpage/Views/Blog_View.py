@@ -27,16 +27,16 @@ def blog_list_view(request):
         ctx['posts'] = list()
 
         for p in post_nodes: # for each item in that list
-            print "------------- POST -----------------"
+#            print "------------- POST -----------------"
             name = Post(p).getName()
             content = Post(p).getContent()
-            print name + ": " + content
+#            print name + ": " + content
 #            ctx['posts'].append({"name":name, "content":content})
             ctx['posts'].append(Post(p))
 #            print ctx['posts'][0]['name']
 #            print ctx['posts'][0]['content']
 
-            print "------------------------------------"
+#            print "------------------------------------"
 
 #        for post in ctx['blog'].getPosts():
 #            ctx['posts'].append(Post(post))
