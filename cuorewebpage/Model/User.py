@@ -45,7 +45,6 @@ class User:
         global LBL_USER, IND_USER
         self.db_init()
         tempUser = None
-        uid = 0
         print uid
         if URI is not None:
             tempUser = neo4j.Node(URI)
@@ -313,7 +312,7 @@ def getCurrentUser(request):
 def getUserBlog(request):
     if isUserLoggedOn(request):
         user = User(uid=request.session['uid'])
-        title = Title(user.getTitles())
+        title = Title(user.getTitles()[0])
         department = Department(title.getDepartments()[0])
         blog = Blog(department.getBlog()[0])
         print "==========================================================================="

@@ -3,14 +3,12 @@
   <div class="row-fluid">
     <div class="span9">
       <div class="title row-fluid legend">
-        <h2> Latest articles </h2>
+        <h2>${blog.getName()} Blog - Latest articles </h2>
       </div>
       <div class="row-fluid">
-      <a>${blog}</a>
-        %for i in range(1, len(posts)):
-            <h1>${posts[0].getName()}</h1>
-            <p>${posts[0].getContent()}</p>
-            <p>${posts}</p>
+        %for item in posts:
+            <h1>${item.getName()}</h1>
+            <p>${item.getContent()}</p>
             <p class="well">
                 <a href="#"><span class="label label-info">sometag</span></a>
                 <a href="#"><span class="label label-info">Bootstrap</span></a>
@@ -42,6 +40,7 @@
       <div class="title">
         <div class="row-fluid legend">
           <h2> About </h2>
+            <p>${blog.getDescription()}</p>
         </div>
       </div>
       <div class="container">
