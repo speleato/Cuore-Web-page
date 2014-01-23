@@ -1,6 +1,7 @@
 <%inherit file="layout_sidebar_default.mako"/>
 <% from datetime import datetime %>
-
+<% EMAX = 5 %>
+<% TMAX = 4 %>
 <div id="main_container">
   <div class="row-fluid">
     <div class="span8">
@@ -31,9 +32,11 @@
         </div>
         <div class="content">
           <div id="external-events">
+            <% counter = 0 %>
             %for event in events:
-                % if event.getStartTime() > (datetime.now()-datetime(1970,1,1)).total_seconds():
+                % if event.getStartTime() > (datetime.now()-datetime(1970,1,1)).total_seconds() and counter < EMAX:
                     <div class="external-event" style="position: relative; "> ${event.getName()} </div>
+                    <% counter+=1 %>
                 % endif
             %endfor
           </div>
@@ -46,8 +49,12 @@
         </div>
         <div class="content top">
           <div id="external-events">
+          <% counter = 0 %>
             %for task in tasks:
-                <div class="external-event ui-draggable" style="position: relative; "> ${task.getName()}</div>
+                % if counter < TMAX:
+                    <div class="external-event ui-draggable" style="position: relative; "> ${task.getName()}</div>
+                    <% counter += 1 %>
+                % endif
             %endfor
             <p> </p>
           </div>
@@ -140,34 +147,35 @@ $(document).ready(function() {
       select: function(start, end, allDay) {
         var title = prompt('Event Title:');
         if (title) {
+            var eID = 0
+            jQuery.ajax(
+            {
+                url       : '/calendar',
+                data      : {'action':0, 'title':title,'sTime':start.getTime(), 'eTime':end.getTime(), 'allDay':allDay},
+                type      : 'POST',
+                success   : function(data)
+            {
+                //The id of the node that was just created
+                eID = data['id'];
+            }
+            }
+          );
+          //Create the new Event in the calendar and assign it all the appropriate fields
           calendar.fullCalendar('renderEvent',
             {
               title: title,
               start: start,
+              id: eID,
               end: end,
               allDay: allDay
             },
             true // make the event "stick"
           );
-          jQuery.ajax(
-            {
-                url       : '/calendar',
-                data      : {'title':title,'sTime':start.getTime(), 'eTime':end.getTime()},
-                type      : 'POST',
-                success   : function(data)
-            {
-            /*
-             when the mako template is rendered by your view then the result will
-             be passed to this function in the variable data
-            */
-            }
-            }
-          );
         }
         calendar.fullCalendar('unselect');
       },
       editable: true,
-      droppable:true,
+      droppable:false,
       drop: function(date, allDay) { // this function is called when something is dropped
         // retrieve the dropped element's stored Event Object
         var originalEventObject = $(this).data('eventObject');
@@ -186,6 +194,23 @@ $(document).ready(function() {
         }
       },
       <% from datetime import datetime %>
+      eventResize: function(event,dayDelta,minuteDelta,revertFunc) {
+          jQuery.ajax(
+            {
+                url       : '/calendar',
+                data      : {'action':1, 'id':event.id, 'sTime':event.start.getTime(), 'eTime':event.end.getTime()},
+                type      : 'POST',
+                success   : function(data)
+            {
+            /*
+             when the mako template is rendered by your view then the result will
+             be passed to this function in the variable data
+            */
+            }
+            }
+          );
+      },
+
       events: [
         <% counter = 0 %>
         % for event in events:
@@ -193,8 +218,14 @@ $(document).ready(function() {
             <% eTime = datetime.fromtimestamp(event.getEndTime()) %>
             {
             title: '${event.getName()}',
-            start: new Date(${sTime.year}, ${sTime.month-1}, ${sTime.day})
-            //end  : new Date(${eTime.year}, ${eTime.month-1}, ${eTime.day})
+            id:  '${event.getNode()._id}',
+            start: new Date(${sTime.year}, ${sTime.month-1}, ${sTime.day}, ${sTime.hour}, ${sTime.minute}),
+            % if (sTime-eTime).total_seconds() != 0:
+                end: new Date(${eTime.year}, ${eTime.month-1}, ${eTime.day}, ${eTime.hour}, ${eTime.minute}),
+                allDay: false
+            % else:
+                allDay: true
+            % endif
             % if counter == len(events)-1:
             }
             % else:

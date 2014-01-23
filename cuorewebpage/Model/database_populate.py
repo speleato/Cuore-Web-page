@@ -74,23 +74,31 @@ hw_blog = Blog(Name="Hardware", Owner=departments[2])
 sys_blog = Blog(Name="Systems", Owner=departments[3])
 adm_blog = Blog(Name="Admin", Owner=departments[4])
 
+event_meet_time = (datetime.now()-datetime(1970,1,1)).total_seconds()
+event_meeting   = Event(Name="General Meeting", Owner=users['leo'], sTime=event_meet_time, eTime=event_meet_time)
+leo_calendar    = Calendar(Name=(User(users['leo']).getFirstName() + "'s Calendar"), Owner=users['leo'])
+leo_calendar.addEvent(event_meeting.getNode())
+
+
 for key in users.keys():
     mUser = User(users[key])
+    if(key != 'leo'):
+        app_calendar    = Calendar(Name=(mUser.getFirstName() + "'s Calendar"), Owner=mUser.getNode())
+        event_app_time  = (datetime(2014, 1, 19)-datetime(1970,1,1)).total_seconds()
+        event_app_hack  = Event(Name="Applications Hack Event", Owner=mUser.getNode(), sTime=event_app_time, eTime=event_app_time)
 
-    app_calendar    = Calendar(Name=(mUser.getFirstName() + "'s Calendar"), Owner=mUser.getNode())
-    event_stime     = (datetime(2014, 1, 19)-datetime(1970,1,1)).total_seconds()
-    event_etime     = (datetime(2014, 1, 19)-datetime(1970,1,1)).total_seconds()
-    app_hack_event  = Event(Name="Applications Hack Event", Owner=mUser.getNode(), sTime=event_stime, eTime=event_etime)
+        app_calendar.setDescription("Calendar which outlines all of the tasks that are assigned to" + mUser.getFirstName())
+        app_calendar.addEvent(event_app_hack.getNode())
+        event_meeting.addInvitee(mUser.getNode())
 
     workspace   = Workspace(Name=(mUser.getFirstName() + "'s Workspace"))
     project     = Project(Name="Intranet Project")
     task1       = Task(Name="Finish the Intranet", Status=STS_IN_PROG)
 
-    app_calendar.setDescription("Calendar which outlines all of the tasks that are assigned to" + mUser.getFirstName())
-    app_calendar.addEvent(app_hack_event.getNode())
     workspace.addProject(project.getNode())
     workspace.addOwner(mUser.getNode())
     project.addTask(task1.getNode())
+
 
 """
 sandy = User(uid="0", first_name="sandy")
