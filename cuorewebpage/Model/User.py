@@ -1,6 +1,7 @@
 from py2neo import neo4j, ogm, node, rel
 from pyramid import request
 from cuorewebpage.Model.Calendar import Calendar
+from cuorewebpage.Model.Event import Event
 from cuorewebpage.Model.Workspace import Workspace
 
 from database_config import *
@@ -281,6 +282,13 @@ class User:
             return Workspace(relationship.end_node)
         else:
             return None
+
+    def getInvitedEvents(self):
+        global REL_INVITED
+        events = list()
+        for relationship in list(self.userInstance.match_incoming(REL_INVITED)):
+            events.append(Event(URI=relationship.start_node))
+        return events
 
 # ---------------------------- NON MEMBER FUNCTIONS -------------------------
 
