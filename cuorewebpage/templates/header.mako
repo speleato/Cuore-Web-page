@@ -4,6 +4,8 @@
       <div class="top_right">
         <ul class="nav nav_menu">
           <li class="dropdown"> <a class="dropdown-toggle administrator" id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="/page.html">
+            <div class="title"><span class="name">${user.userInstance['first_name']}</span><span class="subtitle">${user.userInstance['req_title']}</span></div>
+      <%doc><div class="title"><span class="name">${user.userInstance['first_name']}</span><span class="subtitle">${user.userInstance['req_title']}</span></div></%doc>
       <%doc><div class="title"><span class="name">${user.first_name}</span><span class="subtitle">${user.req_title}</span></div></%doc>
             <span class="icon"><img src="img/thumbnail_george.jpg"></span></a>
             <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
