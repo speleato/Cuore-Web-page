@@ -1,4 +1,5 @@
 import re
+import datetime
 
 from pyramid.response import Response
 from pyramid.view import view_config
@@ -22,24 +23,23 @@ def blog_list_view(request):
         ctx = {}
         ctx['section'] = 'Blog'
         ctx['user'] = getCurrentUser(request)
-        ctx['blog'] = getUserBlog(request)
-        post_nodes = getUserBlog(request).getPosts() # A LIST OF NODES (one 'object', the list)
         ctx['posts'] = list()
+        ctx['blog'] = Blog(Name="Cuore")
 
-        for p in post_nodes: # for each item in that list
-#            print "------------- POST -----------------"
-            name = Post(p).getName()
-            content = Post(p).getContent()
-#            print name + ": " + content
-#            ctx['posts'].append({"name":name, "content":content})
+        blogs = ctx['user'].getDepBlogs()
+        posts = list()
+        for b in blogs:
+            posts.extend(Blog(b).getPosts())
+
+        for p in posts:
             ctx['posts'].append(Post(p))
-#            print ctx['posts'][0]['name']
-#            print ctx['posts'][0]['content']
 
+#            print "------------- POST -----------------"
+#            name = Post(p).getName()
+#            content = Post(p).getContent()
+#            print name + ": " + content
 #            print "------------------------------------"
 
-#        for post in ctx['blog'].getPosts():
-#            ctx['posts'].append(Post(post))
 #        page = int(request.params.get('page', 1))
 #        ctx['paginator'] = Post.get_paginator(request, page)
 
@@ -65,10 +65,11 @@ def blog_post_create(request):
         ctx['section'] = "Create Blog Post"
         ctx['user'] = getCurrentUser(request)
         owner = User(uid=request.session['uid'])
-        blog = getUserBlog(request)
+        blog = Blog(Name='Cuore')
         if request.POST:
             post_name =re.sub("[^A-Za-z0-9,.\-()]", "", request.POST.getone('name'))
             post_content =re.sub("[^A-Za-z0-9,.\-()]", "", request.POST.getone('content'))
+            print datetime.now()
             post = Post(Name=post_name, Content=post_content, Owner=owner.getNode())
             post.setBlog(blog.getNode())
             return HTTPFound(location=request.route_url('Blog'))

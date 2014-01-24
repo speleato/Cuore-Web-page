@@ -36,7 +36,7 @@ class Blog:
     # Arguments	: Uri of Existing Blog Node OR Name of Blog
     #
     def __init__(self, URI=None, Name=None, Owner=None):
-        global LBL_BLOG
+        global LBL_BLOG, LBL_COMPANY
         self.db_init()
         tempBlog = None
         if URI is not None:
@@ -52,11 +52,21 @@ class Blog:
         self.blogInstance = tempBlog
 
         if Owner is not None:
-            if LBL_DEPARTMENT in Owner.get_labels():
+            if (LBL_DEPARTMENT in Owner.get_labels()) or (LBL_COMPANY in Owner.get_labels()):
                 self.blogInstance.get_or_create_path(REL_HASOWNER, Owner)
             else:
                 raise Exception("The Node Provided is not a Department")
 
+
+    # Function	: __str__
+    # Arguments	:
+    # Returns	: name of blog
+    #
+    def __str__(self):
+        if self.blogInstance is not None:
+            return self.blogInstance["name"]
+        else:
+            return None
 
     # Function	: getName
     # Arguments	:

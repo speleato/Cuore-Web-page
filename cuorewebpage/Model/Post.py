@@ -1,10 +1,12 @@
 from py2neo import neo4j, node
 import json
-import datetime
+from datetime import datetime
 from webhelpers.text import urlify
 from webhelpers.date import time_ago_in_words
 from webhelpers.paginate import PageURL_WebOb, Page
 
+from cuorewebpage.Model.User import User
+from cuorewebpage.Model.Blog import Blog
 from database_config import *
 
 # Class  : Post
@@ -24,7 +26,7 @@ from database_config import *
 #	13)	getOwner(self)									- Returns a User Node
 #   14) addComment(self, comment)                       - Adds a comment node
 #   15) getComments(self)                               - Returns a list of Comment Nodes
-# Constants: 
+# Constants:
 
 class Post:
     graph_db = None
@@ -46,7 +48,7 @@ class Post:
     # Function	: Constructor
     # Arguments	: Uri of Existing Blog Node OR Name of Blog
     #
-    def __init__(self, URI=None, Name=None, Content=None, Owner=None):#, Blog=None):
+    def __init__(self, URI=None, Name=None, Content=None, Owner=None, Blog=None):
         global LBL_POST
         self.db_init()
         tempPost = None
@@ -61,13 +63,13 @@ class Post:
 #            raise Exception("Name or URI not specified")
 
         self.postInstance = tempPost
+        self.setTime(datetime.utcnow())
 
         if Content is not None and Owner is not None:
             self.postInstance["content"] = Content
             self.setOwner(Owner)
-#            self.setBlog(Blog)
+            self.setBlog(User(Owner).getDepBlogs()[0])
 
-#        self.postInstance['sTime'] = time
 
     #
     # Function	: __str__
@@ -76,7 +78,7 @@ class Post:
     #
     def __str__(self):
         if self.postInstance is not None:
-            return self.postInstance["name"]
+            return self.postInstance["name"] + " : " + self.postInstance["content"]
         else:
             return None
 
@@ -136,6 +138,13 @@ class Post:
     #
     def getTime(self):
         return self.postInstance["time"]
+
+    #
+    # Function  : getTimeWords(self)
+    # Returns   : time post was created in human readable format
+    #
+    def getTimeWords(self):
+        return time_ago_in_words(self.getTime())
 
     #
     # Function	: setTags

@@ -30,7 +30,7 @@
 %for d in departments:
     <%
         dep_node = Department(d)
-        job_titles = dep_node.getAllTitles()
+        job_titles = dep_node.getTitles()
     %>
     <div class="row-fluid">
     <div class="span8">
@@ -53,7 +53,7 @@
         <%
         title_node = Title(t)
         print title_node
-        users = title_node.getAllUsers()
+        users = title_node.getUsers()
         %>
         %for u in users:
             <%

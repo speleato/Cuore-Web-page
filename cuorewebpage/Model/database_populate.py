@@ -56,6 +56,7 @@ users = dict(
 graph_db.create(
     (titles['Admin'], REL_HASUSER, users['kirby']),
     (titles['Admin'], REL_HASUSER, users['leo']),
+    (titles['Admin'], REL_HASUSER, users['sandy']),
     (titles['Pres'], REL_HASUSER, users['leo']),
     (titles['VP'], REL_HASUSER, users['kevin_r']),
     (titles['AppDev'], REL_HASUSER, users['sandy']),
@@ -73,10 +74,11 @@ app_blog = Blog(Name="Applications", Owner=departments[1])
 hw_blog = Blog(Name="Hardware", Owner=departments[2])
 sys_blog = Blog(Name="Systems", Owner=departments[3])
 adm_blog = Blog(Name="Admin", Owner=departments[4])
+cuore_blog = Blog(Name="Cuore", Owner=company)
 
 event_meet_time = (datetime.now()-datetime(1970,1,1)).total_seconds()
 event_meeting   = Event(Name="General Meeting", Owner=users['leo'], sTime=event_meet_time, eTime=event_meet_time)
-leo_calendar    = Calendar(Name=(User(users['leo']).getFirstName() + "'s Calendar"), Owner=User(users['leo']).getNode())
+leo_calendar    = Calendar(Name=(User(users['leo']).getFullName() + "'s Calendar"), Owner=User(users['leo']).getNode())
 leo_calendar.addEvent(event_meeting.getNode())
 
 app_team = Department(departments[1]).getUsers()
@@ -85,7 +87,8 @@ for person in app_team:
     mUser = User(person)
     app_calendar    = Calendar(Name=(mUser.getFullName() + "'s Calendar"), Owner=mUser.getNode())
     event_app_time  = (datetime(2014, 1, 19)-datetime(1970,1,1)).total_seconds()
-    event_app_hack  = Event(Name="Applications Hack Event", Owner=mUser.getNode(), sTime=event_app_time, eTime=event_app_time)
+    event_app_hack  = Event(Name="Applications Hack Event", sTime=event_app_time, eTime=event_app_time)
+    event_app_hack.addOwner(users['sergio'])
 
     app_calendar.setDescription("Calendar which outlines all of the tasks that are assigned to" + mUser.getFirstName())
     app_calendar.addEvent(event_app_hack.getNode())
@@ -106,27 +109,21 @@ for key in users.keys():
     calendar    = Calendar(Name=(mUser.getFullName() + "'s Calendar"), Owner=mUser.getNode())
     workspace   = Workspace(Name=(mUser.getFullName() + "'s Workspace"), Owner=mUser.getNode())
 
-"""
-sandy = User(uid="0", first_name="sandy")
-sandy.getNode().add_labels(LBL_USER)
-print sandy.getNode().get_labels()
-#post = Post(Name="hello", Content="blah", Owner=sandy)
+sandy = User(users['sandy'])
+post1 = Post(Name="hello1", Content="testing 1", Owner=sandy.getNode())
+post2 = Post(Name="hello2", Content="testing 2", Owner=sandy.getNode())
+post2 = Post(Name="hello3", Content="testing 3", Owner=sandy.getNode())
 
-user_index = graph_db.get_or_create_index(neo4j.Node, IND_USER)
-menode=user_index.get("uid", "0")
-print menode
-#print menode.getNode()
-#print menode.getName()
+for d in sandy.getDepartments():
+    print Department(d).getName()
+for t in sandy.getTitles():
+    print Title(t)
+blogs = sandy.getDepBlogs()
+posts = Blog(blogs[0]).getPosts()
+for p in posts:
+    print "-----------"
+    print Post(p).getName()
+    print Post(p).getContent()
 
 
-store = ogm.Store(graph_db)
-#cuore = store.load_unique(IND_COMP, "name", "cuore", Company)
-comp_index = graph_db.get_or_create_index(neo4j.Node, IND_COMP)
-anode = comp_index.get("name", "Cuore")
-print "-------->"
-print anode
-# what you get back is the URI
-#   [Node('http://127.0.0.1:7474/db/data/node/44364')]
-# if comma after anode, unpacking the list, you get
-#   (44312 {"name":"Cuore"})
-"""
+

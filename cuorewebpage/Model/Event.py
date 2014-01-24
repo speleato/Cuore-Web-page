@@ -50,14 +50,16 @@ class Event:
         if URI is not None:
             self.eventInstance = neo4j.Node(URI)
 
-        elif Name is not None and Owner is not None and sTime is not None and eTime is not None:
+        elif Name is not None and sTime is not None and eTime is not None:
             tempEvent = self.graph_db.get_or_create_indexed_node(IND_EVENT, "name", Name, {"name": Name, "sTime": sTime, "eTime": eTime})
             tempEvent.add_labels(LBL_EVENT)
             self.eventInstance = tempEvent
-            self.addOwner(Owner)
 
         else:
-            raise Exception("Name/Owner/sTime/eTime or URI not specified")
+            raise Exception("Name/sTime/eTime or URI not specified")
+
+        if Owner is not None:
+            self.addOwner(Owner)
 
     #
     # Function	: getName
@@ -140,10 +142,7 @@ class Event:
     #
     def addOwner(self, owner):
         global REL_CREATEDBY, LBL_USER
-        owners = list()
-        for relationship in list(self.eventInstance.match_outgoing(REL_HASOWNER)):
-            owners.append(relationship.end_node)
-        if len(owners) == 0:
+        if len(list(self.eventInstance.match_outgoing(REL_HASOWNER))) == 0:
             if LBL_USER in owner.get_labels():
                 return self.eventInstance.get_or_create_path(REL_CREATEDBY, owner)
             else:

@@ -3,7 +3,11 @@
   <div class="row-fluid">
     <div class="span9">
       <div class="title row-fluid legend">
+          % if blog.getName() is not None:
         <h2>${blog.getName()} Blog - Latest articles </h2>
+          % else:
+          <h2>Blog - Latest articles </h2>
+          % endif
       </div>
       <div class="row-fluid">
         %for item in posts:
@@ -15,8 +19,8 @@
                 <a href="#"><span class="label label-info">UI</span></a>
                 <a href="#"><span class="label label-info">growth</span></a>
                 <i class="icon-user"></i>
-                <a href="#">Admin</a>
-                <i class="icon-calendar"></i> Sept 16th, 2012 at 4:20 pm
+                <a href="#">${blog.getName()}</a>
+                <i class="icon-calendar"></i> ${item.getTime()}
                 <i class="icon-comment"></i>
                 <a href="#">3 Comments</a>
                 <i class="icon-share"></i>
@@ -40,11 +44,15 @@
       <div class="title">
         <div class="row-fluid legend">
           <h2> About </h2>
+            % if blog.getDescription() is not None:
             <p>${blog.getDescription()}</p>
+            % else:
+            <p>No blog description.</p>
+            % endif
         </div>
       </div>
       <div class="container">
-        <p>${blog.getDescription()}</p>
+<!--        <p>${blog.getDescription()}</p>-->
       </div>
       <!-- End .title -->
 
@@ -68,12 +76,11 @@
           <h2> Latest Articles </h2>
         </div>
         <ul class="">
-          <li><a href="#">First Time Buyer Survey</a></li>
-          <li><a href="#">A Thailand Meetup with Elite Authors </a></li>
-          <li><a href="#">TED Talk: The Power of Introverts</a></li>
-          <li><a href="#">First Time Buyer Survey</a></li>
-          <li><a href="#">A Thailand Meetup with Elite Authors </a></li>
-          <li><a href="#">TED Talk: The Power of Introverts</a></li>
+            % for idx, val in enumerate(posts):
+                % if idx < 5:
+          <li><a href="#">${val.getName()}</a></li>
+                % endif
+            % endfor
         </ul>
         <a href="#" class="pull-right">View more articles</a> </div>
       <!-- End .content -->

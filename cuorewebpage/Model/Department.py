@@ -57,7 +57,7 @@ class Department(object):
     # Function  : getAllTitles
     # Arguments :
     # Returns   : list of Title objects related to self
-    def getAllTitles(self):
+    def getTitles(self):
         global REL_HASTITLE
         titles = list()
         rels = self.getNode().match_outgoing(REL_HASTITLE)

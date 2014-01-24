@@ -30,8 +30,8 @@ def Registration(request):
     ctx = {}
     ctx['section'] = 'Registration'
     departments = list()
-    for i in getCompany().getAllDepartments():
-        departments.append({"department":i["name"], "titles":Department(i).getAllTitles()})
+    for i in getCompany().getDepartments():
+        departments.append({"department":i["name"], "titles":Department(i).getTitles()})
     ctx['departments'] = departments
     ctx['user'] = getCurrentUser(request)
     if not getCurrentUser(request):
@@ -147,14 +147,15 @@ def SubmitRegistration(request):
                 ext = os.path.splitext(request.POST.getone('profile_image').filename)[-1].lower()
                 photo_file = getCurrentUser(request).userInstance['uid'] + "/profile_picture" + ext
                 photo_full_path = "cuorewebpage/img/Profile_Pictures/" + photo_file
-                photo = "cuorewebpage:img/Profile_Pictures/" + photo_file # Pyramid Asset Specification format
+                photo_asset_spec = "cuorewebpage:img/Profile_Pictures/" + photo_file
+                photo = photo_asset_spec
 
-                dir = os.path.dirname(photo)
+                dir = os.path.dirname(photo_full_path)
                 try:
                     os.stat(dir)
                 except:
                     os.mkdir(dir)
-                f = open(photo, 'w')
+                f = open(photo_full_path, 'w')
                 f.write(request.POST.getone('profile_image').value)
                 f.close()
 

@@ -7,7 +7,11 @@
             <div class="title"><span class="name">${user.userInstance['first_name']}</span><span class="subtitle">${user.userInstance['req_title']}</span></div>
       <%doc><div class="title"><span class="name">${user.userInstance['first_name']}</span><span class="subtitle">${user.userInstance['req_title']}</span></div></%doc>
       <%doc><div class="title"><span class="name">${user.first_name}</span><span class="subtitle">${user.req_title}</span></div></%doc>
+            % if user.getPhoto() is not None:
             <span class="icon"><img src="${request.static_url(user.getPhoto())}"></span></a>
+            % else:
+            <span class="icon"><img src=""></span></a>
+            %endif
             <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
               <li><a href="profile.html"><i class=" icon-user"></i> My Profile</a></li>
               <li><a href="forms_general.html"><i class=" icon-cog"></i>Settings</a></li>

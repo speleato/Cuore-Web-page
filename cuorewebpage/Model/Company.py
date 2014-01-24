@@ -61,10 +61,10 @@ class Company(object):
     def getNode(self):
         return self.companyInstance
 
-    # Function: getAllDepartments
+    # Function: getDepartments
     # Arguments:
     # Returns: list of Department objects related to self
-    def getAllDepartments(self):
+    def getDepartments(self):
         global REL_HASDEPT
         depts = list()
         for relationship in list(self.companyInstance.match_outgoing(REL_HASDEP)):
@@ -89,7 +89,7 @@ class Company(object):
     def removeDepartment(self, name):
         dept = self.getDepartment(name)
         self.store.delete(dep.getNewsfeed())
-        for i in dep.getAllTitles():
+        for i in dep.getTitles():
             dep.removeTitle(i.name)
         self.store.delete(dep)
 

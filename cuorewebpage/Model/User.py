@@ -235,24 +235,23 @@ class User:
             titles.append(rels.start_node)
         return titles
 
-    # Function  : getTitles
+    # Function  : getDepartments
     # Arguments :
     # Returns   : list of department nodes associated w/ self
     def getDepartments(self):
         departments = list()
-        for i in self.getTitles():
-            for j in Title(i).getDepartments():
-                departments.append(j)
+        for t in self.getTitles():
+            departments.extend(Title(t).getDepartments())
         return departments
 
-    # Function  : getDepBlog
+    # Function  : getDepBlogs
     # Arguments :
     # Returns   : list of blog nodes associated with user's departments
-    def getBlog(self):
+    def getDepBlogs(self):
         global REL_HASBLOG
         blogs = list()
         for dep in self.getDepartments():
-                blogs.append(dep.getBlog())
+                blogs.extend(Department(dep).getBlog())
         return blogs
 
     def isAdmin(self):
@@ -311,18 +310,20 @@ def getCurrentUser(request):
         return User(uid=request.session['uid'])
     return None
 
-# Function: getUserBlog
+"""# Function: getUserBlog
 # Arguments: request
 # Returns: Blog object of current user (just the first one found at this point,
 #          for the purpose of keeping it simple and getting the functionality working!
 def getUserBlog(request):
     if isUserLoggedOn(request):
         user = User(uid=request.session['uid'])
-        title = Title(user.getTitles()[0])
-        department = Department(title.getDepartments()[0])
+        blogs = list()
+        for d in list(user.getDepartments()):
+
         blog = Blog(department.getBlog()[0])
     return None
 
+"""
 
 
 
