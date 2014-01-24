@@ -3,6 +3,7 @@
 <%block name="head">${parent.head()}
     <!-- Include OneID javascript API -->
     <script src="//api.oneid.com/js/oneid.js"></script></%block>
+
 <div id="login_page">
   <!-- Login page -->
   <div id="login">

@@ -9,8 +9,10 @@ def dashboard(request):
         ctx = {}
         ctx['section'] = 'Dashboard'
         ctx['user'] = getCurrentUser(request)
+
         return ctx
     else:
         return redirectUser(request)
+
 
 

@@ -4,7 +4,7 @@ from cuorewebpage.lib.session import *
 
 graph_db = neo4j.GraphDatabaseService(db_config['uri'])
 store = ogm.Store(graph_db)
-
+"""
 class Company(object):
     def __init__(self, name=None):
         self.name=name
@@ -242,6 +242,7 @@ def getCompany():
 
 """
 
+"""
 
 sandy = User(None, "Sandy", "Siththanandan", "sandymeep@gmail.com", "Applications Developer", 3)
 store.save_unique(IND_USER, "uid", sandy.uid, sandy)

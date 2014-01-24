@@ -51,8 +51,12 @@ class Title(object):
     # Function: getAllUsers
     # Arguments:
     # Returns: list of User objects related to self
-    def getAllUsers(self):
-        return self.store.load_related(self, REL_HASUSER, User)
+    def getUsers(self):
+        global REL_HASTITLE
+        users = list()
+        for rels in list(self.titleInstance.match_outgoing(REL_HASUSER)):
+            users.append(rels.end_node)
+        return users
 
     #
     # Function	: setDept

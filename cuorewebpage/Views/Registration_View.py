@@ -12,10 +12,11 @@ import os
 
 from cuorewebpage.lib.session import *
 
-from cuorewebpage.Model.Person import getCompany, getCurrentUser, getUser
+#from cuorewebpage.Model.Person import getCompany, getCurrentUser, getUser
 from cuorewebpage.Model.User import *
 from cuorewebpage.Model.Company import *
 from cuorewebpage.Model.Department import *
+from cuorewebpage.Model.Title import *
 
 graph_db = neo4j.GraphDatabaseService(db_config['uri'])
 store = ogm.Store(graph_db)
@@ -26,40 +27,30 @@ REGISTRATION_EMAIL_RECIPIENTS = "sandymeep@gmail.com"
 
 @view_config(route_name='Registration', renderer='cuorewebpage:templates/registration.mako')
 def Registration(request):
-    '''if getCurrentUser(request):
-        print "==========================================================================="
-        print request.session['uid']
-        print getCurrentUser(request)
-        #    print getCurrentUser(request)['last_name']
-        print "==========================================================================="
-    '''
-    if isUserLoggedOn(request):
-        ctx = {}
-        ctx['section'] = 'Registration'
-        departments = list()
-        for i in getCompany().getAllDepartments():
-            departments.append({"department":i["name"], "titles":Department(i).getAllTitles()})
-        ctx['departments'] = departments
-        ctx['user'] = getCurrentUser(request)
-        if not getCurrentUser(request):
-            print "------------------> create"
-            ctx['view'] = 'create'
-        elif getCurrentUser(request).isAdmin():
-            if request.POST:
-                print "------------------> admin"
-                ctx['view'] = 'admin'
-                ctx['user'] = getUser(request.POST.getone('user'))
-            else:
-                print "------------------> admin_edit"
-                ctx['view'] = 'edit'
-                ctx['user'] = getCurrentUser(request)
+    ctx = {}
+    ctx['section'] = 'Registration'
+    departments = list()
+    for i in getCompany().getAllDepartments():
+        departments.append({"department":i["name"], "titles":Department(i).getAllTitles()})
+    ctx['departments'] = departments
+    ctx['user'] = getCurrentUser(request)
+    if not getCurrentUser(request):
+        print "------------------> create"
+        ctx['view'] = 'create'
+    elif getCurrentUser(request).isAdmin():
+        if request.POST:
+#            print "------------------> admin"
+            ctx['view'] = 'admin'
+            ctx['user'] = getUser(request.POST.getone('user'))
         else:
-            print "------------------> user_edit"
+#            print "------------------> admin_edit"
             ctx['view'] = 'edit'
             ctx['user'] = getCurrentUser(request)
-        return ctx
     else:
-        return redirectUser(request)
+#        print "------------------> user_edit"
+        ctx['view'] = 'edit'
+        ctx['user'] = getCurrentUser(request)
+    return ctx
 
 
 @view_config(route_name='Registration_Action', match_param="action=submit", renderer='cuorewebpage:templates/Registration.mako')
@@ -154,7 +145,9 @@ def SubmitRegistration(request):
             photo = ""
             if request.POST.getone('profile_image') != "":
                 ext = os.path.splitext(request.POST.getone('profile_image').filename)[-1].lower()
-                photo = "cuorewebpage/Profile_Pictures/" + getCurrentUser(request).uid + "/profile_picture" + ext
+                photo_file = getCurrentUser(request).userInstance['uid'] + "/profile_picture" + ext
+                photo_full_path = "cuorewebpage/img/Profile_Pictures/" + photo_file
+                photo = "cuorewebpage:img/Profile_Pictures/" + photo_file # Pyramid Asset Specification format
 
                 dir = os.path.dirname(photo)
                 try:

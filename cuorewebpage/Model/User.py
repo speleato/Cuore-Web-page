@@ -7,7 +7,7 @@ from cuorewebpage.Model.Workspace import Workspace
 from database_config import *
 from cuorewebpage.lib.session import *
 from cuorewebpage.Model.Department import *
-from cuorewebpage.Model.Title import *
+from cuorewebpage.Model.Title import Title
 from cuorewebpage.Model.Blog import Blog
 
 # Class  : User
@@ -52,7 +52,6 @@ class User:
         elif uid is not None:
             tempUser = self.graph_db.get_or_create_indexed_node(IND_USER, 'uid', uid, {"uid": uid})
             tempUser.add_labels(LBL_USER)
-#            tempUser, = self.graph_db.create({"uid": uid})
 
         #else:
         #    raise Exception("UID or URI not specified")
@@ -242,7 +241,7 @@ class User:
     def getDepartments(self):
         departments = list()
         for i in self.getTitles():
-            for j in Title(URI=i).getDepartments():
+            for j in Title(i).getDepartments():
                 departments.append(j)
         return departments
 

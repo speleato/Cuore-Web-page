@@ -42,7 +42,7 @@ class Workspace:
             tempWorkspace = neo4j.Node(URI)
 
         elif Name is not None:
-            tempWorkspace, = self.graph_db.create({"name": Name})
+            tempWorkspace = self.graph_db.get_or_create_indexed_node(IND_WORKSPACE, "name", Name, {"name": Name})
             tempWorkspace.add_labels(LBL_WORKSPACE)
 
         else:
@@ -50,7 +50,7 @@ class Workspace:
 
         if Owner is not None:
             if LBL_USER in Owner.get_labels():
-                return Owner.get_or_create_path(REL_HASWORKSPACE, tempWorkspace)
+                Owner.get_or_create_path(REL_HASWORKSPACE, tempWorkspace)
             else:
                 raise Exception("The Node provided is not a User")
 

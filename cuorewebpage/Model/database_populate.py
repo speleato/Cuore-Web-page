@@ -7,11 +7,11 @@ from cuorewebpage.Model.Project import Project
 from cuorewebpage.Model.Task import Task, STS_OPEN, STS_IN_PROG
 from cuorewebpage.Model.Workspace import Workspace
 from database_config import *
-from Person import getCurrentUser, getUser
+#from Person import getCurrentUser, getUser
 from Company import Company
 from Department import Department
 from Title import Title
-from User import User
+from User import User, getCurrentUser, getUser
 from Blog import Blog
 from Post import Post
 
@@ -76,29 +76,35 @@ adm_blog = Blog(Name="Admin", Owner=departments[4])
 
 event_meet_time = (datetime.now()-datetime(1970,1,1)).total_seconds()
 event_meeting   = Event(Name="General Meeting", Owner=users['leo'], sTime=event_meet_time, eTime=event_meet_time)
-leo_calendar    = Calendar(Name=(User(users['leo']).getFirstName() + "'s Calendar"), Owner=users['leo'])
+leo_calendar    = Calendar(Name=(User(users['leo']).getFirstName() + "'s Calendar"), Owner=User(users['leo']).getNode())
 leo_calendar.addEvent(event_meeting.getNode())
+
+app_team = Department(departments[1]).getUsers()
+
+for person in app_team:
+    mUser = User(person)
+    app_calendar    = Calendar(Name=(mUser.getFullName() + "'s Calendar"), Owner=mUser.getNode())
+    event_app_time  = (datetime(2014, 1, 19)-datetime(1970,1,1)).total_seconds()
+    event_app_hack  = Event(Name="Applications Hack Event", Owner=mUser.getNode(), sTime=event_app_time, eTime=event_app_time)
+
+    app_calendar.setDescription("Calendar which outlines all of the tasks that are assigned to" + mUser.getFirstName())
+    app_calendar.addEvent(event_app_hack.getNode())
+    event_meeting.addInvitee(mUser.getNode())
+
+    workspace   = Workspace(Name=(mUser.getFullName() + "'s Workspace"), Owner=mUser.getNode())
+    project     = Project(Name="Intranet Project")
+    task1       = Task(Name="Finish the Intranet", Status=STS_IN_PROG)
+    task1.assignToUser(mUser.getNode())
+
+    workspace.addProject(project.getNode())
+#    workspace.addOwner(mUser.getNode())
+    project.addTask(task1.getNode())
 
 
 for key in users.keys():
     mUser = User(users[key])
-    if(key != 'leo'):
-        app_calendar    = Calendar(Name=(mUser.getFirstName() + "'s Calendar"), Owner=mUser.getNode())
-        event_app_time  = (datetime(2014, 1, 19)-datetime(1970,1,1)).total_seconds()
-        event_app_hack  = Event(Name="Applications Hack Event", Owner=mUser.getNode(), sTime=event_app_time, eTime=event_app_time)
-
-        app_calendar.setDescription("Calendar which outlines all of the tasks that are assigned to" + mUser.getFirstName())
-        app_calendar.addEvent(event_app_hack.getNode())
-        event_meeting.addInvitee(mUser.getNode())
-
-    workspace   = Workspace(Name=(mUser.getFirstName() + "'s Workspace"))
-    project     = Project(Name="Intranet Project")
-    task1       = Task(Name="Finish the Intranet", Status=STS_IN_PROG)
-
-    workspace.addProject(project.getNode())
-    workspace.addOwner(mUser.getNode())
-    project.addTask(task1.getNode())
-
+    calendar    = Calendar(Name=(mUser.getFullName() + "'s Calendar"), Owner=mUser.getNode())
+    workspace   = Workspace(Name=(mUser.getFullName() + "'s Workspace"), Owner=mUser.getNode())
 
 """
 sandy = User(uid="0", first_name="sandy")

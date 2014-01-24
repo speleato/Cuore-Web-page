@@ -1,5 +1,6 @@
 from py2neo import neo4j, ogm
 from database_config import *
+from Title import Title
 
 # Class  : Department
 # Methods:
@@ -33,12 +34,8 @@ class Department(object):
             tempDept = neo4j.Node(URI)
 
         elif name is not None:
-            #tempDept = self.index.get_or_create("name", name, {"name": name})
-#            tempDept, = self.graph_db.create({"name": name})
             tempDept = self.graph_db.get_or_create_indexed_node(IND_DEP, "name", name, {"name":name})
             tempDept.add_labels(LBL_DEPARTMENT)
-            #self.store.save_unique(IND_DEP, "name", name, tempDept)
-            #self.index.add("name", name, tempDept)
 
         self.deptInstance = tempDept
 
@@ -56,6 +53,7 @@ class Department(object):
 
     def getName(self):
         return self.deptInstance['name']
+
     # Function  : getAllTitles
     # Arguments :
     # Returns   : list of Title objects related to self
@@ -87,9 +85,9 @@ class Department(object):
     # Description: creates a related Title node in neo4j with the given name if it doesn't already exist
     def addTitle(self, name):
         newTitle = Title(name)
-        if not (store.load_indexed(IND_TITLE, "name", newTitle.name, newTitle)):
-            store.save_unique(IND_TITLE, "name", newTitle.name, newTitle)
-            graph_db.create((self.getNode(), REL_HASTITLE, newTitle.getNode()))
+        if not (self.store.load_indexed(IND_TITLE, "name", newTitle.name, newTitle)):
+            self.store.save_unique(IND_TITLE, "name", newTitle.name, newTitle)
+            self.graph_db.create((self.getNode(), REL_HASTITLE, newTitle.getNode()))
 
     # Function: removeTitle
     # Arguments: name of the title (string)
@@ -100,7 +98,7 @@ class Department(object):
         title=self.getTitle(name)
         for i in title.getAllUsers():
             title.safeRemoveUser(i.uid)
-        store.delete(title)
+        self.store.delete(title)
 
     # Function: getBlog
     # Arguments:
@@ -112,5 +110,19 @@ class Department(object):
             blogs.append(rel.start_node)
         return blogs
 
+    def getTitles(self):
+        global REL_HASTITLE
+        titles = list()
+        for relationship in list(self.deptInstance.match_outgoing(REL_HASTITLE)):
+            titles.append(relationship.end_node)
+        return titles
+
+    def getUsers(self):
+        global REL_HASUSER
+        users = list()
+        for i in self.getTitles():
+            for j in Title(i).getUsers():
+                users.append(j)
+        return users
 
 

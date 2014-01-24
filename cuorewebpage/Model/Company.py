@@ -32,15 +32,11 @@ class Company(object):
             tempCompany = neo4j.Node(URI)
 
         elif Name is not None:
-#            tempCompany = self.index.get_or_create("name", name, {"name": name})
-#            tempCompany = self.store.save_unique(IND_COMP, "name", Name, neo4j.Node.abstract(name=Name))
-#            self.graph_db.create({"name": name})
             tempCompany = self.graph_db.get_or_create_indexed_node(IND_COMP, "name", Name, {"name": Name})
             tempCompany.add_labels(LBL_COMPANY)
-#            self.index.add("name", name, tempCompany)
 
-#        else:
-#            raise Exception("UID or Company Name not specified")
+        else:
+            raise Exception("UID or Company Name not specified")
 
         self.companyInstance = tempCompany
 
@@ -74,7 +70,6 @@ class Company(object):
         for relationship in list(self.companyInstance.match_outgoing(REL_HASDEP)):
             depts.append(relationship.end_node)
         return depts
-    #return self.store.load_related(self, REL_HASDEPT, Department)
 
     # Function: addDepartment
     # Arguments: name of the department (string)

@@ -43,7 +43,7 @@ class Calendar:
             self.calInstance = neo4j.Node(URI)
 
         elif Name is not None:
-            tempCal, = self.graph_db.create({"name": Name})
+            tempCal = self.graph_db.get_or_create_indexed_node(IND_CAL, "name", Name, {"name": Name})
             tempCal.add_labels(LBL_CAL)
             self.calInstance = tempCal
 
