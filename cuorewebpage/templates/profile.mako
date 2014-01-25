@@ -11,7 +11,20 @@
           </div>
           <!-- End .title -->
           <div class="content">
-            <div class="row-fluid well well-small"> <img class="row-fluid" src="${request.static_url(user.getPhoto())}" <!--img/sample_avatar_big.jpg-->> </div>
+              % if user.getPhoto() is not None:
+              <div class="row-fluid well well-small"> <img class="row-fluid" src="${request.static_url(user.getPhoto())}" <!--img/sample_avatar_big.jpg-->> </div>
+              % else:
+              <div class="row-fluid well well-small"> <img class="row-fluid" src="">
+                <div class="span12">
+                  <div class="box color_26 height_big">
+                      <div class="content icon big_icon"><a href="${request.route_url('Directory')}"><img align="center" vertical-align="center" src="img/general/contacts_icon.png"/></a>
+                          <div class="description">IMAGE PLACEHOLDER</div>
+                      </div>
+                  </div>
+                </div>
+                <!-- End .span6 -->
+              </div>
+              % endif
             <ul class="nav nav-tabs dark nav-stacked">
               <li><a href="#"><i class="gicon-user"></i> Profile Dashboard</a></li>
               <li><a href="#"><i class="gicon-wrench"></i> Settings</a></li>

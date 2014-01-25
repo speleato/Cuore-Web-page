@@ -15,7 +15,7 @@
     <div class="span3">
       <div class="title">
         <div class="row-fluid legend">
-          <h1>${company} Directory</h1>
+          <h1>Directory</h1>
             </div>
           </div>
           <!-- End .title -->
@@ -52,13 +52,11 @@
     %for t in job_titles:
         <%
         title_node = Title(t)
-        print title_node
         users = title_node.getUsers()
         %>
         %for u in users:
             <%
             user_node = User(u)
-            print user_node.getFirstName()
             %>
     <%doc>  add link to user's profile, i think can be done using get
                   and then rendering the profile with the name as a parameter</%doc>

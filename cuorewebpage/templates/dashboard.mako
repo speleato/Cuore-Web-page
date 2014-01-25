@@ -5,6 +5,7 @@
 
     <div class="span8">
     <div class="box color_3 title_big height_xxxbig paint">
+
       <div class="title row-fluid fluid">
         <div class="row-fluid fluid">
           <div class="span12">
@@ -18,6 +19,7 @@
         <!-- End .row-fluid -->
       </div>
       <!-- End .title -->
+
       <div class="content row-fluid" style="padding-top:115px;">
           <ul class="messages_layout">
               <%
@@ -131,8 +133,8 @@
         <!-- End .span6 -->
         <div class="span6">
           <div class=" box color_26 height_medium paint_hover">
-            <div class="content icon big_icon"> <a href="#" ><img align="center" src="img/general/contacts_icon.png" /></a>
-              <div class="description">CONTACTS</div>
+            <div class="content icon big_icon"><a href="${request.route_url('Directory')}"><img align="center" src="img/general/contacts_icon.png"/></a>
+              <div class="description">DIRECTORY</div>
             </div>
           </div>
         </div>
@@ -341,6 +343,7 @@
 </div>
 <!-- /container -->
 
+<%block name="javascript">
 <!-- Le javascript
     ================================================== -->
 <!-- General scripts -->
@@ -619,7 +622,7 @@ function TaskListViewModel() {
 
 
 </script>
-
+</%block>
 
 
 

@@ -37,6 +37,10 @@ def Registration(request):
     if not getCurrentUser(request):
         print "------------------> create"
         ctx['view'] = 'create'
+    else:
+        return HTTPFound(location=request.route_url('Registration_Action', action='edit'))
+    return ctx
+"""
     elif getCurrentUser(request).isAdmin():
         if request.POST:
 #            print "------------------> admin"
@@ -50,10 +54,38 @@ def Registration(request):
 #        print "------------------> user_edit"
         ctx['view'] = 'edit'
         ctx['user'] = getCurrentUser(request)
+"""
+
+@view_config(route_name='Registration_Action', match_param="action=edit", renderer='cuorewebpage:templates/registration_edit.mako')
+def EditRegistration(request):
+    ctx = {}
+    departments = list()
+    for i in getCompany().getDepartments():
+        departments.append({"department":i["name"], "titles":Department(i).getTitles()})
+    ctx['departments'] = departments
+
+    if not getCurrentUser(request):
+        return redirectUser(request)
+    elif getCurrentUser(request).isAdmin():
+        if request.POST:
+            ctx['section'] = 'Admin Panel'
+        #            print "------------------> admin"
+            ctx['view'] = 'admin'
+            ctx['user'] = getUser(request.POST.getone('user'))
+        else:
+        #            print "------------------> admin_edit"
+            ctx['section'] = 'Admin Edit'
+            ctx['view'] = 'edit'
+            ctx['user'] = getCurrentUser(request)
+    else:
+    #        print "------------------> user_edit"
+        ctx['section'] = 'Edit Settings'
+        ctx['view'] = 'edit'
+        ctx['user'] = getCurrentUser(request)
     return ctx
 
 
-@view_config(route_name='Registration_Action', match_param="action=submit", renderer='cuorewebpage:templates/Registration.mako')
+@view_config(route_name='Registration_Action', match_param="action=submit", renderer='cuorewebpage:templates/registration.mako')
 def SubmitRegistration(request):
     #parameters = Model.process_business_logic()
     if not isUserLoggedOn(request):

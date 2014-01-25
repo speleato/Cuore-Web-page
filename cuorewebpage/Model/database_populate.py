@@ -128,17 +128,4 @@ post1.setBlog(cuore_blog.getNode())
 post2.setBlog(cuore_blog.getNode())
 post3.setBlog(cuore_blog.getNode())
 
-for d in sandy.getDepartments():
-    print Department(d).getName()
-for t in sandy.getTitles():
-    print Title(t)
-
-blog = Blog(Name="Cuore")
-posts = blog.getPosts()
-for p in posts:
-    print "-----------"
-    print Post(p).getName()
-    print Post(p).getContent()
-
-
 

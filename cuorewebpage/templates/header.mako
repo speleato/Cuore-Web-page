@@ -10,11 +10,14 @@
             % if user.getPhoto() is not None:
             <span class="icon"><img src="${request.static_url(user.getPhoto())}"></span></a>
             % else:
-            <span class="icon"><img src=""></span></a>
+            <span class="icon"> IMAGE WOULD<br>GO HERE<!--<img src="">-->
+            </span></a>
+            <!-- End .span6 -->
             %endif
             <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-              <li><a href="profile.html"><i class=" icon-user"></i> My Profile</a></li>
-              <li><a href="forms_general.html"><i class=" icon-cog"></i>Settings</a></li>
+              <li><a href="profile?email=${user.getEmail()}"><i class=" icon-user"></i> My Profile</a></li>
+              <li><a href="${request.route_url('Registration')}"><i class=" icon-cog"></i>Settings</a></li>
+
               <li><a href="index2.html"><i class=" icon-unlock"></i>Log Out</a></li>
               <li><a href="search.html"><i class=" icon-flag"></i>Help</a></li>
             </ul>
