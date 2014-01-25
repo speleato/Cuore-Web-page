@@ -22,6 +22,18 @@
             </div>
             <div class="content">
               <form class="form-horizontal row-fluid" action="${request.route_url('Blog_Action',action='create')}" method="post">
+<%doc>
+                  <div class="form-row control-group row-fluid">
+                      <label class="control-label span3">Blog</label>
+                      <div class="controls span9">
+                          <select data-placeholder="Click Here to Select" class="chzn-select" name="blog">
+                              %for b in blogs:
+                              <option value="${b.getName()}">${b.getName()}</option>
+                              %endfor
+                          </select>
+                      </div>
+                  </div>
+</%doc>
                   <div class="form-row control-group row-fluid">
                       <label class="control-label span3" for="max-length">Post Title</label>
                       <div class="controls span9">

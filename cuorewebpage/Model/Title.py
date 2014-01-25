@@ -1,11 +1,29 @@
 from py2neo import neo4j, ogm
 from database_config import *
-from cuorewebpage.lib.session import *
+
+# Class  : Title
+# Methods:
+#   1)  db_init(self)                                   - Private
+#	2) 	__init__(self)          						- Constructor
+#	3) 	__str__(self) 									- Returns informal string representation
+#	4) 	getNode(self)									- Returns the Company Node
+#	5) 	getName(self) 									- Returns name of company
+#	6) 	setName(self, name)             				- Takes name as a string
+#
+# Properties:
+#   1) name                                             - Company name
+#
+# Relationships:
+# 1) Affiliations
+#    (Department)
+#      |
+#   [:REL_HASTITLE]
+#      v
+#    (Self) -> [:REL_HASUSER] -> (User)
 
 class Title(object):
     graph_db = None
     store = None
-    index = None
     titleInstance = None
 
     def db_init(self):

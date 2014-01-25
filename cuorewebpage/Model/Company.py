@@ -1,8 +1,6 @@
 from py2neo import neo4j, ogm, node, rel
 from database_config import *
 
-graph_db = neo4j.GraphDatabaseService(db_config['uri'])
-store = ogm.Store(graph_db)
 # Class  : Company
 # Methods:
 #   1)  db_init(self)                                   - Private
@@ -12,6 +10,15 @@ store = ogm.Store(graph_db)
 #	5) 	getName(self) 									- Returns name of company
 #	6) 	setName(self, name)             				- Takes name as a string
 #
+# Properties:
+#   1) name                                             - Company name
+
+# Relationships:
+# 1) Affiliations
+#    (self)-[:REL_HASDEP]->(Department)-[:REL_HASTITLE]-(Title)->[:REL_HASUSER]->(User)
+# 2) Blog
+#    (self)-[:REL_HASBLOG]->(Blog)
+
 class Company(object):
     graph_db = None
     companyInstance = None
@@ -93,6 +100,14 @@ class Company(object):
             dep.removeTitle(i.name)
         self.store.delete(dep)
 
+    def getBlog(self):
+        global REL_HASBLOG
+        relationships = list(self.companyInstance.match_outgoing(REL_HASBLOG))
+        if len(relationships) != 0:
+            return relationships[0].end_node
+        else:
+            return None
+
 def getCompany():
-    company = Company(Name="Cuore")#store.load_unique(IND_COMP, "name", "Cuore", Company)
+    company = Company(Name="Cuore")
     return company

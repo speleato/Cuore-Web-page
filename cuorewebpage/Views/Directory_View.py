@@ -16,7 +16,7 @@ def Directory(request):
         ctx['section'] = 'Directory'
         ctx['user'] = getCurrentUser(request)
         ctx['company'] = Company(Name="Cuore").getName()
-        ctx['departments'] = Company(Name="Cuore").getAllDepartments()
+        ctx['departments'] = Company(Name="Cuore").getDepartments()
         return ctx
     else:
         return redirectUser(request)

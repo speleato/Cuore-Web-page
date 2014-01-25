@@ -6,7 +6,7 @@
           <li class="dropdown"> <a class="dropdown-toggle administrator" id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="/page.html">
             <div class="title"><span class="name">${user.userInstance['first_name']}</span><span class="subtitle">${user.userInstance['req_title']}</span></div>
       <%doc><div class="title"><span class="name">${user.userInstance['first_name']}</span><span class="subtitle">${user.userInstance['req_title']}</span></div></%doc>
-      <%doc><div class="title"><span class="name">${user.first_name}</span><span class="subtitle">${user.req_title}</span></div></%doc>
+      <%doc><div class="title"><span class="name">${user.first_name}</span><span class="subtitle">${user.getTitle()}</span></div></%doc>
             % if user.getPhoto() is not None:
             <span class="icon"><img src="${request.static_url(user.getPhoto())}"></span></a>
             % else:

@@ -1,31 +1,67 @@
 from py2neo import neo4j, ogm, node, rel
-from pyramid import request
+
+from database_config import *
 from cuorewebpage.Model.Calendar import Calendar
 from cuorewebpage.Model.Event import Event
 from cuorewebpage.Model.Workspace import Workspace
-
-from database_config import *
 from cuorewebpage.lib.session import *
+
 from cuorewebpage.Model.Department import *
 from cuorewebpage.Model.Title import Title
 from cuorewebpage.Model.Blog import Blog
+from cuorewebpage.Model.Task import Task
 
 # Class  : User
 # Methods:
 #	1) 	db_init(self) 									- Private
-#	1) 	__init__(self) 									- Constructor
-#	1) 	__str__(self) 									- for Print, returns name of User
-#	2) 	getNode(self)									- Returns the User Node
-#	3) 	getName(self) 									- Returns first name of User
+#	2) 	__init__(self) 									- Constructor
+#	3) 	getNode(self)									- Returns the User Node
+#	4) 	__str__(self) 									- for Print, returns name of User
+#	5) 	getFirstName(self) 								- Returns first name of User
+#	5) 	setFirstName(self) 								- Sets first name of User
+#	6) 	getLastName(self) 								- Returns last name of User
+#	6) 	setLastName(self) 								- Sets last name of User
+#	7) 	getFullName(self) 								- Returns full name of User
+#	7) 	getEmail(self)  								- Returns full name of User
+#	7) 	setEmail(self)   								- Returns full name of User
 #	4) 	...getters and setters for the various properties...
 #       ...
 #       ...
 #       ...
 #       ...
+# Properties:
+#   1) uid                                              - Unique ID from OneID Auth
+#   2) first_name                                       - first name
+#   3) last_name                                        - last name
+#   4) email                                            - email address
+#   5) phone                                            - phone number
+#   6) address                                          - street address
+#   7) city
+#   8) state
+#   9) zipcode                                          - zipcode
+#  10) about                                            - about section for User
+#  11) photo                                            - profile picture
+#  12) photo_t                                          - profile thumbnail
+#  13) req_title                                        - requested Title
+#  14) req_dept                                         - requested Department
+#  15) confirmed                                        - 1 User Confirmed 2 Leo Confirmed 3 Both
+#  16)
 
-# Constants:
-# The confirmed variable represents the level of confirmation similar to chmod. 1 means user confirmed, 2 means
-# Leo confirmed, and 3 means both confirmed
+# Relationships:
+# 1) Affiliations
+#    (self)<-[:REL_HASUSER]-(Title)<-[:REL_HASTITLE]<-(Department)<-[:REL_HASDEP]<-(Company)
+# 2) Blogs
+#    (self)<-[:REL_CREATEDBY]<-(Post)<-[:REL_HASPOST]<-(Blog)<-[:REL_HASBLOG]<-(Department)
+#    (self)<-[:REL_CREATEDBY]<-(Post)<-[:REL_HASPOST]<-(Blog)<-[:REL_HASBLOG]<-(Company)
+# 3) Calendar
+#    (self)->[:REL_HASCAL]->(Calendar)->[:REL_HASEVENT]->(Event)->[:REL_CREATEDBY]->(self or User)
+# 4) Workspace
+#    (self)->[:REL_HASWORKSPACE]->(Workspace)->[:REL_HASPROJECT]->(Project)
+#       ^                                                            |
+#       |                                                            v
+#       '----------------[:REL_ASSIGNEDTO]  <- (task)  <-[:REL_HASTASK]
+# 5) Messages (future)
+
 
 class User:
     graph_db = None
@@ -36,7 +72,6 @@ class User:
         if self.graph_db is None:
             self.graph_db = neo4j.GraphDatabaseService(db_config['uri'])
             self.store = ogm.Store(self.graph_db)
-#            self.index = self.graph_db.schema.create_index(IND_USER, "name")
 
     # Function  : Constructor
     # Arguments : URI of Existing User Node OR UID of User
@@ -98,6 +133,8 @@ class User:
     # Returns	: userInstance Node
     def getNode(self):
         return self.userInstance
+
+    # =================== Property Getters & Setters ========================
 
     # Function  : getUID
     # Arguments :
@@ -208,12 +245,7 @@ class User:
     def getConfirmed(self):
         return self.userInstance['confirmed']
 
-    # Function  : removeUser
-    # Arguments :
-    # Returns   :
-    # Descript: : deletes user from neo4j db
-    def removeUser(self):
-        self.store.delete(self)
+    # =================== Relationship Getters & Setters ====================
 
     # Function  : setTitle
     # Arguments : (Title Node) job_title
@@ -235,6 +267,15 @@ class User:
             titles.append(rels.start_node)
         return titles
 
+    # Function  : getTitle
+    # Arguments :
+    # Returns   : title node of user, not Admin
+    def getTitle(self):
+        for t in self.getTitles():
+            if Title(t).getName() != "Admin":
+                return t
+        return None
+
     # Function  : getDepartments
     # Arguments :
     # Returns   : list of department nodes associated w/ self
@@ -243,6 +284,17 @@ class User:
         for t in self.getTitles():
             departments.extend(Title(t).getDepartments())
         return departments
+
+    # Function  : getDepartment
+    # Arguments :
+    # Returns   : the department the user belongs to, excepting Admin
+    def getDepartment(self):
+        for d in self.getDepartments():
+            if Department(d).getName() != "Admin":
+                return d
+        return None
+
+    # ---------------------------------------------------------------Blogs---
 
     # Function  : getDepBlogs
     # Arguments :
@@ -254,11 +306,44 @@ class User:
                 blogs.extend(Department(dep).getBlog())
         return blogs
 
-    def isAdmin(self):
-        for i in self.getDepartments():
-            if Department(i).getName() == "Admin" or Department(i).getName() == "admin":
-                return True
-        return False
+    # Function  : getDepBlog
+    # Arguments :
+    # Returns   : the blog belonging to user's department (not-Admin)
+    def getDepBlog(self):
+        return Blog(self.getDepBlogs()[0])
+
+    # Function  : getMergedBlogPosts
+    # Arguments :
+    # Returns   : list of post nodes from all blogs User is subscribed to -
+    #             Company wide and department based
+    def getMainDepBlogPosts(self):
+        blogs = list()
+        for dep in self.getDepartments():
+            if Department(dep).getName() != "Admin":
+                blogs.append(dep)
+        posts = list()
+        for b in blogs:
+            posts.extend(Blog(b).getPosts())
+        return posts
+
+    # Function  : getMergedBlogPosts
+    # Arguments :
+    # Returns   : list of post nodes from all blogs User is subscribed to -
+    #             Company wide and department based
+    def getMergedBlogPosts(self):
+        blogs = list()
+        blogs.append(Blog(Name="Cuore").getNode())
+        blogs.extend(self.getDepBlogs())
+        posts = list()
+        for b in blogs:
+            posts.extend(Blog(b).getPosts())
+        return posts
+
+    # -----------------------------------------------------------Dashboard---
+
+    # -------------------------------------------------------------Profile---
+
+    # ------------------------------------------------------------Calendar---
 
     # Function : getCalendar
     # Arguments :
@@ -287,6 +372,31 @@ class User:
         for relationship in list(self.userInstance.match_incoming(REL_INVITED)):
             events.append(Event(URI=relationship.start_node))
         return events
+
+    def getAssignedTasks(self):
+        global REL_ASSIGNEDTO
+        tasks = list()
+        for relationship in list(self.userInstance.match_incoming(REL_ASSIGNEDTO)):
+            tasks.append(Task(URI=relationship.start_node))
+        return tasks
+    # ------------------------------------------------------------Workspace--
+
+
+    # =================== Miscellaneous Methods =============================
+
+    # Function  : removeUser
+    # Arguments :
+    # Returns   :
+    # Descript: : deletes user from neo4j db
+    def removeUser(self):
+        self.store.delete(self)
+
+    def isAdmin(self):
+        for i in self.getDepartments():
+            if Department(i).getName() == "Admin" or Department(i).getName() == "admin":
+                return True
+        return False
+
 
 # ---------------------------- NON MEMBER FUNCTIONS -------------------------
 

@@ -26,7 +26,24 @@ from database_config import *
 #	13)	getOwner(self)									- Returns a User Node
 #   14) addComment(self, comment)                       - Adds a comment node
 #   15) getComments(self)                               - Returns a list of Comment Nodes
-# Constants:
+
+# Properties:
+#   1) name                                             - title of post
+#   2) content                                          - body of post
+#   3) description                                      - description? (maybe don't need this)
+#   4) sTime                                            - time first posted
+#   5) tags                                             - JSON encoded, maybe better to make nodes?
+
+# Relationships:
+# 1) Blog and User and Comment
+#    [:REL_CREATEDBY]<-(User-Owner)
+#       |
+#       v
+#    (self)<-[:REL_HASPOST]<-(Blog)<-[:REL_HASBLOG]<-(Company/Department-Owner)
+#       |
+#    [:REL_HASCOMMENT]->(comment)
+#
+# 3) Tags (future?)
 
 class Post:
     graph_db = None
@@ -63,12 +80,14 @@ class Post:
 #            raise Exception("Name or URI not specified")
 
         self.postInstance = tempPost
-        self.setTime(datetime.utcnow())
 
         if Content is not None and Owner is not None:
             self.postInstance["content"] = Content
             self.setOwner(Owner)
-            self.setBlog(User(Owner).getDepBlogs()[0])
+            self.setTime(datetime.utcnow())
+        if Blog is not None:
+#            self.setBlog(User(Owner).getDepBlogs()[0])
+            self.setBlog(Blog)
 
 
     #
@@ -126,18 +145,18 @@ class Post:
 
     #
     # Function	: setTime
-    # Arguments	: String time (in milliseconds)
+    # Arguments	: String sTime (in milliseconds)
     # Returns	:
     #
     def setTime(self, time):
-        self.postInstance["time"] = time
+        self.postInstance["sTime"] = time
     #
     # Function	: getTime
     # Arguments	:
-    # Returns	: (String) time
+    # Returns	: (String) sTime
     #
     def getTime(self):
-        return self.postInstance["time"]
+        return self.postInstance["sTime"]
 
     #
     # Function  : getTimeWords(self)
@@ -170,7 +189,6 @@ class Post:
     def setOwner(self, owner):
         global REL_CREATEDBY, LBL_USER
         if LBL_USER in owner.get_labels():
-            #print "--------HERE WE GO SETTING THE OWNER NOW"
             return self.postInstance.get_or_create_path(REL_CREATEDBY, owner)
         else:
             raise Exception("The Node Provided is not a User")
@@ -215,27 +233,28 @@ class Post:
     #
     # Function  : addComment
     # Arguments : (Comment Node) comment
-    # Returns   :
+    # Returns   : path
     #
     def addComment(self, comment):
         global REL_HASCOMMENT, LBL_COMMENT
         if LBL_COMMENT in comment.get_labels():
             return self.postInstance.get_or_create_path(REL_HASCOMMENT, comment)
         else:
-            raise Exception("The Node Provided is not a comment")
+            raise Exception("The Node Provided is not a Comment")
 
     #
-    # Function  : addComment
+    # Function  : getComment
     # Arguments : (Comment Node) comment
-    # Returns   :
+    # Returns   : list of comment nodes
     #
     def getComments(self):
         global REL_HASCOMMENT
         comments = list()
-        for relationships in list(self.postInstance.match_outgoing(REL_HASCOMMENT)):
-            comments.append(relationships.end_node)
+        for relationship in list(self.postInstance.match_outgoing(REL_HASCOMMENT)):
+            comments.append(relationship.end_node)
         return comments
 
+"""
     #
     # Function  : slug
     # Arguments :
@@ -257,3 +276,4 @@ class Post:
     def get_paginator(cls, request, page=1):
         page_url = PageURL_WebOb(request)
         return Page(Post.all(), page, url=page_url, items_per_page=5)
+"""

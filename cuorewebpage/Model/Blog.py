@@ -1,3 +1,4 @@
+
 from py2neo import neo4j, node
 from database_config import *
 
@@ -11,7 +12,20 @@ from database_config import *
 #	6) 	getOwner(self)									- Returns a Department Node
 #	7) 	addPost(self, post)								- Adds a Post node to the Blog
 #	8)	getPosts(self)									- Returns a list of Post Nodes
-# Constants: 
+#
+# Properties:
+#   1) name                                             - title of post
+#   2) description                                      - description? (maybe don't need this)
+#   4) sTime                                            - time first posted
+#   5) tags                                             - JSON encoded, maybe better to make nodes?
+
+# Relationships:
+# 1) Owner (Company/Department/User); Post
+#    (self)<-[:REL_HASBLOG]<-(Company/Department-Owner)
+#       |
+#    [:REL_HASPOST]->(Post)-[:REL_CREATEDBY]->(User-Owner)
+#       |
+#    [:REL_HASCOMMENT]->(comment)
 
 class Blog:
     graph_db = None

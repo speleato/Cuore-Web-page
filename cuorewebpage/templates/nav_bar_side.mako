@@ -34,6 +34,7 @@
                             data-parent="#sidebar_menu" href="#collapse2">
                         <img src="img/menu_icons/widgets.png"><span>Workspace</span></a>
                         <ul id="collapse2" class="accordion-body collapse">
+                            <li><a href="${request.route_url('Workspace')}">Department</a></li>
                             <li><a href="${request.route_url('Files')}">Files</a></li>
                             <li><a href="${request.route_url('Calendar')}">Calendar</a></li>
                             <li><a href="${request.route_url('Tasks')}">Tasks</a></li>

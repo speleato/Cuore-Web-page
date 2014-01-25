@@ -22,26 +22,21 @@ def blog_list_view(request):
     if isUserLoggedOn(request):
         ctx = {}
         ctx['section'] = 'Blog'
-        ctx['user'] = getCurrentUser(request)
-        ctx['posts'] = list()
-        ctx['blog'] = Blog(Name="Cuore")
 
-        blogs = ctx['user'].getDepBlogs()
-        posts = list()
-        for b in blogs:
-            posts.extend(Blog(b).getPosts())
+        if getCurrentUser(request) is None:
+            return redirectUser(request)
+        else: #Get the user, calendar, and events so we can populate them in the template
+            print "We have an actual user!!"
+            mUser     = User(uid=request.session['uid'])
+            mBlog     = Blog(Name="Cuore")
 
-        for p in posts:
-            ctx['posts'].append(Post(p))
+            posts     = list()
+            for p in mBlog.getPosts():
+                posts.append(Post(p))
 
-#            print "------------- POST -----------------"
-#            name = Post(p).getName()
-#            content = Post(p).getContent()
-#            print name + ": " + content
-#            print "------------------------------------"
-
-#        page = int(request.params.get('page', 1))
-#        ctx['paginator'] = Post.get_paginator(request, page)
+            ctx['user']     = mUser
+            ctx['blog']     = mBlog
+            ctx['posts']    = posts
 
         return ctx
     else:
@@ -62,20 +57,30 @@ def blog_post_view(request):
 def blog_post_create(request):
     if isUserLoggedOn(request):
         ctx = {}
-        ctx['section'] = "Create Blog Post"
-        ctx['user'] = getCurrentUser(request)
-        owner = User(uid=request.session['uid'])
-        blog = Blog(Name='Cuore')
-        if request.POST:
-            post_name =re.sub("[^A-Za-z0-9,.\-()]", "", request.POST.getone('name'))
-            post_content =re.sub("[^A-Za-z0-9,.\-()]", "", request.POST.getone('content'))
-            print datetime.now()
-            post = Post(Name=post_name, Content=post_content, Owner=owner.getNode())
-            post.setBlog(blog.getNode())
-            return HTTPFound(location=request.route_url('Blog'))
-        return ctx
+        ctx['section'] = 'Create Blog Post'
+
+        if getCurrentUser(request) is None:
+            return redirectUser(request)
+        else: #Get the user, calendar, and events so we can populate them in the template
+            print "We have an actual user!!"
+            mUser     = User(uid=request.session['uid'])
+            mBlog     = Blog(Name="Cuore")
+
+            if request.POST:
+#                post_blog = request.POST.getone('blog')
+                post_name =re.sub("[^A-Za-z0-9,.\-()]", "", request.POST.getone('name'))
+                post_content =re.sub("[^A-Za-z0-9,.\-()]", "", request.POST.getone('content'))
+                post = Post(Name=post_name, Content=post_content, Owner=mUser.getNode(), Blog=mBlog.getNode())
+                #            post.setBlog(blog.getNode())
+    #            post.setBlog(Blog(Name=post_blog).getNode())
+                return HTTPFound(location=request.route_url('Blog'))
+
+            ctx['user']     = mUser
+            ctx['blog']     = mBlog
+            return ctx
     else:
         return redirectUser(request)
+
 
 @view_config(route_name='Blog_Action', match_param='action=update', renderer='cuorewebpage:templates/blog_edit.mako')
 def blog_post_update(request):
@@ -131,3 +136,10 @@ def blog_post_update(request):
             print Post(p).getContent()
             print "==========================================================================="
 """
+#        page = int(request.params.get('page', 1))
+#        ctx['paginator'] = Post.get_paginator(request, page)
+
+#        blogs = ctx['user'].getDepBlogs() # a list of Blog nodes
+#        posts = list()
+#        for b in blogs:
+#            posts.extend(Blog(b).getPosts()) # a list of Post nodes

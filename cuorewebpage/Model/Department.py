@@ -11,19 +11,28 @@ from Title import Title
 #	5) 	getName(self) 									- Returns name of company
 #	6) 	setName(self, name)             				- Takes name as a string
 #
+# Properties:
+#   1) name                                             - Company name
+#
+# Relationships:
+# 1) Affiliations
+#   [:REL_HASBLOG]->(Blog)
+#      |
+#    (self)-[:REL_HASTITLE]-(Title)->[:REL_HASUSER]->(User)
+#      ^
+#   [:REL_HASDEP]
+#      |
+#    (company)
+
 class Department(object):
     graph_db = None
     store = None
     deptInstance = None
-    index = None
-    schema = None
 
     def db_init(self):
         if self.graph_db is None:
             self.graph_db = neo4j.GraphDatabaseService(db_config['uri'])
             self.store = ogm.Store(self.graph_db)
-            #self.index = self.graph_db.get_or_create_index(neo4j.Node, IND_DEP)
-            #self.schema = self.graph_db.schema.create_index(IND_DEP, "name")
 
     def __init__(self, URI=None, name=None, company=None):
         global LBL_DEPARTMENT, IND_DEP
@@ -43,7 +52,6 @@ class Department(object):
             global LBL_COMPANY, REL_HASDEP
             if LBL_COMPANY in company.get_labels():
                 company.get_or_create_path(REL_HASDEP, self.deptInstance)
-#                self.deptInstance.get_or_create_path(REL_HASDEP, company)
             else:
                 raise Exception("The Node Provided is not a Company")
 
@@ -53,24 +61,6 @@ class Department(object):
 
     def getName(self):
         return self.deptInstance['name']
-
-    # Function  : getAllTitles
-    # Arguments :
-    # Returns   : list of Title objects related to self
-    def getTitles(self):
-        global REL_HASTITLE
-        titles = list()
-        rels = self.getNode().match_outgoing(REL_HASTITLE)
-        for i in rels:
-            titles.append(i.end_node)
-        return titles
-        #return self.store.load_related(self, REL_HASTITLE, Title)
-
-    # Function  : getTitle
-    # Arguments : name of Title (string)
-    # Returns   : requested related Title object
-    def getTitle(self, name):
-        return self.store.load_unique(IND_TITLE, "name", name, Title)
 
     # Function: getNode
     # Arguments:
@@ -100,29 +90,32 @@ class Department(object):
             title.safeRemoveUser(i.uid)
         self.store.delete(title)
 
-    # Function: getBlog
-    # Arguments:
-    # Returns: list of related blog nodes
-    def getBlog (self):
-        global REL_HASOWNER
-        blogs = list()
-        for rel in list(self.deptInstance.match_incoming(REL_HASOWNER)):
-            blogs.append(rel.start_node)
-        return blogs
-
+    # Function  : getTitles
+    # Arguments :
+    # Returns   : list of Title objects related to self
     def getTitles(self):
         global REL_HASTITLE
         titles = list()
-        for relationship in list(self.deptInstance.match_outgoing(REL_HASTITLE)):
-            titles.append(relationship.end_node)
+        for t in list(self.deptInstance.match_outgoing(REL_HASTITLE)):
+            titles.append(t.end_node)
         return titles
+
+    # Function: getBlog
+    # Arguments:
+    # Returns: related Blog node
+    def getBlog(self):
+        global REL_HASOWNER
+        relationships = list(self.deptInstance.match_incoming(REL_HASOWNER))
+        if len(relationships) != 0:
+            return relationships[0].start_node
+        else:
+            return None
 
     def getUsers(self):
         global REL_HASUSER
         users = list()
-        for i in self.getTitles():
-            for j in Title(i).getUsers():
-                users.append(j)
+        for t in self.getTitles():
+            users.extend(Title(t).getUsers())
         return users
 
 

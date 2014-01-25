@@ -56,7 +56,7 @@ users = dict(
 graph_db.create(
     (titles['Admin'], REL_HASUSER, users['kirby']),
     (titles['Admin'], REL_HASUSER, users['leo']),
-    (titles['Admin'], REL_HASUSER, users['sandy']),
+#    (titles['Admin'], REL_HASUSER, users['sandy']),
     (titles['Pres'], REL_HASUSER, users['leo']),
     (titles['VP'], REL_HASUSER, users['kevin_r']),
     (titles['AppDev'], REL_HASUSER, users['sandy']),
@@ -75,6 +75,7 @@ hw_blog = Blog(Name="Hardware", Owner=departments[2])
 sys_blog = Blog(Name="Systems", Owner=departments[3])
 adm_blog = Blog(Name="Admin", Owner=departments[4])
 cuore_blog = Blog(Name="Cuore", Owner=company)
+cuore_blog.setDescription("Company wide news")
 
 event_meet_time = (datetime.now()-datetime(1970,1,1)).total_seconds()
 event_meeting   = Event(Name="General Meeting", Owner=users['leo'], sTime=event_meet_time, eTime=event_meet_time)
@@ -110,16 +111,24 @@ for key in users.keys():
     workspace   = Workspace(Name=(mUser.getFullName() + "'s Workspace"), Owner=mUser.getNode())
 
 sandy = User(users['sandy'])
-post1 = Post(Name="hello1", Content="testing 1", Owner=sandy.getNode())
-post2 = Post(Name="hello2", Content="testing 2", Owner=sandy.getNode())
-post2 = Post(Name="hello3", Content="testing 3", Owner=sandy.getNode())
+post1 = Post(Name="My Goodness", Content="I am so totally cracked out from doing this all night, I really should" \
+                                         " learn not to procrastinate so that I don't have to pull all nighters", Owner=sandy.getNode())
+post2 = Post(Name="Quite Exciting", Content="Maybe it is time for me to go to sleep, although looking at the clock" \
+    " I almost feel like what a wuss, it's only 12:25!", Owner=sandy.getNode())
+post3 = Post(Name="Maybe it's the lead paint though", Content="Did you know that lead paint vaporizes around or above 1100 degrees" \
+    " Fahrenheit? Yeah, so maybe house paint from 1906 and blowtorches aren't the best combination for your health" \
+    " but what are you going to do?", Owner=sandy.getNode())
+post1.setBlog(cuore_blog.getNode())
+post2.setBlog(cuore_blog.getNode())
+post3.setBlog(cuore_blog.getNode())
 
 for d in sandy.getDepartments():
     print Department(d).getName()
 for t in sandy.getTitles():
     print Title(t)
-blogs = sandy.getDepBlogs()
-posts = Blog(blogs[0]).getPosts()
+
+blog = Blog(Name="Cuore")
+posts = blog.getPosts()
 for p in posts:
     print "-----------"
     print Post(p).getName()

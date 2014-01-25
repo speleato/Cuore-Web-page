@@ -3,11 +3,7 @@
   <div class="row-fluid">
     <div class="span9">
       <div class="title row-fluid legend">
-          % if blog.getName() is not None:
-        <h2>${blog.getName()} Blog - Latest articles </h2>
-          % else:
           <h2>Blog - Latest articles </h2>
-          % endif
       </div>
       <div class="row-fluid">
         %for item in posts:
@@ -19,12 +15,13 @@
                 <a href="#"><span class="label label-info">UI</span></a>
                 <a href="#"><span class="label label-info">growth</span></a>
                 <i class="icon-user"></i>
-                <a href="#">${blog.getName()}</a>
+                <% from cuorewebpage.Model.Blog import Blog %>
+                <a href="#">${Blog(item.getBlog()).getName()}</a>
                 <i class="icon-calendar"></i> ${item.getTime()}
                 <i class="icon-comment"></i>
-                <a href="#">3 Comments</a>
-                <i class="icon-share"></i>
-                <a href="#">39 Shares</a>
+                <a href="#">${len(item.getComments())} Comments</a>
+<!--                <i class="icon-share"></i>
+                <a href="#">39 Shares</a>-->
             </p>
         %endfor
       </div>
@@ -44,15 +41,14 @@
       <div class="title">
         <div class="row-fluid legend">
           <h2> About </h2>
-            % if blog.getDescription() is not None:
-            <p>${blog.getDescription()}</p>
-            % else:
-            <p>No blog description.</p>
-            % endif
         </div>
       </div>
       <div class="container">
-<!--        <p>${blog.getDescription()}</p>-->
+          % if blog.getDescription() is not None:
+          <p>${blog.getDescription()}</p>
+          % else:
+          <p>No blog description.</p>
+          % endif
       </div>
       <!-- End .title -->
 
@@ -64,10 +60,11 @@
           <ul class="nav nav-tabs dark nav-stacked">
             <li ><a href="${request.route_url('Blog_Action', action='dashboard')}"><i class="gicon-home"></i> Dashboard</a></li>
             <li><a href="${request.route_url('Blog_Action', action='create')}"><i class="gicon-edit"></i> Add Blog Post</a></li>
-            <li><a href="#"><i class="gicon-calendar"></i> Calendar</a></li>
+<!--            <li><a href="#"><i class="gicon-calendar"></i> Calendar</a></li>
             <li><a href="#"><i class="gicon-user"></i> Members</a></li>
             <li><a href="#"><i class="gicon-comment"></i> Comments</a></li>
             <li><a href="#"><i class="gicon-picture"></i> Gallery</a></li>
+-->
           </ul>
         </div>
       </div>
