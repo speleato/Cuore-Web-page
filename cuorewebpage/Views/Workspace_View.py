@@ -175,13 +175,6 @@ def Tasks(request):
     else:
         return redirectUser(request)
 
-    if isUserLoggedOn(request):
-        ctx = {}
-        ctx['section'] = 'Tasks'
-        return ctx
-    else:
-        return redirectUser(request)
-
 @view_config(route_name="Workspace", renderer="cuorewebpage:templates/workspace.mako")
 def Workspace(request):
     if isUserLoggedOn(request):

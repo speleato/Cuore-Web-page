@@ -153,7 +153,7 @@
         <ul class="users unstyled content">
           <li>
             <div class="info row-fluid"><span class="number pull-left text_color_0">1</span>
-              <h2 class="pull-left">Kirby</h2>
+              <h2 class="pull-left">George</h2>
             </div>
             <div class="row-fluid">
               <div class="progress small" style="width: 60%;"></div>
@@ -162,7 +162,7 @@
           </li>
           <li>
             <div class="info row-fluid"><span class="number pull-left text_color_0">2</span>
-              <h2 class="pull-left">Mason</h2>
+              <h2 class="pull-left">Celeste</h2>
             </div>
             <div class="row-fluid">
               <div class="progress small" style="width: 40%;"></div>
@@ -171,11 +171,11 @@
           </li>
           <li>
             <div class="info row-fluid"><span class="number pull-left text_color_0">3</span>
-              <h2 class="pull-left">Vincente</h2>
+              <h2 class="pull-left">Bender</h2>
             </div>
             <div class="row-fluid">
               <div class="progress small" style="width: 25%;"></div>
-              <div class="value">6.7k Reach</div>
+              <div class="value">7.6k Reach</div>
             </div>
           </li>
         </ul>

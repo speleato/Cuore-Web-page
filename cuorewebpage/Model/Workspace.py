@@ -49,10 +49,10 @@ class Workspace:
             raise Exception("Name or URI not specified")
 
         if Owner is not None:
-            if LBL_USER in Owner.get_labels():
+            if LBL_DEPARTMENT in Owner.get_labels():
                 Owner.get_or_create_path(REL_HASWORKSPACE, tempWorkspace)
             else:
-                raise Exception("The Node provided is not a User")
+                raise Exception("The Node provided is not a Department")
 
         self.workspaceInstance = tempWorkspace
 
@@ -109,12 +109,12 @@ class Workspace:
     # Returns	:
     #
     def addOwner(self, owner):
-        global REL_HASWORKSPACE, LBL_USER
+        global REL_HASWORKSPACE, LBL_DEPARTMENT
         if len(list(self.workspaceInstance.match_incoming(REL_HASWORKSPACE))) == 0:
-            if LBL_USER in owner.get_labels():
+            if LBL_DEPARTMENT in owner.get_labels():
                 return owner.get_or_create_path(REL_HASWORKSPACE, self.workspaceInstance)
             else:
-                raise Exception("The Node provided is not a User")
+                raise Exception("The Node provided is not a Department")
         else:
             raise Exception("There is already an Owner")
     #

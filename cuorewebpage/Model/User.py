@@ -355,16 +355,12 @@ class User:
             return Calendar(relationship.end_node)
         else:
             return None
+
     # Function  : getWorkspace
     # Arguments :
     # Returns   : a Workspace Object
     def getWorkspace(self):
-        global REL_HASWORKSPACE
-        relationship = (list(self.userInstance.match_outgoing(REL_HASWORKSPACE)))[0]
-        if relationship is not None:
-            return Workspace(relationship.end_node)
-        else:
-            return None
+        return Department(self.getDepartment()).getWorkspace()
 
     def getInvitedEvents(self):
         global REL_INVITED

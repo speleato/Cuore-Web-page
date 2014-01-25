@@ -21,11 +21,11 @@ graph_db.clear()
 
 company = Company(Name="Cuore").getNode()
 
-departments = [ Department(name="business", company=company).getNode(),
-                Department(name="applications", company=company).getNode(),
-                Department(name="hardware", company=company).getNode(),
-                Department(name="systems", company=company).getNode(),
-                Department(name="admin", company=company).getNode(), ]
+departments = [ Department(name="Business", company=company).getNode(),
+                Department(name="Applications", company=company).getNode(),
+                Department(name="Hardware", company=company).getNode(),
+                Department(name="Systems", company=company).getNode(),
+                Department(name="Admin", company=company).getNode(), ]
 titles = dict(
     Pres=Title(name="President", dept=departments[0]).getNode(),
     VP=Title(name="Vice-President", dept=departments[0]).getNode(),
@@ -69,6 +69,10 @@ graph_db.create(
 #    (users['sandy'], REL_ISMEMBER, departments[4]),
     )
 
+for team in departments:
+    workspaces = list()
+    workspaces.append(Workspace(Name=(Department(team).getName() + " Workspace"), Owner=Department(team).getNode()))
+
 bus_blog = Blog(Name="Business", Owner=departments[0])
 app_blog = Blog(Name="Applications", Owner=departments[1])
 hw_blog = Blog(Name="Hardware", Owner=departments[2])
@@ -84,8 +88,11 @@ leo_calendar.addEvent(event_meeting.getNode())
 
 app_team = Department(departments[1]).getUsers()
 
+
 for person in app_team:
     mUser = User(person)
+    workspace = mUser.getWorkspace()
+
     app_calendar    = Calendar(Name=(mUser.getFullName() + "'s Calendar"), Owner=mUser.getNode())
     event_app_time  = (datetime(2014, 1, 19)-datetime(1970,1,1)).total_seconds()
     event_app_hack  = Event(Name="Applications Hack Event", sTime=event_app_time, eTime=event_app_time)
@@ -95,7 +102,6 @@ for person in app_team:
     app_calendar.addEvent(event_app_hack.getNode())
     event_meeting.addInvitee(mUser.getNode())
 
-    workspace   = Workspace(Name=(mUser.getFullName() + "'s Workspace"), Owner=mUser.getNode())
     project     = Project(Name="Intranet Project")
     task1       = Task(Name="Finish the Intranet", Status=STS_IN_PROG)
     task1.assignToUser(mUser.getNode())
@@ -108,7 +114,7 @@ for person in app_team:
 for key in users.keys():
     mUser = User(users[key])
     calendar    = Calendar(Name=(mUser.getFullName() + "'s Calendar"), Owner=mUser.getNode())
-    workspace   = Workspace(Name=(mUser.getFullName() + "'s Workspace"), Owner=mUser.getNode())
+#    workspace   = Workspace(Name=(mUser.getFullName() + "'s Workspace"), Owner=mUser.getNode())
 
 sandy = User(users['sandy'])
 post1 = Post(Name="My Goodness", Content="I am so totally cracked out from doing this all night, I really should" \

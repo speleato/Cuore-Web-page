@@ -1,6 +1,7 @@
 from py2neo import neo4j, ogm
 from database_config import *
 from Title import Title
+from Workspace import Workspace
 
 # Class  : Department
 # Methods:
@@ -108,6 +109,17 @@ class Department(object):
         relationships = list(self.deptInstance.match_incoming(REL_HASOWNER))
         if len(relationships) != 0:
             return relationships[0].start_node
+        else:
+            return None
+
+    # Function  : getWorkspace
+    # Arguments :
+    # Returns   : a Workspace Object
+    def getWorkspace(self):
+        global REL_HASWORKSPACE
+        relationship = (list(self.deptInstance.match_outgoing(REL_HASWORKSPACE)))[0]
+        if relationship is not None:
+            return Workspace(relationship.end_node)
         else:
             return None
 
