@@ -1,4 +1,5 @@
 from database_config import *
+from datetime import datetime
 from py2neo import neo4j, node
 
 # Class  : Task
@@ -26,7 +27,14 @@ from py2neo import neo4j, node
 #	18) addFile(self, file)								- adds a file to the task
 #	19) getFiles(self)									- Returns a list of File Nodes
 #
-# Constants: 
+# Properties:
+#   1)  name
+#   2)  description
+#   3)  eTime
+#   4)  iTime
+#   5)  deadline
+#   6)  priority
+#   7)  status
 
 STS_OPEN = "Open"
 STS_CLOSED = "Closed"
@@ -61,7 +69,8 @@ class Task:
             tempTask = neo4j.Node(URI)
 
         elif Name is not None and Status is not None:
-            tempTask, = self.graph_db.create({"name": Name, "status": Status})
+#            tempTask, = self.graph_db.create({"name": Name, "status": Status})
+            tempTask = self.graph_db.get_or_create_indexed_node(IND_TASK, "nametime", Name+str(datetime.now()), {"name": Name, "status": Status})
             tempTask.add_labels(LBL_TASK)
 
         else:
@@ -69,6 +78,15 @@ class Task:
 
         self.taskInstance = tempTask
 
+    # Function	: __str__
+    # Arguments	:
+    # Returns	: name of task
+    #
+    def __str__(self):
+        if self.taskInstance is not None:
+            return self.taskInstance["name"]
+        else:
+            return None
     #
     # Function	: getName
     # Arguments	:

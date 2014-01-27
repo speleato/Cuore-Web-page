@@ -7,11 +7,11 @@ from cuorewebpage.Model.Project import Project
 from cuorewebpage.Model.Task import Task, STS_OPEN, STS_IN_PROG
 from cuorewebpage.Model.Workspace import Workspace
 from database_config import *
-from Person import getCurrentUser, getUser
+#from Person import getCurrentUser, getUser
 from Company import Company
 from Department import Department
 from Title import Title
-from User import User
+from User import User, getCurrentUser, getUser
 from Blog import Blog
 from Post import Post
 
@@ -21,11 +21,11 @@ graph_db.clear()
 
 company = Company(Name="Cuore").getNode()
 
-departments = [ Department(name="business", company=company).getNode(),
-                Department(name="applications", company=company).getNode(),
-                Department(name="hardware", company=company).getNode(),
-                Department(name="systems", company=company).getNode(),
-                Department(name="admin", company=company).getNode(), ]
+departments = [ Department(name="Business", company=company).getNode(),
+                Department(name="Applications", company=company).getNode(),
+                Department(name="Hardware", company=company).getNode(),
+                Department(name="Systems", company=company).getNode(),
+                Department(name="Admin", company=company).getNode(), ]
 titles = dict(
     Pres=Title(name="President", dept=departments[0]).getNode(),
     VP=Title(name="Vice-President", dept=departments[0]).getNode(),
@@ -56,6 +56,7 @@ users = dict(
 graph_db.create(
     (titles['Admin'], REL_HASUSER, users['kirby']),
     (titles['Admin'], REL_HASUSER, users['leo']),
+#    (titles['Admin'], REL_HASUSER, users['sandy']),
     (titles['Pres'], REL_HASUSER, users['leo']),
     (titles['VP'], REL_HASUSER, users['kevin_r']),
     (titles['AppDev'], REL_HASUSER, users['sandy']),
@@ -68,51 +69,63 @@ graph_db.create(
 #    (users['sandy'], REL_ISMEMBER, departments[4]),
     )
 
+for team in departments:
+    workspaces = list()
+    workspaces.append(Workspace(Name=(Department(team).getName() + " Workspace"), Owner=Department(team).getNode()))
+
 bus_blog = Blog(Name="Business", Owner=departments[0])
 app_blog = Blog(Name="Applications", Owner=departments[1])
 hw_blog = Blog(Name="Hardware", Owner=departments[2])
 sys_blog = Blog(Name="Systems", Owner=departments[3])
 adm_blog = Blog(Name="Admin", Owner=departments[4])
+cuore_blog = Blog(Name="Cuore", Owner=company)
+cuore_blog.setDescription("Company wide news")
+
+event_meet_time = (datetime.now()-datetime(1970,1,1)).total_seconds()
+event_meeting   = Event(Name="General Meeting", Owner=users['leo'], sTime=event_meet_time, eTime=event_meet_time)
+leo_calendar    = Calendar(Name=(User(users['leo']).getFullName() + "'s Calendar"), Owner=User(users['leo']).getNode())
+leo_calendar.addEvent(event_meeting.getNode())
+
+app_team = Department(departments[1]).getUsers()
+
+
+for person in app_team:
+    mUser = User(person)
+    workspace = mUser.getWorkspace()
+
+    app_calendar    = Calendar(Name=(mUser.getFullName() + "'s Calendar"), Owner=mUser.getNode())
+    event_app_time  = (datetime(2014, 1, 19)-datetime(1970,1,1)).total_seconds()
+    event_app_hack  = Event(Name="Applications Hack Event", sTime=event_app_time, eTime=event_app_time)
+    event_app_hack.addOwner(users['sergio'])
+
+    app_calendar.setDescription("Calendar which outlines all of the tasks that are assigned to" + mUser.getFirstName())
+    app_calendar.addEvent(event_app_hack.getNode())
+    event_meeting.addInvitee(mUser.getNode())
+
+    project     = Project(Name="Intranet Project")
+    task1       = Task(Name="Finish the Intranet", Status=STS_IN_PROG)
+    task1.assignToUser(mUser.getNode())
+
+    workspace.addProject(project.getNode())
+#    workspace.addOwner(mUser.getNode())
+    project.addTask(task1.getNode())
+
 
 for key in users.keys():
     mUser = User(users[key])
+    calendar    = Calendar(Name=(mUser.getFullName() + "'s Calendar"), Owner=mUser.getNode())
+#    workspace   = Workspace(Name=(mUser.getFullName() + "'s Workspace"), Owner=mUser.getNode())
 
-    app_calendar    = Calendar(Name=(mUser.getFirstName() + "'s Calendar"), Owner=mUser.getNode())
-    event_stime     = (datetime(2014, 1, 19)-datetime(1970,1,1)).total_seconds()
-    event_etime     = (datetime(2014, 1, 19)-datetime(1970,1,1)).total_seconds()
-    app_hack_event  = Event(Name="Applications Hack Event", Owner=mUser.getNode(), sTime=event_stime, eTime=event_etime)
-
-    workspace   = Workspace(Name=(mUser.getFirstName() + "'s Workspace"))
-    project     = Project(Name="Intranet Project")
-    task1       = Task(Name="Finish the Intranet", Status=STS_IN_PROG)
-
-    app_calendar.setDescription("Calendar which outlines all of the tasks that are assigned to" + mUser.getFirstName())
-    app_calendar.addEvent(app_hack_event.getNode())
-    workspace.addProject(project.getNode())
-    workspace.addOwner(mUser.getNode())
-    project.addTask(task1.getNode())
-
-"""
-sandy = User(uid="0", first_name="sandy")
-sandy.getNode().add_labels(LBL_USER)
-print sandy.getNode().get_labels()
-#post = Post(Name="hello", Content="blah", Owner=sandy)
-
-user_index = graph_db.get_or_create_index(neo4j.Node, IND_USER)
-menode=user_index.get("uid", "0")
-print menode
-#print menode.getNode()
-#print menode.getName()
+sandy = User(users['sandy'])
+post1 = Post(Name="My Goodness", Content="I am so totally cracked out from doing this all night, I really should" \
+                                         " learn not to procrastinate so that I don't have to pull all nighters", Owner=sandy.getNode())
+post2 = Post(Name="Quite Exciting", Content="Maybe it is time for me to go to sleep, although looking at the clock" \
+    " I almost feel like what a wuss, it's only 12:25!", Owner=sandy.getNode())
+post3 = Post(Name="Maybe it's the lead paint though", Content="Did you know that lead paint vaporizes around or above 1100 degrees" \
+    " Fahrenheit? Yeah, so maybe house paint from 1906 and blowtorches aren't the best combination for your health" \
+    " but what are you going to do?", Owner=sandy.getNode())
+post1.setBlog(cuore_blog.getNode())
+post2.setBlog(cuore_blog.getNode())
+post3.setBlog(cuore_blog.getNode())
 
 
-store = ogm.Store(graph_db)
-#cuore = store.load_unique(IND_COMP, "name", "cuore", Company)
-comp_index = graph_db.get_or_create_index(neo4j.Node, IND_COMP)
-anode = comp_index.get("name", "Cuore")
-print "-------->"
-print anode
-# what you get back is the URI
-#   [Node('http://127.0.0.1:7474/db/data/node/44364')]
-# if comma after anode, unpacking the list, you get
-#   (44312 {"name":"Cuore"})
-"""

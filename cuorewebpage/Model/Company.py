@@ -1,8 +1,6 @@
 from py2neo import neo4j, ogm, node, rel
 from database_config import *
 
-graph_db = neo4j.GraphDatabaseService(db_config['uri'])
-store = ogm.Store(graph_db)
 # Class  : Company
 # Methods:
 #   1)  db_init(self)                                   - Private
@@ -12,6 +10,15 @@ store = ogm.Store(graph_db)
 #	5) 	getName(self) 									- Returns name of company
 #	6) 	setName(self, name)             				- Takes name as a string
 #
+# Properties:
+#   1) name                                             - Company name
+
+# Relationships:
+# 1) Affiliations
+#    (self)-[:REL_HASDEP]->(Department)-[:REL_HASTITLE]-(Title)->[:REL_HASUSER]->(User)
+# 2) Blog
+#    (self)-[:REL_HASBLOG]->(Blog)
+
 class Company(object):
     graph_db = None
     companyInstance = None
@@ -32,15 +39,11 @@ class Company(object):
             tempCompany = neo4j.Node(URI)
 
         elif Name is not None:
-#            tempCompany = self.index.get_or_create("name", name, {"name": name})
-#            tempCompany = self.store.save_unique(IND_COMP, "name", Name, neo4j.Node.abstract(name=Name))
-#            self.graph_db.create({"name": name})
             tempCompany = self.graph_db.get_or_create_indexed_node(IND_COMP, "name", Name, {"name": Name})
             tempCompany.add_labels(LBL_COMPANY)
-#            self.index.add("name", name, tempCompany)
 
-#        else:
-#            raise Exception("UID or Company Name not specified")
+        else:
+            raise Exception("UID or Company Name not specified")
 
         self.companyInstance = tempCompany
 
@@ -65,16 +68,15 @@ class Company(object):
     def getNode(self):
         return self.companyInstance
 
-    # Function: getAllDepartments
+    # Function: getDepartments
     # Arguments:
     # Returns: list of Department objects related to self
-    def getAllDepartments(self):
+    def getDepartments(self):
         global REL_HASDEPT
         depts = list()
         for relationship in list(self.companyInstance.match_outgoing(REL_HASDEP)):
             depts.append(relationship.end_node)
         return depts
-    #return self.store.load_related(self, REL_HASDEPT, Department)
 
     # Function: addDepartment
     # Arguments: name of the department (string)
@@ -94,10 +96,18 @@ class Company(object):
     def removeDepartment(self, name):
         dept = self.getDepartment(name)
         self.store.delete(dep.getNewsfeed())
-        for i in dep.getAllTitles():
+        for i in dep.getTitles():
             dep.removeTitle(i.name)
         self.store.delete(dep)
 
+    def getBlog(self):
+        global REL_HASBLOG
+        relationships = list(self.companyInstance.match_outgoing(REL_HASBLOG))
+        if len(relationships) != 0:
+            return relationships[0].end_node
+        else:
+            return None
+
 def getCompany():
-    company = Company(Name="Cuore")#store.load_unique(IND_COMP, "name", "Cuore", Company)
+    company = Company(Name="Cuore")
     return company

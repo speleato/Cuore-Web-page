@@ -3,26 +3,25 @@
   <div class="row-fluid">
     <div class="span9">
       <div class="title row-fluid legend">
-        <h2> Latest articles </h2>
+          <h2>Blog - Latest articles </h2>
       </div>
       <div class="row-fluid">
-      <a>${blog}</a>
-        %for i in range(1, len(posts)):
-            <h1>${posts[0].getName()}</h1>
-            <p>${posts[0].getContent()}</p>
-            <p>${posts}</p>
+        %for item in posts:
+            <h1>${item.getName()}</h1>
+            <p>${item.getContent()}</p>
             <p class="well">
                 <a href="#"><span class="label label-info">sometag</span></a>
                 <a href="#"><span class="label label-info">Bootstrap</span></a>
                 <a href="#"><span class="label label-info">UI</span></a>
                 <a href="#"><span class="label label-info">growth</span></a>
                 <i class="icon-user"></i>
-                <a href="#">Admin</a>
-                <i class="icon-calendar"></i> Sept 16th, 2012 at 4:20 pm
+                <% from cuorewebpage.Model.Blog import Blog %>
+                <a href="#">${Blog(item.getBlog()).getName()}</a>
+                <i class="icon-calendar"></i> ${item.getTime()}
                 <i class="icon-comment"></i>
-                <a href="#">3 Comments</a>
-                <i class="icon-share"></i>
-                <a href="#">39 Shares</a>
+                <a href="#">${len(item.getComments())} Comments</a>
+<!--                <i class="icon-share"></i>
+                <a href="#">39 Shares</a>-->
             </p>
         %endfor
       </div>
@@ -45,7 +44,11 @@
         </div>
       </div>
       <div class="container">
-        <p>${blog.getDescription()}</p>
+          % if blog.getDescription() is not None:
+          <p>${blog.getDescription()}</p>
+          % else:
+          <p>No blog description.</p>
+          % endif
       </div>
       <!-- End .title -->
 
@@ -57,10 +60,11 @@
           <ul class="nav nav-tabs dark nav-stacked">
             <li ><a href="${request.route_url('Blog_Action', action='dashboard')}"><i class="gicon-home"></i> Dashboard</a></li>
             <li><a href="${request.route_url('Blog_Action', action='create')}"><i class="gicon-edit"></i> Add Blog Post</a></li>
-            <li><a href="#"><i class="gicon-calendar"></i> Calendar</a></li>
+<!--            <li><a href="#"><i class="gicon-calendar"></i> Calendar</a></li>
             <li><a href="#"><i class="gicon-user"></i> Members</a></li>
             <li><a href="#"><i class="gicon-comment"></i> Comments</a></li>
             <li><a href="#"><i class="gicon-picture"></i> Gallery</a></li>
+-->
           </ul>
         </div>
       </div>
@@ -69,12 +73,11 @@
           <h2> Latest Articles </h2>
         </div>
         <ul class="">
-          <li><a href="#">First Time Buyer Survey</a></li>
-          <li><a href="#">A Thailand Meetup with Elite Authors </a></li>
-          <li><a href="#">TED Talk: The Power of Introverts</a></li>
-          <li><a href="#">First Time Buyer Survey</a></li>
-          <li><a href="#">A Thailand Meetup with Elite Authors </a></li>
-          <li><a href="#">TED Talk: The Power of Introverts</a></li>
+            % for idx, val in enumerate(posts):
+                % if idx < 5:
+          <li><a href="#">${val.getName()}</a></li>
+                % endif
+            % endfor
         </ul>
         <a href="#" class="pull-right">View more articles</a> </div>
       <!-- End .content -->

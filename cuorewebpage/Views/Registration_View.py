@@ -12,10 +12,11 @@ import os
 
 from cuorewebpage.lib.session import *
 
-from cuorewebpage.Model.Person import getCompany, getCurrentUser, getUser
+#from cuorewebpage.Model.Person import getCompany, getCurrentUser, getUser
 from cuorewebpage.Model.User import *
 from cuorewebpage.Model.Company import *
 from cuorewebpage.Model.Department import *
+from cuorewebpage.Model.Title import *
 
 graph_db = neo4j.GraphDatabaseService(db_config['uri'])
 store = ogm.Store(graph_db)
@@ -26,43 +27,65 @@ REGISTRATION_EMAIL_RECIPIENTS = "sandymeep@gmail.com"
 
 @view_config(route_name='Registration', renderer='cuorewebpage:templates/registration.mako')
 def Registration(request):
-    '''if getCurrentUser(request):
-        print "==========================================================================="
-        print request.session['uid']
-        print getCurrentUser(request)
-        #    print getCurrentUser(request)['last_name']
-        print "==========================================================================="
-    '''
-    if isUserLoggedOn(request):
-        ctx = {}
-        ctx['section'] = 'Registration'
-        departments = list()
-        for i in getCompany().getAllDepartments():
-            departments.append({"department":i["name"], "titles":Department(i).getAllTitles()})
-        ctx['departments'] = departments
-        ctx['user'] = getCurrentUser(request)
-        if not getCurrentUser(request):
-            print "------------------> create"
-            ctx['view'] = 'create'
-        elif getCurrentUser(request).isAdmin():
-            if request.POST:
-                print "------------------> admin"
-                ctx['view'] = 'admin'
-                ctx['user'] = getUser(request.POST.getone('user'))
-            else:
-                print "------------------> admin_edit"
-                ctx['view'] = 'edit'
-                ctx['user'] = getCurrentUser(request)
+    ctx = {}
+    ctx['section'] = 'Registration'
+    departments = list()
+    for i in getCompany().getDepartments():
+        departments.append({"department":i["name"], "titles":Department(i).getTitles()})
+    ctx['departments'] = departments
+    ctx['user'] = getCurrentUser(request)
+    if not getCurrentUser(request):
+        print "------------------> create"
+        ctx['view'] = 'create'
+    else:
+        return HTTPFound(location=request.route_url('Registration_Action', action='edit'))
+    return ctx
+"""
+    elif getCurrentUser(request).isAdmin():
+        if request.POST:
+#            print "------------------> admin"
+            ctx['view'] = 'admin'
+            ctx['user'] = getUser(request.POST.getone('user'))
         else:
-            print "------------------> user_edit"
+#            print "------------------> admin_edit"
             ctx['view'] = 'edit'
             ctx['user'] = getCurrentUser(request)
-        return ctx
     else:
+#        print "------------------> user_edit"
+        ctx['view'] = 'edit'
+        ctx['user'] = getCurrentUser(request)
+"""
+
+@view_config(route_name='Registration_Action', match_param="action=edit", renderer='cuorewebpage:templates/registration_edit.mako')
+def EditRegistration(request):
+    ctx = {}
+    departments = list()
+    for i in getCompany().getDepartments():
+        departments.append({"department":i["name"], "titles":Department(i).getTitles()})
+    ctx['departments'] = departments
+
+    if not getCurrentUser(request):
         return redirectUser(request)
+    elif getCurrentUser(request).isAdmin():
+        if request.POST:
+            ctx['section'] = 'Admin Panel'
+        #            print "------------------> admin"
+            ctx['view'] = 'admin'
+            ctx['user'] = getUser(request.POST.getone('user'))
+        else:
+        #            print "------------------> admin_edit"
+            ctx['section'] = 'Admin Edit'
+            ctx['view'] = 'edit'
+            ctx['user'] = getCurrentUser(request)
+    else:
+    #        print "------------------> user_edit"
+        ctx['section'] = 'Edit Settings'
+        ctx['view'] = 'edit'
+        ctx['user'] = getCurrentUser(request)
+    return ctx
 
 
-@view_config(route_name='Registration_Action', match_param="action=submit", renderer='cuorewebpage:templates/Registration.mako')
+@view_config(route_name='Registration_Action', match_param="action=submit", renderer='cuorewebpage:templates/registration.mako')
 def SubmitRegistration(request):
     #parameters = Model.process_business_logic()
     if not isUserLoggedOn(request):
@@ -154,14 +177,17 @@ def SubmitRegistration(request):
             photo = ""
             if request.POST.getone('profile_image') != "":
                 ext = os.path.splitext(request.POST.getone('profile_image').filename)[-1].lower()
-                photo = "cuorewebpage/Profile_Pictures/" + getCurrentUser(request).uid + "/profile_picture" + ext
+                photo_file = getCurrentUser(request).userInstance['uid'] + "/profile_picture" + ext
+                photo_full_path = "cuorewebpage/img/Profile_Pictures/" + photo_file
+                photo_asset_spec = "cuorewebpage:img/Profile_Pictures/" + photo_file
+                photo = photo_asset_spec
 
-                dir = os.path.dirname(photo)
+                dir = os.path.dirname(photo_full_path)
                 try:
                     os.stat(dir)
                 except:
                     os.mkdir(dir)
-                f = open(photo, 'w')
+                f = open(photo_full_path, 'w')
                 f.write(request.POST.getone('profile_image').value)
                 f.close()
 

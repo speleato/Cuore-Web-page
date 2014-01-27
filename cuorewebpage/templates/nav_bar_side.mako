@@ -34,6 +34,7 @@
                             data-parent="#sidebar_menu" href="#collapse2">
                         <img src="img/menu_icons/widgets.png"><span>Workspace</span></a>
                         <ul id="collapse2" class="accordion-body collapse">
+                            <li><a href="${request.route_url('Workspace')}">Department</a></li>
                             <li><a href="${request.route_url('Files')}">Files</a></li>
                             <li><a href="${request.route_url('Calendar')}">Calendar</a></li>
                             <li><a href="${request.route_url('Tasks')}">Tasks</a></li>
@@ -55,6 +56,9 @@
                         <a class="widgets"data-parent="#sidebar_menu" href="${request.route_url('Support')}">
                         <img src="img/menu_icons/statistics.png"><span>Support</span></a> </li>
 -->
+                    <li class="color_22">
+                        <a class="widgets" data-parent="#sidebar_menu" href="${request.route_url('Registration')}">
+                            <img src="img/menu_icons/others.png"><span>User Settings</span></a> </li>
                     <li class="color_8">
                         <a class="widgets"data-parent="#sidebar_menu" href="${request.route_url('Contact')}">
                         <img src="img/menu_icons/gallery.png"><span>Contact Us</span></a> </li>

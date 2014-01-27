@@ -3,12 +3,11 @@
 <%
     from py2neo import neo4j, ogm
     from database_config import db_config, IND_COMP
-    from cuorewebpage.Model.Person import Company, Department, Title, User
+    from cuorewebpage.Model.User import User
+    from cuorewebpage.Model.Company import Company
+    from cuorewebpage.Model.Department import Department
+    from cuorewebpage.Model.Title import Title
 
-    graph_db = neo4j.GraphDatabaseService(db_config['uri'])
-    store = ogm.Store(graph_db)
-
-    departments = store.load_unique(IND_COMP, "name", "Cuore", Company).getAllDepartments()
 %>
 
 <div id="main_container">
@@ -28,15 +27,16 @@
 
 <!-- span8 box for each department -->
 
-%for i in departments:
+%for d in departments:
     <%
-        job_titles = i.getAllTitles()
+        dep_node = Department(d)
+        job_titles = dep_node.getTitles()
     %>
     <div class="row-fluid">
     <div class="span8">
       <div class="box height_big paint">
         <div class="title">
-          <h4> <span>${i.name}</span> </h4>
+          <h4> <span>${dep_node.getName()}</span> </h4>
         </div>
         <!-- End .title -->
         <div class="content full">
@@ -49,17 +49,21 @@
               </tr>
             </thead>
             <tbody>
-    %for j in job_titles:
+    %for t in job_titles:
         <%
-        users = j.getAllUsers()
+        title_node = Title(t)
+        users = title_node.getUsers()
         %>
-        %for k in users:
-            <%doc>add link to user's profile, i think can be done using get
+        %for u in users:
+            <%
+            user_node = User(u)
+            %>
+    <%doc>  add link to user's profile, i think can be done using get
                   and then rendering the profile with the name as a parameter</%doc>
               <tr>
-                <td><a href="/profile?email=${k.email}"><strong>${k.first_name} ${k.last_name}</strong></a></td>
-                <td>${j.name}</td>
-                <td><a href="mailto:${k.email}">${k.email}</a></td>
+                <td><a href="/profile?email=${user_node.getEmail()}"><strong>${user_node.getFirstName()} ${user_node.getLastName()}</strong></a></td>
+                <td>${title_node.getName()}</td>
+                <td><a href="mailto:${user_node.getEmail()}">${user_node.getEmail()}</a></td>
               </tr>
         %endfor <!-- end user's row -->
     %endfor <!-- end of members under same job_title -->
@@ -114,4 +118,5 @@
 <!-- End .background_changer -->
 </div>
 <!-- /container -->
+
 

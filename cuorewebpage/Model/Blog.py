@@ -1,5 +1,6 @@
-from database_config import *
+
 from py2neo import neo4j, node
+from database_config import *
 
 # Class  : Blog
 # Methods:
@@ -11,7 +12,20 @@ from py2neo import neo4j, node
 #	6) 	getOwner(self)									- Returns a Department Node
 #	7) 	addPost(self, post)								- Adds a Post node to the Blog
 #	8)	getPosts(self)									- Returns a list of Post Nodes
-# Constants: 
+#
+# Properties:
+#   1) name                                             - title of post
+#   2) description                                      - description? (maybe don't need this)
+#   4) sTime                                            - time first posted
+#   5) tags                                             - JSON encoded, maybe better to make nodes?
+
+# Relationships:
+# 1) Owner (Company/Department/User); Post
+#    (self)<-[:REL_HASBLOG]<-(Company/Department-Owner)
+#       |
+#    [:REL_HASPOST]->(Post)-[:REL_CREATEDBY]->(User-Owner)
+#       |
+#    [:REL_HASCOMMENT]->(comment)
 
 class Blog:
     graph_db = None
@@ -36,14 +50,13 @@ class Blog:
     # Arguments	: Uri of Existing Blog Node OR Name of Blog
     #
     def __init__(self, URI=None, Name=None, Owner=None):
-        global LBL_BLOG
+        global LBL_BLOG, LBL_COMPANY
         self.db_init()
         tempBlog = None
         if URI is not None:
             tempBlog = neo4j.Node(URI)
 
         elif Name is not None:
-#            tempBlog, = self.graph_db.create({"name": Name})
             tempBlog = self.graph_db.get_or_create_indexed_node(IND_BLOG, "name", Name, {"name": Name})
             tempBlog.add_labels(LBL_BLOG)
 
@@ -53,11 +66,21 @@ class Blog:
         self.blogInstance = tempBlog
 
         if Owner is not None:
-            if LBL_DEPARTMENT in Owner.get_labels():
+            if (LBL_DEPARTMENT in Owner.get_labels()) or (LBL_COMPANY in Owner.get_labels()):
                 self.blogInstance.get_or_create_path(REL_HASOWNER, Owner)
             else:
                 raise Exception("The Node Provided is not a Department")
 
+
+    # Function	: __str__
+    # Arguments	:
+    # Returns	: name of blog
+    #
+    def __str__(self):
+        if self.blogInstance is not None:
+            return self.blogInstance["name"]
+        else:
+            return None
 
     # Function	: getName
     # Arguments	:
@@ -133,17 +156,4 @@ class Blog:
             posts.append(relationship.end_node)
         return posts
 
-    #
-    # Function	: all
-    # Arguments	:
-    # Returns	: every entry in the blog as a list of tuples
-    #             [ (name, content, time, tags), (name, content, time, tags), ...]
-    #
-    def all(self):
-        global REL_HASPOST
-        posts = list()
-        for relationship in list(self.blogInstance.match_outgoing(REL_HASPOST)):
-            post = Post(relationship.end_node)
-            posts.append(post)
-        return posts
 

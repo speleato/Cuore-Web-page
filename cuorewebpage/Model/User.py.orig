@@ -81,6 +81,11 @@ class User:
         global LBL_USER, IND_USER
         self.db_init()
         tempUser = None
+<<<<<<< HEAD
+        if uid is None:
+            uid = 0
+=======
+>>>>>>> 402ff5630baeb141f9702446e7299e988a311ad1
         if URI is not None:
             tempUser = neo4j.Node(URI)
         elif uid is not None:
@@ -245,12 +250,6 @@ class User:
         return self.userInstance['confirmed']
 
     # =================== Relationship Getters & Setters ====================
-    # Function  : removeUser
-    # Arguments :
-    # Returns   :
-    # Descript: : deletes user from neo4j db
-    def removeUser(self):
-        self.store.delete(self)
 
     # Function  : setTitle
     # Arguments : (Title Node) job_title
@@ -418,7 +417,7 @@ def getCurrentUser(request):
         return User(uid=request.session['uid'])
     return None
 
-# Function: getUserBlog
+"""# Function: getUserBlog
 # Arguments: request
 # Returns: Blog object of current user (just the first one found at this point,
 #          for the purpose of keeping it simple and getting the functionality working!
@@ -448,4 +447,8 @@ def getUserBlog(request):
         print "BLOG:        " + blog.getName()
         print "==========================================================================="
         return blog
+<<<<<<< HEAD
+    return None
+=======
 """
+>>>>>>> 402ff5630baeb141f9702446e7299e988a311ad1

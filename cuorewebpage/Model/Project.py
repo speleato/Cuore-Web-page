@@ -49,7 +49,7 @@ class Project:
             tempProject = neo4j.Node(URI)
 
         elif Name is not None:
-            tempProject, = self.graph_db.create({"name": Name})
+            tempProject = self.graph_db.get_or_create_indexed_node(IND_PROJECT, "name", Name, {"name": Name})
             tempProject.add_labels(LBL_PROJECT)
 
         else:

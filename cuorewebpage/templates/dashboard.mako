@@ -2,34 +2,95 @@
 
 <div id="main_container">
   <div class="row-fluid">
-    <div class="span6 ">
-    <div class="box color_3 title_big height_big paint_hover">
-      <div class="title">
-        <div class="row-fluid">
+
+    <div class="span8">
+    <div class="box color_3 title_big height_xxxbig paint">
+
+      <div class="title row-fluid fluid">
+        <div class="row-fluid fluid">
           <div class="span12">
-            <h4> </i><span>Newsfeed</span> </h4>
+            <h4 class="pull-left"> <span>Newsfeed</span> </h4>
+            <div class="btn-toolbar pull-right">
+              <div class="btn-group"> <a class="btn">View All</a> <a class="btn change_color_outside"><i class="paint_bucket"></i></a> </div>
+            </div>
           </div>
           <!-- End .span12 -->
         </div>
         <!-- End .row-fluid -->
-
       </div>
       <!-- End .title -->
-      <div class="content"  style="padding-top:35px;">
-        <div id="placeholder" style="width:100%;height:240px;"> </div>
+
+      <div class="content row-fluid" style="padding-top:115px;">
+          <ul class="messages_layout">
+              <%
+              from cuorewebpage.Model.User import User
+              from cuorewebpage.Model.Blog import Blog
+              from cuorewebpage.Model.Post import Post
+              from cuorewebpage.Model.Event import Event
+              global LBL_POST
+              %>
+
+              % for item in alerts:
+                %if item['type'] == "post":
+              <%
+              post = Post(item['node'])
+              owner = User(post.getOwner()).getFirstName()
+              blog = Blog(post.getBlog()).getName()
+              %>
+              <li class="span12 from_user left"> <a href="#" class="avatar"><img src="img/message_avatar2.png"/></a>
+                  <div class="message_wrap"> <span class="arrow"></span>
+                      <div class="info"> <a class="name" href="#">${post.getName()}</a> <span class="author"><a href="#">@${owner}</a></span></div>
+                      <div class="text"> ${post.getContent()} </div>
+                      <div class="footer">
+                          <span class="time">${post.getTime()}</span>
+                          <div class="actions pull-right hidden-phone">
+                              <ul class="pull-right">
+                                  <li><a href="#"><i class=" gicon-share-alt icon-white"></i>Reply</a></li>
+<!--                                  <li><a href="#"><i class=" gicon-share icon-white"></i>Share</a></li>
+                                  <li><a href="#"><i class=" gicon-star icon-white"></i>Favorite</a></li>-->
+                              </ul>
+                          </div>
+                      </div>
+                  </div>
+              </li>
+                %elif item['type'] == "event":
+                <%
+                event     = Event(item['node'])
+                %>
+              <li class="span12 from_user right"> <a href="#" class="avatar"><img src="img/message_avatar3.png"/></a>
+                  <div class="message_wrap"> <span class="arrow"></span>
+                      <div class="info"> <a class="name" href="#">${event.getName()}</a> <span class="author"><a href="#">@${event.getLocation()}</a></span></div>
+                      <div class="text"> ${event.getDescription()} </div>
+                      <div class="footer">
+                          <span class="time">${event.getStartTime()} to ${event.getEndTime()}</span>
+                          <div class="actions pull-right hidden-phone">
+                              <ul class="pull-right">
+                                  <li><a href="#"><i class=" gicon-share-alt icon-white"></i>Reply</a></li>
+                                  <!--                                  <li><a href="#"><i class=" gicon-share icon-white"></i>Share</a></li>
+                                                                    <li><a href="#"><i class=" gicon-star icon-white"></i>Favorite</a></li>-->
+                              </ul>
+                          </div>
+                      </div>
+                  </div>
+              </li>
+                % endif
+              % endfor
+          </ul>
       </div>
-      </div>
+      <!-- End .content -->
     </div>
-    <!-- End .box .span6-->
-    <div class="span6">
+    </div>
+    <!-- End .box .span8-->
+
+    <div class="span4">
       <div class="row-fluid fluid">
         <div class="span6">
           <div class=" box color_2 height_medium paint_hover">
             <div class="content numbers">
-              <h3 class="value">219.103</h3>
-              <div class="description mb5">Audience Reach</div>
+              <h3 class="value">86</h3>
+              <div class="description mb5">Hours Logged</div>
               <h1 class="value">3.28<span class="percent">%</span></h1>
-              <div class="description">Average CTR</div>
+              <div class="description">Tasks Completed</div>
             </div>
           </div>
         </div>
@@ -37,10 +98,10 @@
         <div class="span6">
           <div class="box color_25 height_medium paint_hover">
             <div class="content numbers">
-              <h3 class="value">7.147</h3>
-              <div class="description mb5">Total Clicks</div>
-              <h1 class="value">718.862</h1>
-              <div class="description">Total Impressions</div>
+              <h3 class="value">2</h3>
+              <div class="description mb5">IDEAS PROPOSED</div>
+              <h1 class="value">35</h1>
+              <div class="description">UPVOTES</div>
             </div>
           </div>
         </div>
@@ -53,7 +114,7 @@
             <div class="title">
               <div class="row-fluid">
                 <div class="span12">
-                  <h5> </i><span>Fundraisers</span> </h5>
+                  <h5> </i><span>Equity</span> </h5>
                 </div>
                 <!-- End .span12 -->
               </div>
@@ -72,72 +133,17 @@
         <!-- End .span6 -->
         <div class="span6">
           <div class=" box color_26 height_medium paint_hover">
-            <div class="content icon big_icon"> <a href="#" ><img align="center" src="img/general/contacts_icon.png" /></a>
-              <div class="description">CONTACTS</div>
+            <div class="content icon big_icon"><a href="${request.route_url('Directory')}"><img align="center" src="img/general/contacts_icon.png"/></a>
+              <div class="description">DIRECTORY</div>
             </div>
           </div>
         </div>
         <!-- End .span6 -->
       </div>
       <!-- End .row-fluid -->
-
     </div>
     <!-- End.span6-->
-  </div>
-  <!-- End .row-fluid -->
 
-  <div class="row-fluid">
-    <div class="span8">
-      <div class="box height_xxbig paint">
-        <div class="title">
-          <h4> <span>Distribution by Country</span> </h4>
-        </div>
-        <!-- End .title -->
-        <div class="content full">
-          <table id="datatable_example" class="responsive table table-hover full">
-            <thead>
-              <tr>
-                <th class="jv no_sort"> No </th>
-                <th class="ue"> Browser </th>
-                <th class="ms no_sort "> Visits </th>
-                <th class="Yy to_hide_phone"> % Visits </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td> 1 </td>
-                <td> United States </td>
-                <td class="ms"> 161.083 </td>
-                <td class="to_hide_phone"> 45,73% <span class="bar1 no_ie">3,4,10,5,3,6,3</span></td>
-              </tr>
-              <tr>
-                <td> 2 </td>
-                <td> Canada </td>
-                <td class="ms"> 93.966 </td>
-                <td class="to_hide_phone"> 26,67% <span class="bar2 no_ie">1, 4, 6, 7,4, 2,4</span></td>
-              </tr>
-              <tr>
-                <td> 3 </td>
-                <td> Argentina </td>
-                <td class="ms"> 69.640 </td>
-                <td class="to_hide_phone"> 19,77% <span class="bar2 no_ie">1, 2, 2, 7,4, 2,2</span></td>
-              </tr>
-              <tr>
-                <td> 4 </td>
-                <td> Romania </td>
-                <td class="ms"> 24.421 </td>
-                <td class="to_hide_phone"> 6,93% &nbsp; <span class="bar2 no_ie">3, 5, 6, 9,10, 9,8</span></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <!-- End .content -->
-        <div class="description">Some explanation text here <i class="gicon-info-sign icon-white"></i></div>
-      </div>
-
-      <!-- End .box -->
-    </div>
-    <!-- End .span8 -->
 
     <div class="span4">
       <div class="box height_big paint">
@@ -158,7 +164,7 @@
           </li>
           <li>
             <div class="info row-fluid"><span class="number pull-left text_color_0">2</span>
-              <h2 class="pull-left">John</h2>
+              <h2 class="pull-left">Celeste</h2>
             </div>
             <div class="row-fluid">
               <div class="progress small" style="width: 40%;"></div>
@@ -167,11 +173,11 @@
           </li>
           <li>
             <div class="info row-fluid"><span class="number pull-left text_color_0">3</span>
-              <h2 class="pull-left">Michael</h2>
+              <h2 class="pull-left">Bender</h2>
             </div>
             <div class="row-fluid">
               <div class="progress small" style="width: 25%;"></div>
-              <div class="value">6.7k Reach</div>
+              <div class="value">7.6k Reach</div>
             </div>
           </li>
         </ul>
@@ -182,121 +188,11 @@
     </div>
     <!-- End .span4 -->
   </div>
-  <!-- End .row-fluid -->
-
-  <div class="row-fluid">
-    <div class="row-fluid box color_2 title_medium height_medium2 bar_stats paint_hover ">
-      <div class="title hidden-phone">
-        <h5><span>Twitter</span></h5>
-      </div>
-      <!-- End .title -->
-      <div class="content row-fluid fluid numbers">
-        <div class="span3 stats hidden-phone">
-          <div id="placeholder3" style="width:100%;height:65px;margin-top:7px"></div>
-        </div>
-        <div class="span2 average_ctr">
-          <h1 class="value">0.72<span class="percent">%</span></h1>
-          <div class="description mt15" >AVERAGE CTR</div>
-        </div>
-        <div class="span3 shown_left">
-          <div class="row-fluid fluid">
-            <div class="span6">
-              <div class="description">SHOWN</div>
-              <h2 class="value">3.240</h2>
-              <div class="progress small">
-                <div class="bar white" style="width: 100%;"></div>
-              </div>
-              <div class="description" >IMPRESSIONS STATS</div>
-            </div>
-            <div class="span6 full">
-              <div class="description text_color_dark">LEFT</div>
-              <h2 class="value text_color_dark">16.760</h2>
-              <div class="progress small">
-                <div class="bar " style="width: 0%;"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="span3 total_days">
-          <div class="row-fluid">
-            <div class="span6 total_clicks">
-              <h1 class="value">103</h1>
-              <div class="description mt15" >TOTAL CLICKS</div>
-            </div>
-            <div class="span6 days_left">
-              <h1 class="value text_color_dark">28</h1>
-              <div class="description mt15" >DAYS LEFT</div>
-            </div>
-          </div>
-        </div>
-        <div class="span1 stick top right result height_medium2"> <img src="img/arrows_up.png">
-          <div class="description mt15" >Good</div>
-        </div>
-      </div>
-      <!-- End .row-fluid -->
-      <!-- End .content -->
-    </div>
-    <!-- End .box -->
-
+    <!-- End .row-fluid -->
   </div>
   <!-- End .row-fluid -->
 
-  <div class="row-fluid">
-    <div class="row-fluid box color_27 title_medium height_medium2 bar_stats paint_hover">
-      <div class="title hidden-phone">
-        <h5><span>Facebook</span></h5>
-      </div>
-      <!-- End .title -->
-      <div class="content row-fluid fluid numbers">
-        <div class="span3 stats hidden-phone">
-          <div id="placeholder4" style="width:100%;height:65px;margin-top:7px"></div>
-        </div>
-        <div class="span2 average_ctr">
-          <h1 class="value">1.37<span class="percent">%</span></h1>
-          <div class="description mt15" >AVERAGE CTR</div>
-        </div>
-        <div class="span3 shown_left">
-          <div class="row-fluid fluid">
-            <div class="span6">
-              <div class="description">SHOWN</div>
-              <h2 class="value">1.220</h2>
-              <div class="progress small"  >
-                <div class="bar white " style="width: 100%;"></div>
-              </div>
-              <div class="description" >IMPRESSIONS STATS</div>
-            </div>
-            <div class="span6 full">
-              <div class="description text_color_dark">LEFT</div>
-              <h2 class="value text_color_dark">12.420</h2>
-              <div class="progress small">
-                <div class="bar" style="width: 0%;"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="span3 total_days">
-          <div class="row-fluid">
-            <div class="span6 total_clicks">
-              <h1 class="value">67</h1>
-              <div class="description mt15" >TOTAL CLICKS</div>
-            </div>
-            <div class="span6 days_left">
-              <h1 class="value text_color_dark">30</h1>
-              <div class="description mt15" >DAYS LEFT</div>
-            </div>
-          </div>
-        </div>
-        <div class="span1 stick top right result height_medium2"> <img src="img/arrows_down.png">
-          <div class="description mt15" > &nbsp;&nbsp;Bad</div>
-        </div>
-      </div>
-      <!-- End .row-fluid -->
-      <!-- End .content -->
-    </div>
-    <!-- End .box -->
 
-  </div>
-  <!-- End .row-fluid -->
 
   <div class="row-fluid">
     <div class="span6">
@@ -347,8 +243,6 @@
         <!-- End .title -->
         <div class="content row-fluid">
           <ul class="messages_layout">
-
-
 
             <li class="from_user left"> <a href="#" class="avatar"><img src="img/message_avatar2.png"/></a>
               <div class="message_wrap"> <span class="arrow"></span>
@@ -449,6 +343,7 @@
 </div>
 <!-- /container -->
 
+<%block name="javascript">
 <!-- Le javascript
     ================================================== -->
 <!-- General scripts -->
@@ -727,7 +622,7 @@ function TaskListViewModel() {
 
 
 </script>
-</body>
-</html>
+</%block>
+
 
 

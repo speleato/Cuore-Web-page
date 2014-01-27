@@ -1,8 +1,8 @@
 from database_config import *
 from py2neo import neo4j, node, ogm
 import time
+<<<<<<< HEAD
 import os
-#from Person import Title
 from web_config import *
 from Department import *
 from Company import *
@@ -11,6 +11,9 @@ from Project import *
 from Task import *
 
 from Person import Title
+=======
+#from Person import Title
+>>>>>>> 402ff5630baeb141f9702446e7299e988a311ad1
 # Class  : File
 # Methods:
 #	1) 	db_init(self) 									- Private

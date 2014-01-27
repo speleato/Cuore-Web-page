@@ -42,21 +42,24 @@
                         <a class="widgets" href="${request.route_url('IdeaCenter')}">
                         <img src="img/menu_icons/calendar.png"><span>Idea Center</span></a> </li>
                     <li class="color_10">
-                        <a class="widgets"data-parent="#sidebar_menu" href="${request.route_url('CMS')}">
+                        <a class="widgets" data-parent="#sidebar_menu" href="${request.route_url('CMS')}">
                         <img src="img/menu_icons/maps.png"><span>CMS</span></a> </li>
                     <li class="accordion-group color_12">
                         <a class="widgets" data-parent="#sidebar_menu" href="${request.route_url('Store')}">
                         <img src="img/menu_icons/tables.png"><span>Store</span></a> </li>
                     <li class="color_24">
-                        <a class="widgets"data-parent="#sidebar_menu" href="${request.route_url('Jobs')}">
+                        <a class="widgets" data-parent="#sidebar_menu" href="${request.route_url('Jobs')}">
                         <img src="img/menu_icons/grid.png"><span>Jobs</span></a> </li>
                     <li class="accordion-group color_19">
-                        <a class="widgets"data-parent="#sidebar_menu" href="${request.route_url('Support')}">
+                        <a class="widgets" data-parent="#sidebar_menu" href="${request.route_url('Support')}">
                         <img src="img/menu_icons/statistics.png"><span>Support</span></a> </li>
                     <li class="color_8">
-                        <a class="widgets"data-parent="#sidebar_menu" href="${request.route_url('Contact')}">
+                        <a class="widgets" data-parent="#sidebar_menu" href="${request.route_url('Contact')}">
                         <img src="img/menu_icons/gallery.png"><span>Contact Us</span></a> </li>
-                    <li class="accordion-group color_25">
+                    <li class="color_23">
+                        <a class="widgets" data-parent="#sidebar_menu" href="${request.route_url('Registration')}">
+                        <img src=""><span>User Settings</span></a> </li>
+                    <li class="group color_25">
                         <a class="widgets" data-parent="#sidebar_menu" href="${request.route_url('Logout')}">
                         <img src="img/menu_icons/others.png"><span>Logout</span></a> </li>
                 </ul>
