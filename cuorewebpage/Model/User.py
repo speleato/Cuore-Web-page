@@ -45,11 +45,10 @@ class User:
         global LBL_USER, IND_USER
         self.db_init()
         tempUser = None
-        uid = 0
-        print uid
+        if uid is None:
+            uid = 0
         if URI is not None:
             tempUser = neo4j.Node(URI)
-
         elif uid is not None:
             tempUser = self.graph_db.get_or_create_indexed_node(IND_USER, 'uid', uid, {"uid": uid})
             tempUser.add_labels(LBL_USER)
@@ -289,20 +288,17 @@ class User:
 # Function: getUser
 # Arguments: uid
 # Returns: User object from db with uid provided
-def getUser(uid):
-    graph_db = neo4j.GraphDatabaseService(db_config['uri'])
-    store = ogm.Store(graph_db)
-    return store.load_unique(IND_USER, "uid", uid, User)
+def getUser(userID):
+    #graph_db = neo4j.GraphDatabaseService(db_config['uri'])
+    #store = ogm.Store(graph_db)
+    #return store.load_unique(IND_USER, "uid", uid, User)
+    return User(uid=userID)
 
 # Function: getCurrentUser
 # Arguments: request
 # Returns: User object of current user w/ uid if found, otherwise returns none
 def getCurrentUser(request):
     if isUserLoggedOn(request):
-#        return getUser(request.session["uid"])
-        #graph_db = neo4j.GraphDatabaseService(db_config['uri'])
-        #store = ogm.Store(graph_db)
-        #return store.load_unique(IND_USER, "uid", request.session['uid'], User)
         return User(uid=request.session['uid'])
     return None
 

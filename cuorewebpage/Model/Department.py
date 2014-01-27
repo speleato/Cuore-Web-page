@@ -91,6 +91,8 @@ class Department(object):
             store.save_unique(IND_TITLE, "name", newTitle.name, newTitle)
             graph_db.create((self.getNode(), REL_HASTITLE, newTitle.getNode()))
 
+
+
     # Function: removeTitle
     # Arguments: name of the title (string)
     # Returns:
@@ -111,6 +113,7 @@ class Department(object):
         for rel in list(self.deptInstance.match_incoming(REL_HASOWNER)):
             blogs.append(rel.start_node)
         return blogs
+
 
 
 

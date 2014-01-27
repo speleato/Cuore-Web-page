@@ -1,6 +1,14 @@
 from database_config import *
 from py2neo import neo4j, node, ogm
 import time
+import os
+from web_config import *
+from Department import *
+from Company import *
+from User import *
+from Project import *
+from Task import *
+
 from Person import Title
 # Class  : File
 # Methods:
@@ -26,26 +34,27 @@ STS_IN_PROG = "In_Progress"
 class File:
     graph_db = None
     FileInstance = None
-    store = None
 
     #
     # Function	: Constructor
     # Arguments	: Uri of Existing File Node OR Name of File
     #
-    def __init__(self, URI=None, Name=None, Body=None):
+    def __init__(self, URI=None, Name=None, Depart=None):
         global LBL_FILE
         self.db_init()
         tempFile = None
         if URI is not None:
             tempFile = neo4j.Node(URI)
-        elif Name is not None and Body is not None:
-            bytes = str.encode(Body)
-            print type(bytes)
-            tempFile, = self.graph_db.create({"name": Name, "file": bytes})
+        elif Name is not None and Depart is not None:
+            #We create the node in the database with the reference to the file.
+            tempFile = self.graph_db.get_or_create_indexed_node(IND_FILE,"name",Name,{"name":Name})
             tempFile.add_labels(LBL_FILE)
         else:
             raise Exception("Name/Status or URI not specified")
         self.FileInstance = tempFile
+        self.FileInstance["file"] = './fileSystem/'+Depart +'/'+Name
+        self.FileInstance["department"]= Depart
+        self.FileInstance["modTime"] = time.strftime("%c")
 
 
     def db_init(self):
@@ -73,6 +82,17 @@ class File:
             return None
 
     #
+    # Function	: getDepartment
+    # Arguments	:
+    # Returns	: department of File
+    #
+    def getDepartment(self):
+        if self.FileInstance is not None:
+            return self.FileInstance["department"]
+        else:
+            return None
+
+    #
     # Function 	: getFiles
     # Arguments :
     # Returns 	: a list of File Nodes belonging to a specific department (restriction: each file belongs only to ONE department
@@ -90,13 +110,37 @@ class File:
     # Arguments :
     # Returns 	: stores a file in the database
     #
-    def storeFile(self):
-        global REL_HASFILE
-        currentTime = time.strftime("%c")
-        files = list()
-        for relationship in list(self.FileInstance.match_outgoing(REL_HASFILE)):
-            files.append(relationship.end_node)
-        return files
+    def storeFile(self, File, project, task, uid):
+        self.db_init()
+        if os.getcwd() == BASE_ROOT:
+            path = FILESYS_PATH
+            os.chdir(path)
+
+        #We check if the department directory still exists
+        if not os.path.isdir(self.getDepartment()):
+            #We create a new directory for that department
+            os.makedirs(self.getDepartment())
+
+        #Now if the file exists in the original directory, we delete it before inserting the new file
+        if os.path.isfile(self.getDepartment() + '/'+self.getName()):
+            os.remove(self.getDepartment() + '/'+self.getName())
+
+        #We now insert the file into the folder
+        output = open(os.path.join(self.getDepartment() + '/', self.getName()), 'wb')
+        output.write(File)
+        output.close()
+
+        #We assign it to a department
+        deptOwner = Department(None, self.getDepartment()).getNode()
+        fileCreator = getUser(uid)
+        self.setDepartment(deptOwner)
+        self.setCreator(fileCreator)
+        if project is not None:
+            projectAssigned = Project(None, project).getNode()
+            self.setProject(projectAssigned)
+        if task is not None:
+            taskAssigned = Task(None, task, None).getNode()
+            self.setTask(taskAssigned)
 
     #
     # Function	: deleteFile
@@ -137,16 +181,55 @@ class File:
 
 
     #
-    # Function	: getCreation
-    # Arguments	:
+    # Function	: setDept
+    # Arguments	: (Department Node) dept
+    # Returns	: a 'Path' object containing nodes and relationships used
     #
-    def assignToDepartment(self, department):
+    def setDepartment(self, dept):
         global REL_HASFILE, LBL_FILE
-        if LBL_FILE in department.get_labels():
-            return self.FileInstance.get_or_create_path(REL_HASFILE, department)
+        if LBL_DEPARTMENT in dept.get_labels():
+            return dept.get_or_create_path(REL_HASFILE, self.FileInstance)
+        else:
+            raise Exception("The Node Provided is not a Department")
+
+
+        #
+    # Function	: setCreator
+    # Arguments	: (Department Node) dept
+    # Returns	: a 'Path' object containing nodes and relationships used
+    #
+    def setCreator(self, user):
+        global REL_CREATEDBY, LBL_FILE
+        if LBL_FILE in self.FileInstance.get_labels():
+            return self.FileInstance.get_or_create_path(REL_CREATEDBY, user.userInstance)
         else:
             raise Exception("The Node Provided is not a User")
 
+
+    #
+    # Function	: setProject
+    # Arguments	: (Department Node) dept
+    # Returns	: a 'Path' object containing nodes and relationships used
+    #
+    def setProject(self, project):
+        global REL_HASFILE, LBL_FILE
+        if LBL_PROJECT in project.get_labels():
+            return project.get_or_create_path(REL_HASFILE, self.FileInstance)
+        else:
+            raise Exception("The Node Provided is not a Department")
+
+
+    #
+    # Function	: setTask
+    # Arguments	: (Department Node) dept
+    # Returns	: a 'Path' object containing nodes and relationships used
+    #
+    def setTask(self, task):
+        global REL_HASFILE, LBL_FILE
+        if LBL_TASK in task.get_labels():
+            return task.get_or_create_path(REL_HASFILE, self.FileInstance)
+        else:
+            raise Exception("The Node Provided is not a Department")
 
     # Clears the entire DB for dev purposes
     def clear(self):
