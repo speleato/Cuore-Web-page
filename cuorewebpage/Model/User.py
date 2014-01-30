@@ -140,7 +140,7 @@ class User:
     # Returns   : uid of user
     def getUID(self):
         if self.userInstance is not None:
-            return self.userInstance['UID']
+            return self.userInstance['uid']
         else:
             return None
 
@@ -415,7 +415,11 @@ def getUser(userID):
 # Returns: User object of current user w/ uid if found, otherwise returns none
 def getCurrentUser(request):
     if isUserLoggedOn(request):
-        return User(uid=request.session['uid'])
+        graph_db = neo4j.GraphDatabaseService(db_config['uri'])
+        # Check to see if user already registered. Note: don't use User(uid=request.session['uid']) to do this check
+        #       since it will create a node if it doesn't already exist (basically returns a false positive/clutters db)
+        if graph_db.get_indexed_node(IND_USER, 'uid', request.session['uid']):
+            return User(uid=request.session['uid'])
     return None
 
 # Function: getUserBlog
@@ -427,25 +431,15 @@ def getUserBlog(request):
         user = User(uid=request.session['uid'])
         blogs = list()
         for d in list(user.getDepartments()):
+            blog = Blog(d.getBlog()[0])
+            #return None
 
-        blog = Blog(department.getBlog()[0])
-    return None
-
-"""
-
-
-
-
-
-
-
-
-"""
-        print "==========================================================================="
-        print "USER:        " + user.getFullName()
-        print "TITLE:       " + title.getName()
-        print "DEPARTMENT:  " + department.getName()
-        print "BLOG:        " + blog.getName()
-        print "==========================================================================="
+            print "==========================================================================="
+            '''
+            print "USER:        " + user.getFullName()
+            print "TITLE:       " + title.getName()
+            '''
+            print "DEPARTMENT:  " + d.getName()
+            print "BLOG:        " + blog.getName()
+            print "==========================================================================="
         return blog
-"""

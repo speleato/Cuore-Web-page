@@ -70,7 +70,7 @@ class Company(object):
 
     # Function: getDepartments
     # Arguments:
-    # Returns: list of Department objects related to self
+    # Returns: list of Department nodes related to self
     def getDepartments(self):
         global REL_HASDEPT
         depts = list()
@@ -111,3 +111,21 @@ class Company(object):
 def getCompany():
     company = Company(Name="Cuore")
     return company
+
+def getUnconfirmed():
+    graph_db = neo4j.GraphDatabaseService(db_config['uri'])
+    unconfirmedNode=graph_db.get_or_create_indexed_node(IND_UNCONFIRMED, "name", "unconfirmed", {"name":"unconfirmed"})
+    unconfirmed = []
+    for relationship in list(unconfirmedNode.match_incoming(REL_UNCONFIRMED)):
+        unconfirmed.append(relationship.start_node)
+    return unconfirmed
+
+def getUnassigned():
+    graph_db = neo4j.GraphDatabaseService(db_config['uri'])
+    unassignedNode = graph_db.get_or_create_indexed_node(IND_UNASSIGNED, "name", "unassigned", {"name":"unassigned"})
+    unassigned = []
+    for relationship in list(unassignedNode.match_incoming(REL_UNASSIGNED)):
+        unassigned.append(relationship.start_node)
+    return unassigned
+
+

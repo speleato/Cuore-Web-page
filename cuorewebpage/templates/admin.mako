@@ -24,82 +24,66 @@
     from py2neo import neo4j, ogm, cypher
     from database_config import db_config, IND_COMP, IND_DEP, IND_TITLE, IND_USER, IND_UNASSIGNED, IND_UNCONFIRMED, REL_HASTITLE, REL_UNCONFIRMED, REL_UNASSIGNED
 
-    from cuorewebpage.Model.Person import User, Title, Department, Company
+    #from cuorewebpage.Model.Person import User, Title, Department, Company
 
     graph_db = neo4j.GraphDatabaseService(db_config['uri'])
     store = ogm.Store(graph_db)
+    print "start"
+    print departments
+    print "done"
 %>
+
 %if request.POST:
     %if request.POST.getone("searchType")=="Get All":
-        <%
-            departments = store.load_unique(IND_COMP, "name", "Cuore", Company).getAllDepartments()
-        %>
-        %for i in departments:
-            <h2>${i.name}</h2>
-            <%
-                titles = i.getAllTitles()
-            %>
-            %for j in titles:
-                <h3>${j.name}</h3>
-                <%
-                    users = j.getAllUsers()
-                %>
-                %for k in users:
-                    <form action="/registration" method="post">
-                        <input type="text" name="user" hidden value="${k.uid}">
-                        <input type="submit" value="Edit ${k.first_name} ${k.last_name}'s info">
-                    </form>
+        %for department in departments:
+            <h2>${department}</h2>
+            %for titles in departments[department]:
+                %for title in titles:
+                    <h3>${title}</h3>
+                    %for users in titles[title]:
+                        %for user in users:
+                            <form action="/registration" method="post">
+                                <%doc> Passes through UID of desired user as a hidden field (used to identify target user in registration/edit panel)</%doc>
+                                <input type="text" name="user" hidden value="${users[user]}">
+                                <input type="submit" value="Edit ${user}'s info">
+                            </form>
+                        %endfor
+                    %endfor
                 %endfor
             %endfor
         %endfor
         <h2>Unconfirmed Users</h2>
-        <%
-            unconfirmed=[]
-            for k in graph_db.get_or_create_indexed_node(IND_UNCONFIRMED, "name", "unconfirmed").match(REL_UNCONFIRMED):
-                unconfirmed.append(store.load(User, k.start_node))
-        %>
-        %for k in unconfirmed:
+        %for user in unconfirmed:
             <form action="/registration" method="post">
-                <input type="text" name="user" hidden value="${k.uid}">
-                <input type="submit" value="Confirm ${k.first_name} ${k.last_name}">
+                <%doc> Passes through UID of desired user as a hidden field (used to identify target user in registration/edit panel)</%doc>
+                <input type="text" name="user" hidden value="${unconfirmed[user]}">
+                <input type="submit" value="Confirm ${user}">
             </form>
         %endfor
         <h2>Unassigned Users</h2>
-        <%
-            unassigned=[]
-            for k in graph_db.get_or_create_indexed_node(IND_UNASSIGNED, "name", "unassigned").match(REL_UNASSIGNED):
-                unassigned.append(store.load(User, k.start_node))
-        %>
-        %for k in unassigned:
+        %for user in unassigned:
             <form action="/registration" method="post">
-                <input type="text" name="user" hidden value="${k.uid}">
-                <input type="submit" value="Assign ${k.first_name} ${k.last_name}">
+                <%doc> Passes through UID of desired user as a hidden field (used to identify target user in registration/edit panel)</%doc>
+                <input type="text" name="user" hidden value="${unassigned[user]}">
+                <input type="submit" value="Assign ${user}">
             </form>
         %endfor
     %elif request.POST.getone("searchType")=="Get All Unconfirmed":
         <h2>Unconfirmed Users</h2>
-        <%
-            unconfirmed=[]
-            for k in graph_db.get_or_create_indexed_node(IND_UNCONFIRMED, "name", "unconfirmed").match(REL_UNCONFIRMED):
-                unconfirmed.append(store.load(User, k.start_node))
-        %>
-        %for k in unconfirmed:
+        %for user in unconfirmed:
             <form action="/registration" method="post">
-                <input type="text" name="user" hidden value="${k.uid}">
-                <input type="submit" value="Confirm ${k.first_name} ${k.last_name}">
+                <%doc> Passes through UID of desired user as a hidden field (used to identify target user in registration/edit panel)</%doc>
+                <input type="text" name="user" hidden value="${unconfirmed[user]}">
+                <input type="submit" value="Confirm ${user}">
             </form>
         %endfor
     %elif request.POST.getone("searchType")=="Get All Unassigned":
         <h2>Unassigned Users</h2>
-        <%
-            unassigned=[]
-            for k in graph_db.get_or_create_indexed_node(IND_UNASSIGNED, "name", "unassigned").match(REL_UNASSIGNED):
-                unassigned.append(store.load(User, k.start_node))
-        %>
-        %for k in unassigned:
+        %for user in unassigned:
             <form action="/registration" method="post">
-                <input type="text" name="user" hidden value="${k.uid}">
-                <input type="submit" value="Assign ${k.first_name} ${k.last_name}">
+                <%doc> Passes through UID of desired user as a hidden field (used to identify target user in registration/edit panel)</%doc>
+                <input type="text" name="user" hidden value="${unassigned[user]}">
+                <input type="submit" value="Assign ${user}">
             </form>
         %endfor
     %elif request.POST.getone("searchType")=="Search":
@@ -190,12 +174,9 @@
     <input type="submit" value="Add Department"><br/>
 
     <span>Add a Title to</span>
-    <%
-        departments = store.load_unique(IND_COMP, "name", "Cuore", Company).getAllDepartments()
-    %>
     <select name="addToDep">
-    %for i in departments:
-        <option value=${i.name}>${i.name}</option>
+    %for department in departments:
+        <option value=${department}>${department}</option>
     %endfor
     </select>
     <span>department:</span>
@@ -204,8 +185,8 @@
 
     <span>Remove Department:</span>
     <select name="remDep">
-    %for i in departments:
-        <option value=${i.name}>${i.name}</option>
+    %for department in departments:
+        <option value=${department}>${department}</option>
     %endfor
     </select>
     <input type="submit" value="Remove Department"><br/>

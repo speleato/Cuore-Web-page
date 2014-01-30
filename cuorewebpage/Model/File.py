@@ -10,7 +10,7 @@ from User import *
 from Project import *
 from Task import *
 
-from Person import Title
+from Title import *
 # Class  : File
 # Methods:
 #	1) 	db_init(self) 									- Private

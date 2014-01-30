@@ -12,7 +12,6 @@ import os
 
 from cuorewebpage.lib.session import *
 
-#from cuorewebpage.Model.Person import getCompany, getCurrentUser, getUser
 from cuorewebpage.Model.User import *
 from cuorewebpage.Model.Company import *
 from cuorewebpage.Model.Department import *
@@ -55,6 +54,7 @@ def Registration(request):
         ctx['view'] = 'edit'
         ctx['user'] = getCurrentUser(request)
 """
+
 
 @view_config(route_name='Registration_Action', match_param="action=edit", renderer='cuorewebpage:templates/registration_edit.mako')
 def EditRegistration(request):
@@ -133,9 +133,11 @@ def SubmitRegistration(request):
             about = re.sub("[^A-Za-z0-9,.\-() ]", "", request.POST.getone('about'))
             req_title = request.POST.getone('req_title')
             uid = request.session["uid"]
+            # default profile picture
+            photo="cuorewebpage:img/menu_icons/profile.png"
             if request.POST.getone('profile_image') != "":
                 ext = os.path.splitext(request.POST.getone('profile_image').filename)[-1].lower()
-                photo = "cuorewebpage/Profile_Pictures/" + getCurrentUser(request).uid + "/profile_picture" + ext
+                photo = "cuorewebpage/Profile_Pictures/" + uid + "/profile_picture" + ext
 
                 dir = os.path.dirname(photo)
                 try:
@@ -149,20 +151,20 @@ def SubmitRegistration(request):
             # create flags and set to not confirmed
             # create user node in database, put in temporary zone
             user = User(uid=uid, first_name=first_name, last_name=last_name, email=email, confirmed=0,
-                        phone=phone, address=address, city=city, state=state, zipcode=zipcode, about=about, req_title=req_title)
+                        phone=phone, address=address, city=city, state=state, zipcode=zipcode, about=about, photo=photo, req_title=req_title)
 #            store.save_unique(IND_USER, "uid", user.uid, user)
             unconfirmedNode=graph_db.get_or_create_indexed_node("Unconfirmed", "name", "unconfirmed", {"name":"unconfirmed"})
 #            userNode=graph_db.get_indexed_node(IND_USER, "uid", user.uid)
             graph_db.create((user.getNode(), REL_UNCONFIRMED, unconfirmedNode))
+            Calendar(Name=(user.getFullName() + "'s Calendar"), Owner=user.getNode())
 
             # after registration, send email to Leo
             mailer=get_mailer(request)
             message = Message(subject="Registration by " + name,
                               sender=REGISTRATION_EMAIL_SERVER,      # change to cuore mail server later
                               recipients=[REGISTRATION_EMAIL_RECIPIENTS],  # change to leo when rolled out
-                              body=name + " has registered for the Cuore Intranet with the email "
-                                     + email + ". Click here to confirm " + name
-                                     + "'s registration: " + "link_to_admin_panel")
+                              body=name + " has registered for the Cuore Intranet. Click here to confirm " + name
+                                     + "'s registration: " + request.route_url('AdminPanel'))
             mailer.send(message)
             transaction.commit()
         elif request.POST.getone('task') == "edit":
@@ -174,7 +176,7 @@ def SubmitRegistration(request):
             state = re.sub("[^A-Za-z0-9,.\-() ]", "", request.POST.getone('state'))
             zipcode = re.sub("[^A-Za-z0-9,.\-() ]", "", request.POST.getone('zip_code'))
             about = re.sub("[^A-Za-z0-9,.!?\-() ]", "", request.POST.getone('about'))
-            photo = ""
+            photo = getCurrentUser(request).getPhoto()
             if request.POST.getone('profile_image') != "":
                 ext = os.path.splitext(request.POST.getone('profile_image').filename)[-1].lower()
                 photo_file = getCurrentUser(request).userInstance['uid'] + "/profile_picture" + ext
@@ -186,6 +188,11 @@ def SubmitRegistration(request):
                 try:
                     os.stat(dir)
                 except:
+                    dir2 = os.path.dirname(dir)
+                    try:
+                        os.stat(dir2)
+                    except:
+                        os.mkdir(dir2)
                     os.mkdir(dir)
                 f = open(photo_full_path, 'w')
                 f.write(request.POST.getone('profile_image').value)

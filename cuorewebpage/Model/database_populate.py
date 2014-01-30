@@ -43,7 +43,7 @@ users = dict(
     sandy=User(uid="2C1F3V0RiQqS0rJY5qEejQ==", first_name="Sandy", last_name="Siththanandan", email="sandy@cuore.io",
                confirmed=3, req_title="Applications Developer", phone="6502695948", city="SF", state="CA", zipcode="94112").getNode(),
     kirby=User(uid="7jxjnWJGsgCTBjzKX7Yk3Q==", first_name="Kirby", last_name="Linvill", email="kirby@cuore.io", confirmed=3,
-               req_title="Applications Developer", ).getNode(),
+               req_title="Applications Developer", photo="cuorewebpage:img/menu_icons/profile.png").getNode(),
     vincente=User(uid="ENIFCyZRQceEalwDDBI8nA==", first_name="Vincente", last_name="Ciancio", email="vincente@cuore.io", confirmed=3,
                   req_title="Applications Developer", ).getNode(),
     sergio=User(uid="4", first_name="Sergio", last_name="Peleo", email="sergio@cuore.io", confirmed=3,
