@@ -123,3 +123,20 @@ def calendar_event_rename(request):
     data['success'] = True
 
     return data
+
+@view_config(route_name="Calendar_Action", match_param='action=delete', renderer='json')
+def calendar_event_delete(request):
+    if not isUserLoggedOn(request):
+        return redirectUser(request)
+
+    data = {};
+    print "============================="
+    print "\tDeleting Event"
+    print "\tId  \t: " + request.POST.getone('id')
+    print "============================="
+
+    mEvent = Event(graph_db.node(request.POST.getone('id')))
+
+    data['success'] = mEvent.deleteSelf()
+
+    return data
