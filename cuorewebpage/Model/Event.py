@@ -73,6 +73,14 @@ class Event:
             return None
 
     #
+    # Function  : setName
+    # Arguments : String name
+    # Returns   :
+    #
+    def setName(self, name):
+        self.eventInstance["name"] = name
+
+    #
     # Function	: setDescription
     # Arguments	: (String) description
     #
