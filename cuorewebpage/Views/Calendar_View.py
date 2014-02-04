@@ -1,18 +1,14 @@
 __author__ = 'vincente'
 
+from pyramid.view import view_config
+from py2neo import neo4j, ogm
+
 from cuorewebpage.Model.Project import Project
 from cuorewebpage.Model.Task import Task
-from cuorewebpage.Model.Department import Department
-from datetime import datetime
-from pyramid.view import view_config
-
-from py2neo import neo4j, ogm
 from database_config import db_config
 from cuorewebpage.lib.session import *
 from cuorewebpage.Model.User import User, getCurrentUser
-from cuorewebpage.Model.Calendar import Calendar
 from cuorewebpage.Model.Event import Event
-from cuorewebpage.Model.Post import Post
 
 
 graph_db = neo4j.GraphDatabaseService(db_config['uri'])
@@ -139,4 +135,20 @@ def calendar_event_delete(request):
 
     data['success'] = mEvent.deleteSelf()
 
+    return data
+
+@view_config(route_name="Calendar_Action", match_param='action=invite', renderer='json')
+def calendar_event_invite(request):
+    if not isUserLoggedOn(request):
+        return redirectUser(request)
+
+    data = {}
+    print "============================="
+    print "\tInviting to Event"
+    print "\tEvent Id  \t: " + request.POST.getone('id')
+    print "\tUsers     \t: "
+
+    for user in json.loads(request.POST.getone('invitees')):
+        print "\t\t " + user[0]
+    print "============================="
     return data
