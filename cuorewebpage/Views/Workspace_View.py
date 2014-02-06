@@ -22,6 +22,8 @@ store = ogm.Store(graph_db)
 @view_config(route_name="Tasks", renderer="cuorewebpage:templates/tasks.mako")
 def Tasks(request):
     if isUserLoggedOn(request):
+        if getCurrentUser(request) is None:
+            return redirectToRegistration(request)
         ctx = {}
         ctx['section']  = 'Tasks'
         ctx['id'] = -1
@@ -101,7 +103,7 @@ def Tasks(request):
 def Workspace(request):
     if isUserLoggedOn(request):
         if getCurrentUser(request) is None:
-            return redirectUser(request)
+            return redirectToRegistration(request)
         else: #Get the user, calendar, and events so we can populate them in the template
             print "We have an actual user!!"
             mUser     = User(uid=request.session['uid'])

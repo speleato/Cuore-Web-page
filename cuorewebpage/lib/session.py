@@ -20,6 +20,9 @@ def isUserLoggedOn(request):
 def redirectUser(request):
     return HTTPFound(location=request.route_url('Login'))
 
+def redirectToRegistration(request):
+    return HTTPFound(location=request.route_url('Registration'))
+
 
 
 # this will get the POST aswer when the oneID button is pressed and if the user is valid

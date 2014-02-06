@@ -28,9 +28,6 @@
 
     graph_db = neo4j.GraphDatabaseService(db_config['uri'])
     store = ogm.Store(graph_db)
-    print "start"
-    print departments
-    print "done"
 %>
 
 %if request.POST:
@@ -42,7 +39,7 @@
                     <h3>${title}</h3>
                     %for users in titles[title]:
                         %for user in users:
-                            <form action="/registration" method="post">
+                            <form action="/registration/edit" method="post">
                                 <%doc> Passes through UID of desired user as a hidden field (used to identify target user in registration/edit panel)</%doc>
                                 <input type="text" name="user" hidden value="${users[user]}">
                                 <input type="submit" value="Edit ${user}'s info">
@@ -54,7 +51,7 @@
         %endfor
         <h2>Unconfirmed Users</h2>
         %for user in unconfirmed:
-            <form action="/registration" method="post">
+            <form action="/registration/edit" method="post">
                 <%doc> Passes through UID of desired user as a hidden field (used to identify target user in registration/edit panel)</%doc>
                 <input type="text" name="user" hidden value="${unconfirmed[user]}">
                 <input type="submit" value="Confirm ${user}">
@@ -62,7 +59,7 @@
         %endfor
         <h2>Unassigned Users</h2>
         %for user in unassigned:
-            <form action="/registration" method="post">
+            <form action="/registration/edit" method="post">
                 <%doc> Passes through UID of desired user as a hidden field (used to identify target user in registration/edit panel)</%doc>
                 <input type="text" name="user" hidden value="${unassigned[user]}">
                 <input type="submit" value="Assign ${user}">
@@ -71,7 +68,7 @@
     %elif request.POST.getone("searchType")=="Get All Unconfirmed":
         <h2>Unconfirmed Users</h2>
         %for user in unconfirmed:
-            <form action="/registration" method="post">
+            <form action="/registration/edit" method="post">
                 <%doc> Passes through UID of desired user as a hidden field (used to identify target user in registration/edit panel)</%doc>
                 <input type="text" name="user" hidden value="${unconfirmed[user]}">
                 <input type="submit" value="Confirm ${user}">
@@ -80,7 +77,7 @@
     %elif request.POST.getone("searchType")=="Get All Unassigned":
         <h2>Unassigned Users</h2>
         %for user in unassigned:
-            <form action="/registration" method="post">
+            <form action="/registration/edit" method="post">
                 <%doc> Passes through UID of desired user as a hidden field (used to identify target user in registration/edit panel)</%doc>
                 <input type="text" name="user" hidden value="${unassigned[user]}">
                 <input type="submit" value="Assign ${user}">

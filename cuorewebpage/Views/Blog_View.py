@@ -24,7 +24,7 @@ def blog_list_view(request):
         ctx['section'] = 'Blog'
 
         if getCurrentUser(request) is None:
-            return redirectUser(request)
+            return redirectToRegistration(request)
         else: #Get the user, calendar, and events so we can populate them in the template
             print "We have an actual user!!"
             mUser     = User(uid=request.session['uid'])
@@ -45,6 +45,8 @@ def blog_list_view(request):
 @view_config(route_name='Blog_Entry', renderer='cuorewebpage:templates/blogentry.mako')
 def blog_post_view(request):
     if isUserLoggedOn(request):
+        if getCurrentUser(request) is None:
+            return redirectToRegistration(request)
         ctx = {}
         ctx['section'] = "Blog Dashboard"
         ctx['user'] = getCurrentUser(request)
@@ -60,7 +62,7 @@ def blog_post_create(request):
         ctx['section'] = 'Create Blog Post'
 
         if getCurrentUser(request) is None:
-            return redirectUser(request)
+            return redirectToRegistration(request)
         else: #Get the user, calendar, and events so we can populate them in the template
             print "We have an actual user!!"
             mUser     = User(uid=request.session['uid'])
@@ -85,6 +87,8 @@ def blog_post_create(request):
 @view_config(route_name='Blog_Action', match_param='action=update', renderer='cuorewebpage:templates/blog_edit.mako')
 def blog_post_update(request):
     if isUserLoggedOn(request):
+        if getCurrentUser(request) is None:
+            return redirectToRegistration(request)
         ctx = {}
         ctx['section'] = "Update Blog Post"
         ctx['user'] = getCurrentUser(request)
@@ -95,6 +99,8 @@ def blog_post_update(request):
 @view_config(route_name='Blog_Action', match_param='action=dashboard', renderer='cuorewebpage:templates/blog_dashboard.mako')
 def blog_post_update(request):
     if isUserLoggedOn(request):
+        if getCurrentUser(request) is None:
+            return redirectToRegistration(request)
         ctx = {}
         ctx['section'] = "Blog Dashboard"
         ctx['user'] = getCurrentUser(request)

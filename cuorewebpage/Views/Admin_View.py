@@ -11,6 +11,8 @@ from cuorewebpage.Model.Department import Department
 from cuorewebpage.Model.Title import Title
 from cuorewebpage.lib.session import *
 
+import pyramid.httpexceptions
+
 graph_db = neo4j.GraphDatabaseService(db_config['uri'])
 store = ogm.Store(graph_db)
 
@@ -18,6 +20,10 @@ store = ogm.Store(graph_db)
 def admin_panel(request):
     print request
     if isUserLoggedOn(request):
+        if getCurrentUser(request) is None:
+            return redirectToRegistration(request)
+        if not getCurrentUser(request).isAdmin():
+            raise pyramid.httpexceptions.HTTPForbidden()
         ctx = {}
         ctx['section'] = 'Admin Panel'
         # ctx['departments'] holds a dictionary in the form {Department_name : array_of_title_dictionaries}

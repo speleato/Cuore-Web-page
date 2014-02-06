@@ -22,6 +22,8 @@ store = ogm.Store(graph_db)
 @view_config(route_name="Files", renderer="cuorewebpage:templates/files.mako")
 def Files(request):
     if isUserLoggedOn(request):
+        if getCurrentUser(request) is None:
+            return redirectToRegistration(request)
         ctx = {}
         ctx['section'] = 'Files'
         user = User(request.session['uid'])

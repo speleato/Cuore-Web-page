@@ -15,7 +15,7 @@ def dashboard(request):
         ctx = {}
         ctx['section'] = 'Dashboard'
         if getCurrentUser(request) is None:
-            return redirectUser(request)
+            return redirectToRegistration(request)
         else: #Get the user, calendar, and events so we can populate them in the template
             print "We have an actual user!!"
             mUser     = User(uid=request.session['uid'])

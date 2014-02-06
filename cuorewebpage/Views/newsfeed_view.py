@@ -5,6 +5,7 @@ import time
 from py2neo import neo4j, ogm
 from database_config import db_config
 from cuorewebpage.lib.session import *
+from cuorewebpage.Model.User import getCurrentUser
 
 graph_db = neo4j.GraphDatabaseService(db_config['uri'])
 store = ogm.Store(graph_db)
@@ -12,6 +13,8 @@ store = ogm.Store(graph_db)
 @view_config(route_name="Newsfeed", renderer="cuorewebpage:templates/newsfeed.mako")
 def Newsfeed(request):
     if isUserLoggedOn(request):
+        if getCurrentUser(request) is None:
+            return redirectToRegistration(request)
         if request.POST:
             newsNode=graph_db.create({"news":request.POST.getone('news'), "time":time.time(), "author":request.POST.getone('author')})
             departments=request.POST.getall('postTo[]')

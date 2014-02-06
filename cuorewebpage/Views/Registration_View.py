@@ -26,6 +26,8 @@ REGISTRATION_EMAIL_RECIPIENTS = "sandymeep@gmail.com"
 
 @view_config(route_name='Registration', renderer='cuorewebpage:templates/registration.mako')
 def Registration(request):
+    if not isUserLoggedOn(request):
+        return redirectUser(request)
     ctx = {}
     ctx['section'] = 'Registration'
     departments = list()
@@ -58,6 +60,7 @@ def Registration(request):
 
 @view_config(route_name='Registration_Action', match_param="action=edit", renderer='cuorewebpage:templates/registration_edit.mako')
 def EditRegistration(request):
+    print request.POST
     ctx = {}
     departments = list()
     for i in getCompany().getDepartments():
@@ -65,7 +68,7 @@ def EditRegistration(request):
     ctx['departments'] = departments
 
     if not getCurrentUser(request):
-        return redirectUser(request)
+        return redirectToRegistration(request)
     elif getCurrentUser(request).isAdmin():
         if request.POST:
             ctx['section'] = 'Admin Panel'
@@ -143,6 +146,11 @@ def SubmitRegistration(request):
                 try:
                     os.stat(dir)
                 except:
+                    dir2 = os.path.dirname(dir)
+                    try:
+                        os.stat(dir2)
+                    except:
+                        os.mkdir(dir2)
                     os.mkdir(dir)
                 f = open(photo, 'w')
                 f.write(request.POST.getone('profile_image').value)
