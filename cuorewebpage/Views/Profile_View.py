@@ -11,6 +11,8 @@ store = ogm.Store(graph_db)
 @view_config(route_name="Profile", renderer="cuorewebpage:templates/profile.mako")
 def profile(request):
     if isUserLoggedOn(request):
+        if getCurrentUser(request) is None:
+            return redirectToRegistration(request)
         ctx = {}
         ctx['user'] = getCurrentUser(request)
         ctx['section'] = "Profile"

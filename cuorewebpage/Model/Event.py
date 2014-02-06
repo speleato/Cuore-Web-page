@@ -73,6 +73,32 @@ class Event:
             return None
 
     #
+    # Function  : deleteSelf
+    # Arguments :
+    # Returns   :
+    #
+    def deleteSelf(self):
+        if self.eventInstance is None:
+            return False
+        #Get all outbound and inbound relationships from this node which we want to delete
+        relationships = list(self.eventInstance.match_incoming())
+        relationships.extend(list(self.eventInstance.match_outgoing()))
+        for relationship in relationships:
+            relationship.delete()
+
+        #Since we just deleted everything connecting this node to the graph, lets delete it
+        self.eventInstance.delete()
+        return self.eventInstance.exists == False
+
+    #
+    # Function  : setName
+    # Arguments : String name
+    # Returns   :
+    #
+    def setName(self, name):
+        self.eventInstance["name"] = name
+
+    #
     # Function	: setDescription
     # Arguments	: (String) description
     #

@@ -6,6 +6,7 @@ from cuorewebpage.lib.session import *
 from cuorewebpage.Model.File import *
 from cuorewebpage.Model.Person import *
 from cuorewebpage.Model.User import *
+from cuorewebpage.Model.Project import *
 
 from py2neo import neo4j, ogm
 from database_config import *
@@ -21,16 +22,39 @@ store = ogm.Store(graph_db)
 @view_config(route_name="Files", renderer="cuorewebpage:templates/files.mako")
 def Files(request):
     if isUserLoggedOn(request):
+        if getCurrentUser(request) is None:
+            return redirectToRegistration(request)
         ctx = {}
         ctx['section'] = 'Files'
-        currentUser = getUser(request.session['uid'])
+        user = User(request.session['uid'])
+        projects = list()
+        tasks = list()
+        departments = user.getDepartments()
+        workspace = user.getWorkspace()
+        if workspace is not None:
+            projects = workspace.getProjects()
+            #we have a set of nodes
+            if projects is not None:
+                for k in projects:
+                    for v in Project(None, k["name"]).getTasks():
+                        tasks.append(v)
 
-        departments = file.getDepartmentByUID(request.session['uid'])
+
+        ctx['department'] = list()
+        ctx['workspaces'] = list()
+        ctx['projects'] = list()
+        ctx['tasks'] = list()
+
         if departments:
             for i in departments:
-                ctx['department'].append(departments(i)['name'])
-        else:
-            ctx['department'] = []
+                ctx['department'].append(i['name'])
+        if projects:
+            for i in projects:
+                ctx['projects'].append(i['name'])
+        if tasks:
+            for i in tasks:
+                for k in tasks[i]:
+                    ctx['tasks'].append(i['name'])
         return ctx
     else:
         return redirectUser(request)
@@ -43,15 +67,15 @@ def FileUpload(request):
 
             user = request.session['uid']
 
-            file = request.POST.get('file').value
+            fileString = request.POST.get('file').value
             name = request.POST.get('file').filename
-            #We store the file in the database
-            file = File(None, name, file)
-            file.storeFile()
+            department = request.POST.get('department')
+            project = request.POST.get('project')
+            task = request.POST.get('task')
 
-            #Now that we have the file we relate it to the title.
-            #file.assignToDepartment()
-            #userNode = graph_db.getNodeById(IND_FILE)
+            #We store the file in the database
+            file = File(None, name, department)
+            file.storeFile(fileString, project, task, request.session['uid'])
         else:
             print "error in POST file upload."
         return HTTPFound(location=request.route_url('Files'))

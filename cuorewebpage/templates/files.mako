@@ -16,12 +16,25 @@
         <label for="file">File</label>
         <input id="file" name="file" type="file" value="" />
         <input type="submit" value="submit" />
+        <div style="margin-left:400px">
+            <p>Which department does this file belong to?</p>
+            %for i in range(0, len(department)):
+                <input type="radio" name="department" value="${department[i]}">${department[i]}</i><br/>
+            %endfor
+        </div>
+        <div style="margin-left:400px">
+            <p>Which project does this file belong to?</p>
+            %for i in range(0, len(projects)):
+                <input type="radio" name="project" value="${projects[i]}">${projects[i]}</i><br/>
+            %endfor
+        </div>
+        <div style="margin-left:400px">
+            <p>Which task does this file belong to?</p>
+            %for i in range(0, len(tasks)):
+                <input type="radio" name="task" value="${tasks[i]}">${tasks[i]}</i><br/>
+            %endfor
+        </div>
     </form>
-    <div>
-        %for i in range(1, len(department)):
-            <input type="radio" name="departments" value="${department[i]}">${department[i]}</i>
-        %endfor
-    </div>
 </div>
 <%block name="footer">
 ${parent.footer()}

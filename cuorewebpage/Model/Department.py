@@ -80,6 +80,8 @@ class Department(object):
             self.store.save_unique(IND_TITLE, "name", newTitle.name, newTitle)
             self.graph_db.create((self.getNode(), REL_HASTITLE, newTitle.getNode()))
 
+
+
     # Function: removeTitle
     # Arguments: name of the title (string)
     # Returns:
@@ -129,5 +131,6 @@ class Department(object):
         for t in self.getTitles():
             users.extend(Title(t).getUsers())
         return users
+
 
 

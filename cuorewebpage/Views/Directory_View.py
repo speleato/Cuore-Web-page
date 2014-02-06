@@ -12,6 +12,8 @@ store = ogm.Store(graph_db)
 @view_config(route_name="Directory", renderer="cuorewebpage:templates/Directory.mako")
 def Directory(request):
     if isUserLoggedOn(request):
+        if getCurrentUser(request) is None:
+            return redirectToRegistration(request)
         ctx = {}
         ctx['section'] = 'Directory'
         ctx['user'] = getCurrentUser(request)

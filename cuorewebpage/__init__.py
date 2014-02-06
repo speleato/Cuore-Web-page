@@ -34,6 +34,7 @@ def main(global_config, **settings):
     config.add_route('FileDelete', '/files/delete')
     config.add_route('Workspace', '/workspace')
     config.add_route('Calendar', '/calendar')
+    config.add_route('Calendar_Action', '/calendar/event/{action}')
     config.add_route('Tasks', '/tasks')
     config.add_route('CMS', '/cms')
     config.add_route('Store', '/store')
