@@ -8,7 +8,7 @@
             <%doc><div class="title"><span class="name">${user.userInstance['first_name']}</span><span class="subtitle">${user.userInstance['req_title']}</span></div></%doc>
             <%doc><div class="title"><span class="name">${user.first_name}</span><span class="subtitle">${user.getTitle()}</span></div></%doc>
             % if user.getPhoto() is not None:
-            <span class="icon"><img src="${request.static_url(user.getPhoto())}"></span></a>
+            <span class="icon"><img height="100" width="100" src="${request.static_url(user.getPhoto())}"></span></a>
             % else:
             <span class="icon"> IMAGE WOULD<br>GO HERE<!--<img src="">-->
             </span></a>
