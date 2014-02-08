@@ -268,8 +268,9 @@ class User:
     def getTitles(self):
         global REL_HASUSER
         titles = list()
-        for rels in list(self.userInstance.match_incoming(REL_HASUSER)):
-            titles.append(rels.start_node)
+        if self.userInstance.match_incoming(REL_HASUSER) is not None:
+            for rels in list(self.userInstance.match_incoming(REL_HASUSER)):
+                titles.append(rels.start_node)
         return titles
 
     # Function  : getTitle
@@ -286,8 +287,9 @@ class User:
     # Returns   : list of department nodes associated w/ self
     def getDepartments(self):
         departments = list()
-        for t in self.getTitles():
-            departments.extend(Title(t).getDepartments())
+        if self.getTitles() is not None:
+            for t in self.getTitles():
+                departments.extend(Title(t).getDepartments())
         return departments
 
     # Function  : getDepartment

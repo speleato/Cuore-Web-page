@@ -22,11 +22,12 @@ store = ogm.Store(graph_db)
 @view_config(route_name="Files", renderer="cuorewebpage:templates/files.mako")
 def Files(request):
     if isUserLoggedOn(request):
+        mUser     = User(uid=request.session['uid'])
         if getCurrentUser(request) is None:
             return redirectToRegistration(request)
         ctx = {}
         ctx['section'] = 'Files'
-        user = User(request.session['uid'])
+        user = User(uid = request.session['uid'])
         projects = list()
         tasks = list()
         departments = user.getDepartments()
@@ -44,17 +45,17 @@ def Files(request):
         ctx['workspaces'] = list()
         ctx['projects'] = list()
         ctx['tasks'] = list()
+        ctx['user'] = mUser
 
-        if departments:
+        if departments is not None:
             for i in departments:
                 ctx['department'].append(i['name'])
-        if projects:
+        if projects is not None:
             for i in projects:
                 ctx['projects'].append(i['name'])
-        if tasks:
+        if tasks is not None:
             for i in tasks:
-                for k in tasks[i]:
-                    ctx['tasks'].append(i['name'])
+                ctx['tasks'].append(i['name'])
         return ctx
     else:
         return redirectUser(request)
@@ -74,7 +75,7 @@ def FileUpload(request):
             task = request.POST.get('task')
 
             #We store the file in the database
-            file = File(None, name, department)
+            file = File(None, name, department, task)
             file.storeFile(fileString, project, task, request.session['uid'])
         else:
             print "error in POST file upload."
