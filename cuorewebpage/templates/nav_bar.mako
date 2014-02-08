@@ -20,7 +20,7 @@
                 <ul id="sidebar_menu" class="navbar nav nav-list container full">
                     <li class="accordion-group color_4 active">
                         <a class="dashboard " href="${request.route_url('Dashboard')}">
-                        <img src="img/menu_icons/dashboard.png"><span>Dashboard</span></a> </li>
+                        <img src="${request.static_url('cuorewebpage:img/menu_icons/dashboard.png')}"><span>Dashboard</span></a> </li>
                     <li class="accordion-group color_7">
                         <a class="accordion-toggle widgets collapsed" data-toggle="collapse"
                         data-parent="#sidebar_menu" href="#collapse1">

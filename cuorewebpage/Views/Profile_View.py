@@ -14,7 +14,10 @@ def profile(request):
         if getCurrentUser(request) is None:
             return redirectToRegistration(request)
         ctx = {}
-        ctx['user'] = getCurrentUser(request)
+        if request.GET:
+            ctx['user'] = User(uid = request.GET.getone('uid'))
+        else:
+            ctx['user'] = getCurrentUser(request)
         ctx['section'] = "Profile"
         return ctx
     else:
