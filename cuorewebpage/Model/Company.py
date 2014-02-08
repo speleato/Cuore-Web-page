@@ -1,5 +1,8 @@
 from py2neo import neo4j, ogm, node, rel
 from database_config import *
+from cuorewebpage.Model.Department import *
+from cuorewebpage.Model.Blog import *
+from cuorewebpage.Model.Workspace import *
 
 # Class  : Company
 # Methods:
@@ -72,7 +75,7 @@ class Company(object):
     # Arguments:
     # Returns: list of Department nodes related to self
     def getDepartments(self):
-        global REL_HASDEPT
+        global REL_HASDEP
         depts = list()
         for relationship in list(self.companyInstance.match_outgoing(REL_HASDEP)):
             depts.append(relationship.end_node)
@@ -84,9 +87,11 @@ class Company(object):
     # Description: creates a related department node in neo4j with the given name if it doesn't already exist
     def addDepartment(self, name):
         newDep = Department(name)
-        if not (self.getDepartment(name)):
-            self.store.save_unique(IND_DEPT, "name", newDep.name, newDep)
-            self.graph_db.create((self.getNode(), REL_HASDEPT, newDep.getNode()))
+        newBlog = Blog(Name=name, Owner=newDep)
+        newWorkspace = Workspace(Name=name+" Workspace", Owner=newDep)
+        #if not (self.getDepartment(name)):
+        #    self.store.save_unique(IND_DEP, "name", newDep.name, newDep)
+        #    self.graph_db.create((self.getNode(), REL_HASDEP, newDep.getNode()))
 
     # Function: removeDepartment
     # Arguments: name of the department (string)
@@ -94,7 +99,7 @@ class Company(object):
     # Description: deletes a related department node and all associated titles, safely removes the people associated
     #       with those titles (attaches the people to an unassigned node)
     def removeDepartment(self, name):
-        dept = self.getDepartment(name)
+        dep = self.getDepartment(name)
         self.store.delete(dep.getNewsfeed())
         for i in dep.getTitles():
             dep.removeTitle(i.name)
