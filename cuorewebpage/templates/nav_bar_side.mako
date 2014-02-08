@@ -20,11 +20,11 @@
                 <ul id="sidebar_menu" class="navbar nav nav-list container full">
                     <li class="accordion-group color_4 active">
                         <a class="dashboard " href="${request.route_url('Dashboard')}">
-                        <img src="img/menu_icons/dashboard.png"><span>Dashboard</span></a> </li>
+                        <img src="${request.static_url('cuorewebpage:img/menu_icons/dashboard.png')}"><span>Dashboard</span></a> </li>
                     <li class="accordion-group color_7">
                         <a class="accordion-toggle widgets collapsed" data-toggle="collapse"
                         data-parent="#sidebar_menu" href="#collapse1">
-                        <img src="img/menu_icons/forms.png"><span>Directory</span></a>
+                        <img src="${request.static_url('cuorewebpage:img/menu_icons/forms.png')}"><span>Directory</span></a>
                         <ul id="collapse1" class="accordion-body collapse">
                             <li><a href="${request.route_url('Profile')}">Profile</a></li>
                             <li><a href="${request.route_url('Directory')}">Departments</a></li>
@@ -32,7 +32,7 @@
                     <li class="accordion-group color_3">
                         <a class="accordion-toggle widgets collapsed" data-toggle="collapse"
                             data-parent="#sidebar_menu" href="#collapse2">
-                        <img src="img/menu_icons/widgets.png"><span>Workspace</span></a>
+                        <img src="${request.static_url('cuorewebpage:img/menu_icons/widgets.png')}"><span>Workspace</span></a>
                         <ul id="collapse2" class="accordion-body collapse">
                             <li><a href="${request.route_url('Workspace')}">Department</a></li>
                             <li><a href="${request.route_url('Files')}">Files</a></li>
@@ -42,10 +42,10 @@
                         </ul>
                     <li class="color_13">
                         <a class="widgets" href="${request.route_url('IdeaCenter')}">
-                        <img src="img/menu_icons/calendar.png"><span>Idea Center</span></a> </li>
+                        <img src="${request.static_url('cuorewebpage:img/menu_icons/calendar.png')}"><span>Idea Center</span></a> </li>
                     <li class="color_10">
                         <a class="widgets"data-parent="#sidebar_menu" href="${request.route_url('CMS')}">
-                        <img src="img/menu_icons/maps.png"><span>CMS</span></a> </li>
+                        <img src="${request.static_url('cuorewebpage:img/menu_icons/maps.png')}"><span>CMS</span></a> </li>
 <!--                    <li class="accordion-group color_12">
                         <a class="widgets" data-parent="#sidebar_menu" href="${request.route_url('Store')}">
                         <img src="img/menu_icons/tables.png"><span>Store</span></a> </li>
@@ -58,13 +58,13 @@
 -->
                     <li class="color_22">
                         <a class="widgets" data-parent="#sidebar_menu" href="${request.route_url('Registration')}">
-                            <img src="img/menu_icons/others.png"><span>User Settings</span></a> </li>
+                            <img src="${request.static_url('cuorewebpage:img/menu_icons/others.png')}"><span>User Settings</span></a> </li>
                     <li class="color_8">
                         <a class="widgets"data-parent="#sidebar_menu" href="${request.route_url('Contact')}">
-                        <img src="img/menu_icons/gallery.png"><span>Contact Us</span></a> </li>
+                        <img src="${request.static_url('cuorewebpage:img/menu_icons/gallery.png')}"><span>Contact Us</span></a> </li>
                     <li class="accordion-group color_25">
                         <a class="widgets" data-parent="#sidebar_menu" href="${request.route_url('Logout')}">
-                        <img src="img/menu_icons/others.png"><span>Logout</span></a> </li>
+                        <img src="${request.static_url('cuorewebpage:img/menu_icons/others.png')}"><span>Logout</span></a> </li>
                 </ul>
                 <div class="menu_states row-fluid container ">
                     <h2 class="pull-left">Menu Settings</h2>

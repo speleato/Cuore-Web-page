@@ -12,76 +12,65 @@
 
 <div id="main_container">
   <div class="row-fluid">
-    <div class="span3">
+    <div class="span12">
+
       <div class="title">
-        <div class="row-fluid legend">
-          <h1>Directory</h1>
-            </div>
-          </div>
-          <!-- End .title -->
+        <div class="row-fluid legend"> <h1>Directory</h1> </div>
+      </div>
+      <!-- End .title -->
 
-          <div class="content">
-          <!-- End .content -->
-        </div>
-        <!-- End .span3 -->
-
-<!-- span8 box for each department -->
+      <div class="content">
+        <!-- span12 box for each department -->
 
 %for d in departments:
     <%
         dep_node = Department(d)
         job_titles = dep_node.getTitles()
     %>
-    <div class="row-fluid">
-    <div class="span8">
-      <div class="box height_big paint">
-        <div class="title">
-          <h4> <span>${dep_node.getName()}</span> </h4>
-        </div>
-        <!-- End .title -->
-        <div class="content full">
-          <table id="datatable_example" class="responsive table table-hover full">
-            <thead>
-              <tr>
-                <th class="ue"> Name </th>
-                <th class="ue"> Title </th>
-                <th class="Yy to_hide_phone"> Email </th>
-              </tr>
-            </thead>
-            <tbody>
-    %for t in job_titles:
-        <%
-        title_node = Title(t)
-        users = title_node.getUsers()
-        %>
-        %for u in users:
+        <div class="row-fluid">
+          <div class="span12">
+              <div class="box height_big paint">
+                <div class="title"> <h4> <span>${dep_node.getName()}</span> </h4> </div>
+                <!-- End .title -->
+                <div class="content full">
+                  <table id="datatable_example" class="responsive table table-hover full">
+                    <thead>
+                      <tr>
+                        <th class="ue"> Name </th>
+                        <th class="ue"> Title </th>
+                        <th class="Yy to_hide_phone"> Email </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+        %for t in job_titles:
             <%
-            user_node = User(u)
+            title_node = Title(t)
+            users = title_node.getUsers()
             %>
-    <%doc>  add link to user's profile, i think can be done using get
-                  and then rendering the profile with the uid as a parameter</%doc>
-              <tr>
-                <td><a href="/profile?uid=${user_node.getUID()}"><strong>${user_node.getFirstName()} ${user_node.getLastName()}</strong></a></td>
-                <td>${title_node.getName()}</td>
-                <td><a href="mailto:${user_node.getEmail()}">${user_node.getEmail()}</a></td>
-              </tr>
-        %endfor <!-- end user's row -->
-    %endfor <!-- end of members under same job_title -->
-            </tbody>
-          </table>
+            %for u in users:
+                <%
+                user_node = User(u)
+                %>
+        <%doc>  add link to user's profile, i think can be done using get
+                      and then rendering the profile with the uid as a parameter</%doc>
+                      <tr>
+                        <td><a href="/profile?uid=${user_node.getUID()}"><strong>${user_node.getFirstName()} ${user_node.getLastName()}</strong></a></td>
+                        <td>${title_node.getName()}</td>
+                        <td><a href="mailto:${user_node.getEmail()}">${user_node.getEmail()}</a></td>
+                      </tr>
+            %endfor <!-- end user's row -->
+        %endfor <!-- end of members under same job_title -->
+                    </tbody>
+                  </table>
+                </div>
+              </div> <!-- End .box -->
+          </div> <!-- End .span12 -->
         </div>
-        <!-- End .content -->
-<!--        <div class="description">Some explanation text here <i class="gicon-info-sign icon-white"></i></div>-->
-      </div>
-      <!-- End .box -->
 %endfor <!-- end of department -->
 
-    </div>
-    <!-- End .span8 -->
-
-    </div>
-    <!-- End #container -->
-  </div>
+      </div> <!-- End .content -->
+    </div> <!-- End .span8 -->
+  </div> <!-- End row-fluid  -->
 
 <div class="background_changer dropdown">
   <div class="dropdown" id="colors_pallete"> <a data-toggle="dropdown" data-target="drop4" class="change_color"></a>

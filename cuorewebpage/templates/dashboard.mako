@@ -205,6 +205,7 @@
         </div>
         <!-- End .title -->
         <div class="content row-fluid">
+          <!--
           <div id="todoapp" class="row-fluid">
             <div class="todos">
               <ul data-bind="foreach: tasks, visible: tasks().length > 0" id="todo-list" class="unstyled">
@@ -225,9 +226,21 @@
             </div>
           </div>
           <div id="credits" class="description"> *Double-click to edit tasks. Enter to finish. </div>
+          -->
+            <div id="external-events">
+                <% counter = 0 %>
+                %for task in tasks:
+                % if counter < TMAX:
+                <div class="external-event ui-draggable" style="position: relative; "> ${task.getName()}</div>
+                <% counter += 1 %>
+                % endif
+                %endfor
+                <p> </p>
+            </div>
+
         </div>
         <!-- End .content -->
-        <div class="description"> You have <b data-bind="text: incompleteTasks().length">&nbsp;</b> incomplete task(s) <span data-bind="visible: incompleteTasks().length == 0">- its beer time!</span> <a class="pull-right" data-bind="visible: completeTasks().length &gt; 0, click: removeCompleted" href="#" id="clear-completed">Clear Completed Tasks </a> </div>
+<!--        <div class="description"> You have <b data-bind="text: incompleteTasks().length">&nbsp;</b> incomplete task(s) <span data-bind="visible: incompleteTasks().length == 0">- its beer time!</span> <a class="pull-right" data-bind="visible: completeTasks().length &gt; 0, click: removeCompleted" href="#" id="clear-completed">Clear Completed Tasks </a> </div>-->
       </div>
       <!-- End .box -->
     </div>
