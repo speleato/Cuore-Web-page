@@ -40,10 +40,13 @@ def Calendar(request):
 
             workspace   = mUser.getWorkspace()
             projects    = workspace.getProjects()
-            for project in projects:
-                for task in (Project(project)).getTasks():
-                    tasks.append(Task(task))
 
+            print "========================="
+            print "Adding Tasks: "
+            for task in mUser.getAssignedTasks():
+                tasks.append(task)
+                print "\t" + task.getName()
+            print "========================="
             ctx['user']     = mUser
             ctx['tasks']    = tasks
             ctx['events']   = events
