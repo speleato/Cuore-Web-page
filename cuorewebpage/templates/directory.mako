@@ -59,9 +59,9 @@
             user_node = User(u)
             %>
     <%doc>  add link to user's profile, i think can be done using get
-                  and then rendering the profile with the name as a parameter</%doc>
+                  and then rendering the profile with the uid as a parameter</%doc>
               <tr>
-                <td><a href="/profile?email=${user_node.getEmail()}"><strong>${user_node.getFirstName()} ${user_node.getLastName()}</strong></a></td>
+                <td><a href="/profile?uid=${user_node.getUID()}"><strong>${user_node.getFirstName()} ${user_node.getLastName()}</strong></a></td>
                 <td>${title_node.getName()}</td>
                 <td><a href="mailto:${user_node.getEmail()}">${user_node.getEmail()}</a></td>
               </tr>
