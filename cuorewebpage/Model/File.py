@@ -40,21 +40,22 @@ class File:
     # Function	: Constructor
     # Arguments	: Uri of Existing File Node OR Name of File
     #
-    def __init__(self, URI=None, Name=None, Depart=None):
+    def __init__(self, URI=None, Name=None, Depart=None, Task=None):
         global LBL_FILE
         self.db_init()
         tempFile = None
         if URI is not None:
             tempFile = neo4j.Node(URI)
-        elif Name is not None and Depart is not None:
+        elif Name is not None:
             #We create the node in the database with the reference to the file.
             tempFile = self.graph_db.get_or_create_indexed_node(IND_FILE,"name",Name,{"name":Name})
             tempFile.add_labels(LBL_FILE)
         else:
-            raise Exception("Name/Status or URI not specified")
+            raise Exception("Name not specified")
         self.FileInstance = tempFile
         self.FileInstance["file"] = './fileSystem/'+Depart +'/'+Name
         self.FileInstance["department"]= Depart
+        self.FileInstance["task"]= Task
         self.FileInstance["modTime"] = time.strftime("%c")
 
 
@@ -140,7 +141,7 @@ class File:
             projectAssigned = Project(None, project).getNode()
             self.setProject(projectAssigned)
         if task is not None:
-            taskAssigned = Task(None, task, None).getNode()
+            taskAssigned = Task(Name=task, Status= STS_IN_PROG).getNode()
             self.setTask(taskAssigned)
 
     #

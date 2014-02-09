@@ -42,7 +42,7 @@ def blog_list_view(request):
     else:
         return redirectUser(request)
 
-@view_config(route_name='Blog_Entry', renderer='cuorewebpage:templates/blogentry.mako')
+@view_config(route_name='Blog_Post', renderer='cuorewebpage:templates/blog_post.mako')
 def blog_post_view(request):
     if isUserLoggedOn(request):
         if getCurrentUser(request) is None:

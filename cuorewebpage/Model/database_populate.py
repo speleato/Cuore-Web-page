@@ -46,7 +46,7 @@ users = dict(
                req_title="Applications Developer", photo="cuorewebpage:img/menu_icons/profile.png").getNode(),
     vincente=User(uid="ENIFCyZRQceEalwDDBI8nA==", first_name="Vincente", last_name="Ciancio", email="vincente@cuore.io", confirmed=3,
                   req_title="Applications Developer", ).getNode(),
-    sergio=User(uid="4", first_name="Sergio", last_name="Peleo", email="sergio@cuore.io", confirmed=3,
+    sergio=User(uid="tFNm//nfbPwzHfYyVYHv6w==", first_name="Sergio", last_name="Peleo", email="sergio@cuore.io", confirmed=3,
                 req_title="Lead Applications Developer", ).getNode(),
     mason=User(uid="5", first_name="Mason", last_name="Borda", email="mason@cuore.io", confirmed=3,
                req_title="Lead Hardware Engineer").getNode(),
