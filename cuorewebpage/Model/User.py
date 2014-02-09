@@ -274,10 +274,10 @@ class User:
 
     # Function  : getTitle
     # Arguments :
-    # Returns   : title node of user, not Admin
-    def getTitle(self):
+    # Returns   : desired title node of user
+    def getTitle(self, name):
         for t in self.getTitles():
-            if Title(t).getName() != "Admin":
+            if Title(t).getName() == name:
                 return t
         return None
 
@@ -292,10 +292,10 @@ class User:
 
     # Function  : getDepartment
     # Arguments :
-    # Returns   : the department the user belongs to, excepting Admin
-    def getDepartment(self):
+    # Returns   : the desired department the user belongs to
+    def getDepartment(self, name):
         for d in self.getDepartments():
-            if Department(d).getName() != "Admin":
+            if Department(d).getName() == name:
                 return d
         return None
 
@@ -365,7 +365,7 @@ class User:
     # Arguments :
     # Returns   : a Workspace Object
     def getWorkspace(self):
-        return Department(self.getDepartment()).getWorkspace()
+        return Department(self.getDepartments()[0]).getWorkspace()
 
     def getInvitedEvents(self):
         global REL_INVITED

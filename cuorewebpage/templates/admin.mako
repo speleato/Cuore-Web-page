@@ -51,37 +51,45 @@
         %endfor
         <h2>Unconfirmed Users</h2>
         %for user in unconfirmed:
-            <form action="/registration/edit" method="post">
-                <%doc> Passes through UID of desired user as a hidden field (used to identify target user in registration/edit panel)</%doc>
-                <input type="text" name="user" hidden value="${unconfirmed[user]}">
-                <input type="submit" value="Confirm ${user}">
-            </form>
+            %for name in user:
+                <form action="/registration/edit" method="post">
+                    <%doc> Passes through UID of desired user as a hidden field (used to identify target user in registration/edit panel)</%doc>
+                    <input type="text" name="user" hidden value="${user[name]}">
+                    <input type="submit" value="Confirm ${name}">
+                </form>
+            %endfor
         %endfor
         <h2>Unassigned Users</h2>
         %for user in unassigned:
-            <form action="/registration/edit" method="post">
-                <%doc> Passes through UID of desired user as a hidden field (used to identify target user in registration/edit panel)</%doc>
-                <input type="text" name="user" hidden value="${unassigned[user]}">
-                <input type="submit" value="Assign ${user}">
-            </form>
+            %for name in user:
+                <form action="/registration/edit" method="post">
+                    <%doc> Passes through UID of desired user as a hidden field (used to identify target user in registration/edit panel)</%doc>
+                    <input type="text" name="user" hidden value="${user[name]}">
+                    <input type="submit" value="Confirm ${name}">
+                </form>
+            %endfor
         %endfor
     %elif request.POST.getone("searchType")=="Get All Unconfirmed":
         <h2>Unconfirmed Users</h2>
         %for user in unconfirmed:
-            <form action="/registration/edit" method="post">
-                <%doc> Passes through UID of desired user as a hidden field (used to identify target user in registration/edit panel)</%doc>
-                <input type="text" name="user" hidden value="${unconfirmed[user]}">
-                <input type="submit" value="Confirm ${user}">
-            </form>
+            %for name in user:
+                <form action="/registration/edit" method="post">
+                    <%doc> Passes through UID of desired user as a hidden field (used to identify target user in registration/edit panel)</%doc>
+                    <input type="text" name="user" hidden value="${user[name]}">
+                    <input type="submit" value="Confirm ${name}">
+                </form>
+            %endfor
         %endfor
     %elif request.POST.getone("searchType")=="Get All Unassigned":
         <h2>Unassigned Users</h2>
         %for user in unassigned:
-            <form action="/registration/edit" method="post">
-                <%doc> Passes through UID of desired user as a hidden field (used to identify target user in registration/edit panel)</%doc>
-                <input type="text" name="user" hidden value="${unassigned[user]}">
-                <input type="submit" value="Assign ${user}">
-            </form>
+            %for name in user:
+                <form action="/registration/edit" method="post">
+                    <%doc> Passes through UID of desired user as a hidden field (used to identify target user in registration/edit panel)</%doc>
+                    <input type="text" name="user" hidden value="${user[name]}">
+                    <input type="submit" value="Confirm ${name}">
+                </form>
+            %endfor
         %endfor
     %elif request.POST.getone("searchType")=="Search":
         <%
@@ -180,6 +188,7 @@
     <input type="text" name="addTitle">
     <input type="submit" value="Add Title"><br/>
 
+<%doc>
     <span>Remove Department:</span>
     <select name="remDep">
     %for department in departments:
@@ -187,7 +196,7 @@
     %endfor
     </select>
     <input type="submit" value="Remove Department"><br/>
-
+<%/doc>
 <%doc>
     <span>Remove Title in</span>
     <select name="remFromDep" id="remFromDep">

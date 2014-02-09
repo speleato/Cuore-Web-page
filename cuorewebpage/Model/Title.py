@@ -107,10 +107,16 @@ class Title(object):
     # Function: safeRemoveUser
     # Arguments: email of the User (string)
     # Returns:
-    # Description: safely removes the the relationship between User and selfin neo4j (attaches the people to an
+    # Description: safely removes the the relationship between User and self in neo4j (attaches the people to an
     #       unassigned node)
     def safeRemoveUser(self, uid):
         user=self.getUser(uid)
         graph_db.create((user.getNode(), "UNASSIGNED", graph_db.get_or_create_indexed_node("Unassigned", "name", "unassigned")))
         for i in user.getNode().match(REL_HASTITLE):
             i.delete()
+
+    def addUser(self, user_object):
+        if LBL_USER in user_object.getNode().get_labels():
+            self.titleInstance.get_or_create_path(REL_HASUSER, user_object.userInstance)
+        else:
+            raise Exception("The Node Provided is not a User")

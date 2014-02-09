@@ -77,17 +77,49 @@
                 <form class="form-horizontal cmxform" id="validateForm" method="post"
                       action="${request.route_url('Registration_Action', action='submit')}" accept-charset="utf-8"
                       enctype="multipart/form-data" autocomplete="off">
-                    <input id="task" name="task" type="hidden" required class="span12" value="${view}"/>
-                <input id="uid" hidden value=${user.getUID()}/>
+
+                <input id="task" name="task" type="hidden" required class="span12" value="${view}"/>
+                <input id="uid" name="uid" value=${user.getUID()} type="hidden"/>
+                <h1>${user.getFullName()}</h1>
+                <%doc>
                 <div class="form-row control-group row-fluid">
-                  <label class="control-label span3">Email Address</label>
-                  <div class="controls span9">
-                    <input id="email" type="email" name="email" value="${user.getEmail()}" required class="row-fluid"/>
-                  </div>
+                    <label class="control-label span3" for="inputEmail">Departments</label>
+                    <div class="controls span9">
+                        <select data-placeholder="Choose a Department" class="chzn-select" multiple="" tabindex="3">
+                            %for i in departments:
+                                <option value="${i['department']}">${i['department']}</option>
+                            %endfor
+                        </select>
+                    </div>
                 </div>
+                </%doc>
+                %for i in departments:
+                    <div class="form-row control-group row-fluid">
+                    <label class="control-label span3" for="inputEmail">Titles in ${i['department']}</label>
+                        <div class="controls span9">
+                            <select data-placeholder="None" class="chzn-select" multiple="" tabindex="3" name="titles[]">
+                                %if (user.getReqDept() != i['department']) and not user.getDepartment(i['department']):
+                                    <option value="None" selected="selected">None</option>
+                                    %for j in i['titles']:
+                                        <option value="${i['department']},${j['name']}">${j['name']}</option>
+                                    %endfor
+                                %else:
+                                    <option value="None">None</option>
+                                    %for j in i['titles']:
+                                        %if (j['name'] == user.getReqTitle()) or (user.getTitle(j['name'])):
+                                            <option value="${i['department']},${j['name']}" selected="selected">${j['name']}</option>
+                                        %else:
+                                            <option value="${i['department']},${j['name']}">${j['name']}</option>
+                                        %endif
+                                    %endfor
+                                %endif
+                            </select>
+                        </div>
+                    </div>
+                %endfor
                 <div class="form-actions row-fluid">
                   <div class="span7 offset3">
-                    <button type="submit" class="btn btn-primary">Save changes</button>
+                    <button type="submit" class="btn btn-primary">Confirm</button>
                     <button type="button" class="btn btn-secondary">Cancel</button>
                   </div>
                 </div>

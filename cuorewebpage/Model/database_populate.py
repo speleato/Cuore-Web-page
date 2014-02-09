@@ -51,7 +51,13 @@ users = dict(
     mason=User(uid="5", first_name="Mason", last_name="Borda", email="mason@cuore.io", confirmed=3,
                req_title="Lead Hardware Engineer").getNode(),
     kevin_a=User(uid="6", first_name="Kevin", last_name="Aloysius", email="luscious@cuore.io", confirmed=3,
-                 req_title="Lead Systems Engineer").getNode())
+                 req_title="Lead Systems Engineer").getNode(),
+    test=User(uid="7", first_name="Tester", last_name="Jones", email="TJones@cuore.io", confirmed=0, req_dept="Applications",
+               req_title="Applications Developer", photo="cuorewebpage:img/menu_icons/profile.png").getNode())
+
+unconfirmedNode=graph_db.get_or_create_indexed_node("Unconfirmed", "name", "unconfirmed", {"name":"unconfirmed"})
+graph_db.create((users['test'], REL_UNCONFIRMED, unconfirmedNode))
+#Calendar(Name=(user.getFullName() + "'s Calendar"), Owner=user.getNode())
 
 graph_db.create(
     (titles['Admin'], REL_HASUSER, users['kirby']),
