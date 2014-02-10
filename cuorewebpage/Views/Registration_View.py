@@ -106,7 +106,7 @@ def SubmitRegistration(request):
             user = User(uid=uid)
 
             # notify user if equity rate is changed
-            if user.getEquityRate() != equity_rate:
+            if (user.getEquityRate() != equity_rate) and (equity_rate != "None"):
                 mailer = get_mailer(request)
                 message = Message(subject="Your Equity Rate for Cuore has been changed",
                     sender = "info@cuore.io",                    # change to admin email later
@@ -189,11 +189,15 @@ def SubmitRegistration(request):
             graph_db.create((user.getNode(), REL_UNCONFIRMED, unconfirmedNode))
             Calendar(Name=(user.getFullName() + "'s Calendar"), Owner=user.getNode())
 
-            # after registration, send email to Leo
+            # after registration, send email to admins
             mailer=get_mailer(request)
+            admin_emails = []
+            for i in getAdmins():
+                admin_emails.append(User(i).getEmail())
+
             message = Message(subject="Registration by " + name,
                               sender="info@cuore.io",      # change to cuore mail server later
-                              recipients=["kirby@cuore.io"],  # change to leo when rolled out
+                              recipients=admin_emails,  # change to leo when rolled out
                               body=name + " has registered for the Cuore Intranet. Click here to go to the admin panel and confirm " + name
                                      + "'s registration: " + request.route_url('AdminPanel'))
             mailer.send(message)

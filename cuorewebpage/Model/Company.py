@@ -139,4 +139,9 @@ def getUnassigned():
         unassigned.append(relationship.start_node)
     return unassigned
 
+def getAdmins():
+    graph_db = neo4j.GraphDatabaseService(db_config['uri'])
+    return Department(name="Admin").getUsers()
+
+
 
