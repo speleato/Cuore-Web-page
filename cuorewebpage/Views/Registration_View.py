@@ -95,34 +95,56 @@ def SubmitRegistration(request):
         return redirectUser(request)
     if request.POST:
         if request.POST.getone('task') == "admin":
-            title=re.sub("[^A-Za-z0-9,.\-()] ", "", request.POST.getone('title'))
-            email=re.sub("[^A-Za-z0-9.@!#$%&'*+\-/=?^_`{|}~]", "", request.POST.getone('email'))
-            department=re.sub("[^A-Za-z0-9,.\-()]", "", request.POST.getone('department'))
+            # note: titles is a list of department and title names in the format: ["department_name,title_name", ...]
+            #       however the list will also contain some strings that represent a department/title combo that is not
+            #       associated with user, these strings are "None" strings (quick fix, go back later w/ AJAX)
+            titles=request.POST.getall('titles[]')
+            equity_rate = request.POST.getone('equity_rate')
             uid=request.POST.getone('uid')
 
             # add updated info to database
-            userNode = graph_db.get_indexed_node(IND_USER, "uid", uid)
-            # if leo confirmed, update confirmation flags
-            confirmed=userNode.get_properties()["confirmed"]
-            if(confirmed<2):
-                confirmed += 2
-            userNode.update_properties({"title":title, "email":email, "confirmed":confirmed})
-            titleNode = graph_db.get_or_create_indexed_node(IND_TITLE, "name", title, {"name":title})
-            departmentNode = graph_db.get_indexed_node(IND_DEP, "name", department)
-            graph_db.create((titleNode, "IS A", userNode), (departmentNode, "IN", titleNode))
-            unconfirmedNode = graph_db.get_indexed_node("Unconfirmed", "name", "unconfirmed")
-            graph_db.match(userNode, "IS", unconfirmedNode).delete()
+            user = User(uid=uid)
+
+            # notify user if equity rate is changed
+            if (user.getEquityRate() != equity_rate) and (equity_rate != "None"):
+                mailer = get_mailer(request)
+                message = Message(subject="Your Equity Rate for Cuore has been changed",
+                    sender = "info@cuore.io",                    # change to admin email later
+                    recipients = [user.getEmail()],
+                    body = "Your equity rate has been changed from " + str(user.getEquityRate()) + " to " + str(equity_rate))
+                mailer.send(message)
+                user.userInstance['equity_rate'] = equity_rate
+                transaction.commit()
+
+            split_titles = []
+
+            for i in titles:
+                if i != "None":
+                    Department(name=i.split(",")[0]).addTitle(Title(name=i.split(",")[1]))
+                    Title(name=i.split(",")[1]).addUser(user)
+                    split_titles.append(i.split(",")[1])
+
+
+            #temporary way of removing titles
+            for i in user.getTitles():
+                if Title(i).getName() not in split_titles:
+                    user.removeTitle(Title(i))
+
+
             # after confirmed by Leo, send email to user
-            confirmationNumber=userNode.get_properties()["confirmationNumber"]
-            mailer = get_mailer(request)
-            message = Message(subject="Confirm your Cuore Intranet Registration",
-                  sender = ADMIN_EMAIL,                    # change to admin email later
-                  recipients = [email],
-                  body = "You have been added to the Cuore intranet as a " + title + " in the "
-                       + department + " department. Click on this link to confirm your"
-                       + " registration: " + request.url + "/confirm")
-            mailer.send(message)
-            transaction.commit()
+            # if leo confirmed, update confirmation flags
+            if(user.getConfirmed()<2):
+                for i in user.userInstance.match(REL_UNCONFIRMED):
+                    i.delete()
+                user.userInstance['confirmed'] += 2
+                mailer = get_mailer(request)
+                message = Message(subject="Confirm your Cuore Intranet Registration",
+                    sender = "info@cuore.io",                    # change to admin email later
+                    recipients = [User(uid=uid).getEmail()],
+                    body = "You have been added to the Cuore intranet. Click on this link to confirm your registration: "
+                         + request.url + "/confirm")
+                mailer.send(message)
+                transaction.commit()
         elif request.POST.getone('task') == "create":
             first_name=re.sub("[^A-Za-z0-9,.\-()]", "", request.POST.getone('first_name'))
             last_name=re.sub("[^A-Za-z0-9,.\-()]", "", request.POST.getone('last_name'))
@@ -134,7 +156,8 @@ def SubmitRegistration(request):
             state = re.sub("[^A-Za-z0-9,.\-() ]", "", request.POST.getone('state'))
             zipcode = re.sub("[^A-Za-z0-9,.\-() ]", "", request.POST.getone('zip_code'))
             about = re.sub("[^A-Za-z0-9,.\-() ]", "", request.POST.getone('about'))
-            req_title = request.POST.getone('req_title')
+            req_title = request.POST.getone('req_title').split(",")[1]
+            req_dept = request.POST.getone('req_title').split(",")[0]
             uid = request.session["uid"]
             # default profile picture
             photo="cuorewebpage:img/menu_icons/profile.png"
@@ -159,19 +182,23 @@ def SubmitRegistration(request):
             # create flags and set to not confirmed
             # create user node in database, put in temporary zone
             user = User(uid=uid, first_name=first_name, last_name=last_name, email=email, confirmed=0,
-                        phone=phone, address=address, city=city, state=state, zipcode=zipcode, about=about, photo=photo, req_title=req_title)
+                        phone=phone, address=address, city=city, state=state, zipcode=zipcode, about=about, photo=photo, req_title=req_title, req_dept=req_dept)
 #            store.save_unique(IND_USER, "uid", user.uid, user)
             unconfirmedNode=graph_db.get_or_create_indexed_node("Unconfirmed", "name", "unconfirmed", {"name":"unconfirmed"})
 #            userNode=graph_db.get_indexed_node(IND_USER, "uid", user.uid)
             graph_db.create((user.getNode(), REL_UNCONFIRMED, unconfirmedNode))
             Calendar(Name=(user.getFullName() + "'s Calendar"), Owner=user.getNode())
 
-            # after registration, send email to Leo
+            # after registration, send email to admins
             mailer=get_mailer(request)
+            admin_emails = []
+            for i in getAdmins():
+                admin_emails.append(User(i).getEmail())
+
             message = Message(subject="Registration by " + name,
-                              sender=REGISTRATION_EMAIL_SERVER,      # change to cuore mail server later
-                              recipients=[REGISTRATION_EMAIL_RECIPIENTS],  # change to leo when rolled out
-                              body=name + " has registered for the Cuore Intranet. Click here to confirm " + name
+                              sender="info@cuore.io",      # change to cuore mail server later
+                              recipients=admin_emails,  # change to leo when rolled out
+                              body=name + " has registered for the Cuore Intranet. Click here to go to the admin panel and confirm " + name
                                      + "'s registration: " + request.route_url('AdminPanel'))
             mailer.send(message)
             transaction.commit()

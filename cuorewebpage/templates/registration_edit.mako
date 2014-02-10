@@ -77,17 +77,49 @@
                 <form class="form-horizontal cmxform" id="validateForm" method="post"
                       action="${request.route_url('Registration_Action', action='submit')}" accept-charset="utf-8"
                       enctype="multipart/form-data" autocomplete="off">
-                    <input id="task" name="task" type="hidden" required class="span12" value="${view}"/>
-                <input id="uid" hidden value=${user.getUID()}/>
+
+                <input id="task" name="task" type="hidden" required class="span12" value="${view}"/>
+                <input id="uid" name="uid" value=${user.getUID()} type="hidden"/>
+                <h1>${user.getFullName()}</h1>
+                <%doc>
+                        This is currently a kludgy solution to assign titles. Ideally it should be done with AJAX so that
+                    the admin can hit a button that says add title, or remove title. This should then pop up a department
+                    and title select box where the contents of the title select box are dynamically rendered based on which
+                    department is selected.
+                </%doc>
+                %for i in departments:
+                    <div class="form-row control-group row-fluid">
+                    <label class="control-label span3" for="inputEmail">Titles in ${i['department']}</label>
+                        <div class="controls span9">
+                            <select data-placeholder="None" class="chzn-select" multiple="" tabindex="3" name="titles[]">
+                                %if (user.getReqDept() != i['department']) and not user.getDepartment(i['department']):
+                                    <option value="None" selected="selected">None</option>
+                                    %for j in i['titles']:
+                                        <option value="${i['department']},${j['name']}">${j['name']}</option>
+                                    %endfor
+                                %else:
+                                    <option value="None">None</option>
+                                    %for j in i['titles']:
+                                        %if (j['name'] == user.getReqTitle()) or (user.getTitle(j['name'])):
+                                            <option value="${i['department']},${j['name']}" selected="selected">${j['name']}</option>
+                                        %else:
+                                            <option value="${i['department']},${j['name']}">${j['name']}</option>
+                                        %endif
+                                    %endfor
+                                %endif
+                            </select>
+                        </div>
+                    </div>
+                %endfor
                 <div class="form-row control-group row-fluid">
-                  <label class="control-label span3">Email Address</label>
+                  <label class="control-label span3">Equity Rate</label>
                   <div class="controls span9">
-                    <input id="email" type="email" name="email" value="${user.getEmail()}" required class="row-fluid"/>
+                    <input id="equity_rate" name="equity_rate" type="text" value="${user.getEquityRate()}" required class="row-fluid"/>
                   </div>
                 </div>
                 <div class="form-actions row-fluid">
                   <div class="span7 offset3">
-                    <button type="submit" class="btn btn-primary">Save changes</button>
+                    <button type="submit" class="btn btn-primary">Confirm</button>
                     <button type="button" class="btn btn-secondary">Cancel</button>
                   </div>
                 </div>

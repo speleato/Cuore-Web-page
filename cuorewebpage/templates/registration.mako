@@ -70,7 +70,7 @@
                           %for i in departments:
                               <optgroup label="${i['department']}">
                                   %for j in i['titles']:
-                                      <option value="${j['name']}">${j['name']}</option>
+                                      <option value="${i['department']},${j['name']}">${j['name']}</option>
                                   %endfor
                               </optgroup>
                           %endfor
@@ -166,7 +166,17 @@
                           action="${request.route_url('Registration_Action', action='submit')}" accept-charset="utf-8"
                           enctype="multipart/form-data" autocomplete="off">
                         <input id="task" name="task" type="hidden" required class="span12" value="${view}"/>
-                    <input id="uid" hidden value=${user.getUID()}/>
+                    <div class="form-row control-group row-fluid">
+                        <label class="control-label span3" for="inputEmail">Departments</label>
+                        <div class="controls span9">
+                            <select data-placeholder="Choose a Department" class="chzn-select" multiple="" tabindex="3">
+                                %for i in departments:
+                                    <option value="${i['department']}">${i['department']}</option>
+                                %endfor
+                            </select>
+                        </div>
+                    </div>
+                    <input id="uid" value=${user.getUID()} hidden/>
                     <div class="form-row control-group row-fluid">
                       <label class="control-label span3">Email Address</label>
                       <div class="controls span9">

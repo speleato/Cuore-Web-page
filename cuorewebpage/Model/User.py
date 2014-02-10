@@ -77,7 +77,7 @@ class User:
     # Arguments : URI of Existing User Node OR UID of User
     def __init__(self, URI=None, uid=None, first_name=None, last_name=None,
                  email=None, phone=None, address=None, city=None, state=None, zipcode=None,
-                 about=None, photo=None, req_title=None, req_dept=None, confirmed=None):
+                 about=None, photo=None, req_title=None, req_dept=None, confirmed=None, equity_rate=None):
         global LBL_USER, IND_USER
         self.db_init()
         tempUser = None
@@ -120,6 +120,9 @@ class User:
             self.userInstance['req_dept'] = req_dept
         if confirmed is not None:
             self.userInstance['confirmed'] = confirmed
+        if equity_rate is not None:
+            self.userInstance['equity_rate'] = equity_rate
+
 
     def __str__(self):
         if self.userInstance is not None:
@@ -244,6 +247,12 @@ class User:
     def getConfirmed(self):
         return self.userInstance['confirmed']
 
+    # Function  : getEquityRate
+    # Arguments :
+    # Returns   : equity rate
+    def getEquityRate(self):
+        return self.userInstance['equity_rate']
+
     # =================== Relationship Getters & Setters ====================
     # Function  : removeUser
     # Arguments :
@@ -262,6 +271,20 @@ class User:
         else:
             raise Exception("The Node Provided is not a Title")
 
+    def removeTitle(self, title_object):
+        if LBL_TITLES in title_object.getNode().get_labels():
+            for i in self.getNode().match(REL_HASUSER, title_object.getNode()):
+                i.delete()
+            # if no longer given a title, attach to unassigned node
+            count = 0
+            for i in self.getNode().match(REL_HASUSER):
+                count += 1
+            if count == 0:
+                unassigned_node = self.graph_db.get_or_create_indexed_node(IND_UNASSIGNED, "name", "unassigned", {"name":"unassigned"})
+                self.getNode().get_or_create_path(REL_UNASSIGNED, unassigned_node)
+        else:
+            raise Exception("The Object Provided is not a Title")
+
     # Function  : getTitles
     # Arguments :
     # Returns   : list of titles nodes associated with self
@@ -275,10 +298,10 @@ class User:
 
     # Function  : getTitle
     # Arguments :
-    # Returns   : title node of user, not Admin
-    def getTitle(self):
+    # Returns   : desired title node of user
+    def getTitle(self, name):
         for t in self.getTitles():
-            if Title(t).getName() != "Admin":
+            if Title(t).getName() == name:
                 return t
         return None
 
@@ -294,10 +317,10 @@ class User:
 
     # Function  : getDepartment
     # Arguments :
-    # Returns   : the department the user belongs to, excepting Admin
-    def getDepartment(self):
+    # Returns   : the desired department the user belongs to
+    def getDepartment(self, name):
         for d in self.getDepartments():
-            if Department(d).getName() != "Admin":
+            if Department(d).getName() == name:
                 return d
         return None
 
@@ -367,7 +390,7 @@ class User:
     # Arguments :
     # Returns   : a Workspace Object
     def getWorkspace(self):
-        return Department(self.getDepartment()).getWorkspace()
+        return Department(self.getDepartments()[0]).getWorkspace()
 
     def getInvitedEvents(self):
         global REL_INVITED

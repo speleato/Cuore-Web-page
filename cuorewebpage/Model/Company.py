@@ -86,9 +86,9 @@ class Company(object):
     # Returns:
     # Description: creates a related department node in neo4j with the given name if it doesn't already exist
     def addDepartment(self, name):
-        newDep = Department(name)
-        newBlog = Blog(Name=name, Owner=newDep)
-        newWorkspace = Workspace(Name=name+" Workspace", Owner=newDep)
+        newDep = Department(name=name, company=Company(Name="Cuore").getNode())
+        Blog(Name=name, Owner=newDep.getNode())
+        Workspace(Name=name+" Workspace", Owner=newDep.getNode())
         #if not (self.getDepartment(name)):
         #    self.store.save_unique(IND_DEP, "name", newDep.name, newDep)
         #    self.graph_db.create((self.getNode(), REL_HASDEP, newDep.getNode()))
@@ -99,11 +99,17 @@ class Company(object):
     # Description: deletes a related department node and all associated titles, safely removes the people associated
     #       with those titles (attaches the people to an unassigned node)
     def removeDepartment(self, name):
-        dep = self.getDepartment(name)
-        self.store.delete(dep.getNewsfeed())
+        dep = Department(name=name)
+        blog = Blog(Name=name, Owner=dep.getNode())
+        workspace = Workspace(Name=name+" Workspace", Owner=dep.getNode())
+
         for i in dep.getTitles():
-            dep.removeTitle(i.name)
-        self.store.delete(dep)
+            dep.removeTitle(i['name'])
+        self.store.delete(dep.getNode())
+
+        #eventually need to replace these shallow deletes w/ a deep delete
+        self.store.delete(blog.getNode())
+        self.store.delete(workspace.getNode())
 
     def getBlog(self):
         global REL_HASBLOG
@@ -132,5 +138,10 @@ def getUnassigned():
     for relationship in list(unassignedNode.match_incoming(REL_UNASSIGNED)):
         unassigned.append(relationship.start_node)
     return unassigned
+
+def getAdmins():
+    graph_db = neo4j.GraphDatabaseService(db_config['uri'])
+    return Department(name="Admin").getUsers()
+
 
 

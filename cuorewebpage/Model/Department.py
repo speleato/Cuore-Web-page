@@ -75,10 +75,10 @@ class Department(object):
     # Returns:
     # Description: creates a related Title node in neo4j with the given name if it doesn't already exist
     def addTitle(self, name):
-        newTitle = Title(name)
-        if not (self.store.load_indexed(IND_TITLE, "name", newTitle.name, newTitle)):
-            self.store.save_unique(IND_TITLE, "name", newTitle.name, newTitle)
-            self.graph_db.create((self.getNode(), REL_HASTITLE, newTitle.getNode()))
+        newTitle = Title(name=name, dept=self.getNode())
+        #if not (self.store.load_indexed(IND_TITLE, "name", newTitle.name, newTitle)):
+        #    self.store.save_unique(IND_TITLE, "name", newTitle.name, newTitle)
+        #    self.graph_db.create((self.getNode(), REL_HASTITLE, newTitle.getNode()))
 
 
 
@@ -88,14 +88,14 @@ class Department(object):
     # Description: deletes a related title node, safely removes the people related to the title (attaches the people to
     #       an unassigned node)
     def removeTitle(self, name):
-        title=self.getTitle(name)
+        title=Title(name=name)
         for i in title.getAllUsers():
             title.safeRemoveUser(i.uid)
-        self.store.delete(title)
+        self.store.delete(title.getNode())
 
     # Function  : getTitles
     # Arguments :
-    # Returns   : list of Title objects related to self
+    # Returns   : list of Title nodes related to self
     def getTitles(self):
         global REL_HASTITLE
         titles = list()
@@ -131,6 +131,13 @@ class Department(object):
         for t in self.getTitles():
             users.extend(Title(t).getUsers())
         return users
+
+    # Connect a title node to self
+    def addTitle(self, title_object):
+        if LBL_TITLES in title_object.titleInstance.get_labels():
+            self.deptInstance.get_or_create_path(REL_HASTITLE, title_object.titleInstance)
+        else:
+            raise Exception("The Node Provided is not a Title")
 
 
 

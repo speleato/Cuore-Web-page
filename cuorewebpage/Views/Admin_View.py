@@ -43,11 +43,11 @@ def admin_panel(request):
         ctx['unconfirmed'] = []
         # holds array of unconfirmed user dictionaries in the form of {Full_name: uid}
         for i in getUnconfirmed():
-            ctx['unconfirmed'].append({i.getFullName(): i.getUID()})
+            ctx['unconfirmed'].append({User(i).getFullName(): User(i).getUID()})
         ctx['unassigned'] = []
         # holds array of unassigned user dictionaries in the form of {Full_name: uid}
         for i in getUnassigned():
-            ctx['unassigned'].append({i.getFullName(): i.getUID()})
+            ctx['unassigned'].append({User(i).getFullName(): User(i).getUID()})
 
 
 
@@ -57,14 +57,16 @@ def admin_panel(request):
                 #store.load_unique(IND_COMP, "name", "Cuore", Company).addDepartment(re.escape(request.POST.getone("addDep")))
                 print 1
             elif request.POST.getone("addTitle"):
-                store.load_unique(IND_DEP, "name", request.POST.getone("addToDep"), Department).addTitle(re.escape(request.POST.getone("addTitle")))
+                Department(name=request.POST.getone("addToDep")).addTitle((re.sub("[^A-Za-z0-9,.\-() ]", "", request.POST.getone("addTitle"))))
+                #store.load_unique(IND_DEP, "name", request.POST.getone("addToDep"), Department).addTitle(re.escape(request.POST.getone("addTitle")))
                 print 2
-            elif request.POST.getone("remDep"):
-                store.load_unique(IND_COMP, "name", "Cuore", Company).removeDepartment(re.escape(request.POST.getone("remDep")))
-                print 3
-            elif request.POST.getone("remTitle"):
-                store.load_unique(IND_DEP, "name", request.POST.getone("remFromDep"), Department).removeTitle(re.escape(request.POST.getone("remTitle")))
-                print 4
+            #elif request.POST.getone("remDep"):
+                #Company("Cuore").removeDepartment(request.POST.getone("remDep"))
+                #store.load_unique(IND_COMP, "name", "Cuore", Company).removeDepartment(re.escape(request.POST.getone("remDep")))
+                #print 3
+            #elif request.POST.getone("remTitle"):
+                #store.load_unique(IND_DEP, "name", request.POST.getone("remFromDep"), Department).removeTitle(re.escape(request.POST.getone("remTitle")))
+                #print 4
 
         return (ctx)
     else:
