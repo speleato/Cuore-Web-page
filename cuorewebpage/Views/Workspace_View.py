@@ -1,6 +1,7 @@
 from cuorewebpage.Model.Project import Project
 from cuorewebpage.Model.Task import Task
 from cuorewebpage.Model.Department import Department
+from cuorewebpage.Model.Workspace import Workspace
 from datetime import datetime
 
 __author__ = 'boggle_eye'
@@ -102,23 +103,32 @@ def Tasks(request):
 @view_config(route_name="Workspace", renderer="cuorewebpage:templates/workspace.mako")
 def Workspace(request):
     if isUserLoggedOn(request):
+        ctx = {}
+        ctx['section'] = 'Workspace'
         if getCurrentUser(request) is None:
             return redirectToRegistration(request)
         else: #Get the user, calendar, and events so we can populate them in the template
-            print "We have an actual user!!"
             mUser     = User(uid=request.session['uid'])
-            mCalendar = mUser.getCalendar()
-        ctx = {}
-        ctx['section'] = 'Workspace'
+            mDept     = mUser.getDepartment()
+            mWorkspace = Department(mDept).getWorkspace()
+            mProjects  = Workspace(mWorkspace).getProjects()
+            mBlog      = Department(mDept).getBlog()
+
+        posts = list()
+        for p in mUser.getMainDepBlogPosts():
+            posts.append(Post(URI=p))
+
+        tasks = list()
+        for p in mProjects:
+            for t in Project(p).getTasks():
+                tasks.append(Task(t))
+
+
         ctx['user'] = mUser
-#        ctx['department'] = Department(User(mUser).getDepartment())
-        ctx['posts'] = list()
-
-        posts = ctx['user'].getMainDepBlogPosts()
-
-        for p in posts:
-            ctx['posts'].append(Post(p))
-
+        ctx['department'] = Department(mDept)
+        ctx['posts'] = posts
+        ctx['projects'] = mProjects
+        ctx['tasks'] = tasks
         return ctx
     else:
         return redirectUser(request)

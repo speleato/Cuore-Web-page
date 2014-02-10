@@ -1,3 +1,4 @@
+"""
 from py2neo import neo4j, ogm, node, rel
 from cuorewebpage.Model.Calendar import Calendar
 from cuorewebpage.Model.Event import Event
@@ -117,7 +118,8 @@ for key in users.keys():
 #    workspace   = Workspace(Name=(mUser.getFullName() + "'s Workspace"), Owner=mUser.getNode())
 
 sandy = User(users['sandy'])
-post1 = Post(Name="My Goodness", Content="I am so totally cracked out from doing this all night, I really should" \
+"""
+"""post1 = Post(Name="My Goodness", Content="I am so totally cracked out from doing this all night, I really should" \
                                          " learn not to procrastinate so that I don't have to pull all nighters", Owner=sandy.getNode())
 post2 = Post(Name="Quite Exciting", Content="Maybe it is time for me to go to sleep, although looking at the clock" \
     " I almost feel like what a wuss, it's only 12:25!", Owner=sandy.getNode())
@@ -129,3 +131,4 @@ post2.setBlog(cuore_blog.getNode())
 post3.setBlog(cuore_blog.getNode())
 
 
+"""

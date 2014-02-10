@@ -5,7 +5,10 @@ import time
 from py2neo import neo4j, ogm
 from database_config import db_config
 from cuorewebpage.lib.session import *
-from cuorewebpage.Model.User import getCurrentUser
+from cuorewebpage.Model.User import *
+from cuorewebpage.Model.Blog import *
+from cuorewebpage.Model.Post import *
+from cuorewebpage.Model.Event import *
 
 graph_db = neo4j.GraphDatabaseService(db_config['uri'])
 store = ogm.Store(graph_db)
@@ -13,16 +16,50 @@ store = ogm.Store(graph_db)
 @view_config(route_name="Newsfeed", renderer="cuorewebpage:templates/newsfeed.mako")
 def Newsfeed(request):
     if isUserLoggedOn(request):
+        ctx = {}
+        ctx['section'] = 'Newsfeed'
         if getCurrentUser(request) is None:
             return redirectToRegistration(request)
-        if request.POST:
-            newsNode=graph_db.create({"news":request.POST.getone('news'), "time":time.time(), "author":request.POST.getone('author')})
-            departments=request.POST.getall('postTo[]')
-            for i in departments:
-                depNode=graph_db.get_indexed_node("Newsfeed", "name", i)
-                number=depNode.get_properties()["numPosts"]
-                depNode.update_properties({"numPosts":(number+1)})
-                graph_db.create((depNode, "NEWS", newsNode[0]))
-        return {}
+        else: #Get the user, calendar, and events so we can populate them in the template
+            mUser     = User(uid=request.session['uid'])
+            mBlog = Blog(Name="Cuore")
+            mCalendar = mUser.getCalendar()
+
+            alerts = list()
+
+            posts     = list()
+            for p in mBlog.getPosts():
+                post = Post(p)
+                print "!! POST !!----------------------------"
+                print post
+                print "!!!!!!!-------------------------------"
+                posts.append(post)
+                alerts.append({"type": "post", "time": post.getUpdateTime(), "node": post})
+
+            events    = list()
+            for e in mCalendar.getEvents():
+                event = Event(e)
+                print "!! EVENT !!----------------------------"
+                print event
+                print "!!!!!!!-------------------------------"
+                events.append(event)
+                alerts.append({"type": "event", "time": event.getUpdateTime(), "node": event})
+
+            #Get all the Events that we have been invited to
+            for event in mUser.getInvitedEvents():
+                events.append(event)
+            #                alerts.append({"type": "event", "node": Event(URI=event).getNode()})
+
+            if request.POST:
+                print "making a Cuore blog post"
+
+            ctx['alerts'] = alerts
+
+            ctx['user']     = mUser
+            ctx['calendar'] = mCalendar
+            ctx['posts']    = posts
+            ctx['events']   = events
+
+            return ctx
     else:
         return redirectUser(request)

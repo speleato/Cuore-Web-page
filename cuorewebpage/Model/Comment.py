@@ -37,7 +37,7 @@ class Comment:
     # Function	: Constructor
     # Arguments	: Uri of Existing Blog Node OR Name of Blog
     #
-    def __init__(self, URI=None, Name=None, Content=None, Owner=None):
+    def __init__(self, URI=None, Name=None, Content=None, Owner=None, Parent=None):
         global LBL_COMMENT
         self.db_init()
         temp = None
@@ -62,6 +62,11 @@ class Comment:
                 self.commentInstance.get_or_create_path(REL_CREATEDBY, Owner)
             else:
                 raise Exception("The Node Provided is not a User")
+
+        if Parent is not None:
+            global REL_HASCOMMENT, LBL_TASK, LBL_POST, LBL_EVENT
+            if (LBL_TASK in Parent.get_labels()) or (LBL_POST in Parent.get_labels()):
+                Parent.get_or_create_path(REL_HASCOMMENT, self.commentInstance)
 
     #
     # Function	: getName

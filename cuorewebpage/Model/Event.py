@@ -1,4 +1,5 @@
 from database_config import *
+from datetime import datetime
 from py2neo import neo4j, node
 
 # Class  : Event
@@ -60,6 +61,9 @@ class Event:
 
         if Owner is not None:
             self.addOwner(Owner)
+
+        if self.getUpdateTime() is None:
+            self.setUpdateTime()
 
     #
     # Function	: getName
@@ -144,6 +148,23 @@ class Event:
     #
     def getEndTime(self):
         return self.eventInstance["eTime"]
+
+    #
+    # Function	: setUpdateTime
+    # Arguments	: String uTime (in milliseconds)
+    # Returns	:
+    #
+    def setUpdateTime(self):
+        self.eventInstance['uTime'] = datetime.now()
+
+    #
+    # Function	: getUpdateTime
+    # Arguments	:
+    # Returns	: (String) uTime
+    #
+    def getUpdateTime(self):
+        return self.eventInstance['uTime']
+
 
     #
     # Function 	: setLocation

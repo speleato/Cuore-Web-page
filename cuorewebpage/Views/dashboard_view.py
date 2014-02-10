@@ -19,37 +19,34 @@ def dashboard(request):
         else: #Get the user, calendar, and events so we can populate them in the template
             print "We have an actual user!!"
             mUser     = User(uid=request.session['uid'])
+            mBlog = Blog(Name="Cuore")
             mCalendar = mUser.getCalendar()
 
             alerts = list()
 
             posts     = list()
-            for p in Blog(Name="Cuore").getPosts():
-                posts.append(Post(p))
-                alerts.append({"type": "post", "node": Post(URI=p).getNode()})
+            for p in mBlog.getPosts():
+                post = Post(p)
+                print "!! POST !!----------------------------"
+                print post
+                print "!!!!!!!-------------------------------"
+                posts.append(post)
+                alerts.append({"type": "post", "time": post.getUpdateTime(), "node": post})
 
             events    = list()
-            for event in mCalendar.getEvents():
-                events.append(Event(URI=event))
-                alerts.append({"type": "event", "node": Event(URI=event).getNode()})
+            for e in mCalendar.getEvents():
+                event = Event(e)
+                print "!! EVENT !!----------------------------"
+                print event
+                print "!!!!!!!-------------------------------"
+                events.append(event)
+                alerts.append({"type": "event", "time": event.getUpdateTime(), "node": event})
 
             #Get all the Events that we have been invited to
             for event in mUser.getInvitedEvents():
                 events.append(event)
 #                alerts.append({"type": "event", "node": Event(URI=event).getNode()})
 
-            #Get Tasks for the tasks sidebar
-            tasks       = list()
-            for task in mUser.getAssignedTasks():
-                tasks.append(task)
-                alerts.append({"type": "task", "node": Task(URI=task).getNode()})
-
-#            workspace   = mUser.getWorkspace()
-#            projects    = workspace.getProjects()
-#            for project in projects:
-#                for task in (Project(project)).getTasks():
-#                    if Task(task).getAssignedUsers() == mUser:
-#                        tasks.append(Task(task))
 
             ctx['alerts'] = alerts
 
@@ -57,12 +54,8 @@ def dashboard(request):
             ctx['calendar'] = mCalendar
             ctx['posts']    = posts
             ctx['events']   = events
-            ctx['tasks']    = tasks
 
-#            for item in alerts:
-#                print "========================="
-#                print item.getName()
-        return ctx
+            return ctx
     else:
         return redirectUser(request)
 
@@ -81,3 +74,22 @@ def checkAlertType(alert):
     return None
 
 
+"""
+            #Get Tasks for the tasks sidebar
+            tasks       = list()
+            for t in mUser.getAssignedTasks():
+                task = Task(t)
+                print "!! TASK !!----------------------------"
+                print task
+                print "!!!!!!!-------------------------------"
+                tasks.append(task)
+                alerts.append({"type": "task", "time": task.getUpdateTime(), "node": task})
+
+#            workspace   = mUser.getWorkspace()
+#            projects    = workspace.getProjects()
+#            for project in projects:
+#                for task in (Project(project)).getTasks():
+#                    if Task(task).getAssignedUsers() == mUser:
+#                        tasks.append(Task(task))
+            ctx['tasks']    = tasks
+"""

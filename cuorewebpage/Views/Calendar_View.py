@@ -25,6 +25,8 @@ def Calendar(request):
         else: #Get the user, calendar, and events so we can populate them in the template
             mUser     = User(uid=request.session['uid'])
             mCalendar = mUser.getCalendar()
+            print "!!!!!!!!!!!!!!!!!!!!!!!"
+            print mCalendar
 
             #Populate the Event List to pass to the mako file
             events = list()

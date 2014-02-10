@@ -20,30 +20,14 @@
               </tr>
             </thead>
             <tbody>
+% for p in projects:
               <tr>
-                <td> Intranet </td>
-                <td> Pyramid based web application to serve Cuore communication needs</td>
-                <td class="ms"> 4 </td>
-                <td class="to_hide_phone"> 45,73% <span class="bar1 no_ie"></span></td>
+                <td> p.getName()</td>
+                <td> p.getDescription()</td>
+                <td class="ms"> len(p.getTasks()) </td>
+                <td class="to_hide_phone"> % <span class="bar1 no_ie"></span></td>
               </tr>
-              <tr>
-                <td> Web Service for Fitness </td>
-                <td> XML web service for fitness information </td>
-                <td class="ms"> 1 </td>
-                <td class="to_hide_phone"> 0% <span class="bar2 no_ie"></span></td>
-              </tr>
-              <tr>
-                <td> Web Service for Diet </td>
-                <td> XML web service for diet information </td>
-                <td class="ms"> 1 </td>
-                <td class="to_hide_phone"> 0% <span class="bar2 no_ie"></span></td>
-              </tr>
-              <tr>
-                <td> Web Service for Shopping </td>
-                <td> XML web service for retail information </td>
-                <td class="ms"> 1 </td>
-                <td class="to_hide_phone"> 0% &nbsp; <span class="bar2 no_ie"></span></td>
-              </tr>
+%endfor
             </tbody>
           </table>
         </div>

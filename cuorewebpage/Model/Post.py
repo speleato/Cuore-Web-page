@@ -88,6 +88,8 @@ class Post:
         if Blog is not None:
 #            self.setBlog(User(Owner).getDepBlogs()[0])
             self.setBlog(Blog)
+        if self.getUpdateTime() is None:
+            self.setUpdateTime()
 
 
     #
@@ -111,6 +113,20 @@ class Post:
             return self.postInstance["name"]
         else:
             return None
+
+
+    #
+    # Function	: getNID
+    # Arguments	:
+    # Returns	: Node ID
+    #
+    def getNID(self):
+        if self.postInstance is not None:
+            return self.postInstance._id
+        else:
+            return None
+
+
 
     #
     # Function	: setDescription
@@ -157,6 +173,22 @@ class Post:
     #
     def getTime(self):
         return self.postInstance["sTime"]
+
+    #
+    # Function	: setUpdateTime
+    # Arguments	: String uTime (in milliseconds)
+    # Returns	:
+    #
+    def setUpdateTime(self):
+        self.postInstance['uTime'] = datetime.now()
+
+    #
+    # Function	: getUpdateTime
+    # Arguments	:
+    # Returns	: (String) uTime
+    #
+    def getUpdateTime(self):
+        return self.postInstance['uTime']
 
     #
     # Function  : getTimeWords(self)
@@ -277,3 +309,11 @@ class Post:
         page_url = PageURL_WebOb(request)
         return Page(Post.all(), page, url=page_url, items_per_page=5)
 """
+
+# Function: getPost
+# Arguments: request
+# Returns: User object of current user w/ uid if found, otherwise returns none
+def getPost(request):
+    graph_db = neo4j.GraphDatabaseService(db_config['uri'])
+    node = graph_db.node(request.GET.getone('URI'))
+    return Post(node)

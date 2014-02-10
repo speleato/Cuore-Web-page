@@ -12,6 +12,7 @@ from cuorewebpage.Model.Title import *
 from cuorewebpage.Model.Department import *
 from cuorewebpage.Model.Blog import *
 from cuorewebpage.Model.Post import *
+from cuorewebpage.Model.Comment import *
 
 #graph_db = neo4j.GraphDatabaseService(db_config['uri'])
 #store = ogm.Store(graph_db)
@@ -25,14 +26,13 @@ def blog_list_view(request):
 
         if getCurrentUser(request) is None:
             return redirectToRegistration(request)
-        else: #Get the user, calendar, and events so we can populate them in the template
-            print "We have an actual user!!"
+        else:
             mUser     = User(uid=request.session['uid'])
             mBlog     = Blog(Name="Cuore")
 
             posts     = list()
             for p in mBlog.getPosts():
-                posts.append(Post(p))
+                posts.append(Post(URI=p))
 
             ctx['user']     = mUser
             ctx['blog']     = mBlog
@@ -42,14 +42,44 @@ def blog_list_view(request):
     else:
         return redirectUser(request)
 
-@view_config(route_name='Blog_Post', renderer='cuorewebpage:templates/blog_post.mako')
+"""
+INDIVIDUAL BLOG ENTRY PAGE
+"""
+@view_config(route_name='Blog_Action', match_param='action=post', renderer='cuorewebpage:templates/blog_post.mako')
+
 def blog_post_view(request):
     if isUserLoggedOn(request):
         if getCurrentUser(request) is None:
             return redirectToRegistration(request)
         ctx = {}
-        ctx['section'] = "Blog Dashboard"
-        ctx['user'] = getCurrentUser(request)
+        ctx['section'] = "Blog Entry"
+        mUser = getCurrentUser(request)
+        mBlog = Blog(Name="Cuore")
+        mPost = getPost(request)
+
+        if request.POST:
+            comment_name =re.sub("[^A-Za-z0-9,.\-()]", "", request.POST.getone('name'))
+            comment_content =re.sub("[^A-Za-z0-9,.\-()]", "", request.POST.getone('content'))
+            comment = Comment(Name=comment_name, Content=comment_content, Owner=mUser.getNode(), Parent=mPost.getNode())
+            mPost.setUpdateTime()
+            return HTTPFound(location=request.route_url('Blog', action="post", _query={'URI': mPost.getNode()} ) )
+
+        posts     = list()
+        for p in mBlog.getPosts():
+            posts.append(Post(URI=p))
+
+        comments = list()
+        for c in mPost.getComments():
+            comments.append(Comment(URI=c))
+
+        ctx['user'] = mUser
+        ctx['post'] = mPost
+        ctx['blog'] = mBlog
+        ctx['comments'] = comments
+        ctx['posts'] = posts
+        print "=========================================="
+        print request.GET.getone('URI')
+        print "=========================================="
         return ctx
     else:
         return redirectUser(request)
@@ -63,8 +93,7 @@ def blog_post_create(request):
 
         if getCurrentUser(request) is None:
             return redirectToRegistration(request)
-        else: #Get the user, calendar, and events so we can populate them in the template
-            print "We have an actual user!!"
+        else:
             mUser     = User(uid=request.session['uid'])
             mBlog     = Blog(Name="Cuore")
 
@@ -73,8 +102,6 @@ def blog_post_create(request):
                 post_name =re.sub("[^A-Za-z0-9,.\-()]", "", request.POST.getone('name'))
                 post_content =re.sub("[^A-Za-z0-9,.\-()]", "", request.POST.getone('content'))
                 post = Post(Name=post_name, Content=post_content, Owner=mUser.getNode(), Blog=mBlog.getNode())
-                #            post.setBlog(blog.getNode())
-    #            post.setBlog(Blog(Name=post_blog).getNode())
                 return HTTPFound(location=request.route_url('Blog'))
 
             ctx['user']     = mUser

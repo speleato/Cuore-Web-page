@@ -69,7 +69,6 @@ class Task:
             tempTask = neo4j.Node(URI)
 
         elif Name is not None and Status is not None:
-#            tempTask, = self.graph_db.create({"name": Name, "status": Status})
             tempTask = self.graph_db.get_or_create_indexed_node(IND_TASK, "nametime", Name+str(datetime.now()), {"name": Name, "status": Status})
             tempTask.add_labels(LBL_TASK)
 
@@ -77,6 +76,9 @@ class Task:
             raise Exception("Name/Status or URI not specified")
 
         self.taskInstance = tempTask
+
+        if self.getUpdateTime() is None:
+            self.setUpdateTime()
 
     # Function	: __str__
     # Arguments	:
@@ -128,6 +130,23 @@ class Task:
     #
     def getEndTime(self):
         return self.taskInstance["eTime"]
+
+    #
+    # Function	: setUpdateTime
+    # Arguments	: String uTime (in milliseconds)
+    # Returns	:
+    #
+    def setUpdateTime(self):
+        self.taskInstance['uTime'] = datetime.now()
+
+    #
+    # Function	: getUpdateTime
+    # Arguments	:
+    # Returns	: (String) uTime
+    #
+    def getUpdateTime(self):
+        return self.taskInstance['uTime']
+
 
     #
     # Function	: setInvestedTime

@@ -26,8 +26,7 @@ def main(global_config, **settings):
     config.add_route('Directory', '/directory')
     config.add_route('Newsfeed', '/newsfeed')
     config.add_route('Blog', '/blog')
-    config.add_route('Blog_Action', '/blog/{action}') # action = create or update
-    config.add_route('Blog_Post', '/blog/{id:\d+}/{slug}')
+    config.add_route('Blog_Action', '/blog/{action}') # action = create or update or comment/view
     config.add_route('Files', '/files')
     config.add_route('FileUpload', '/files/upload')
     config.add_route('FileDownload', '/files/download')
