@@ -59,6 +59,9 @@
                     <li class="color_22">
                         <a class="widgets" data-parent="#sidebar_menu" href="${request.route_url('Registration')}">
                             <img src="${request.static_url('cuorewebpage:img/menu_icons/others.png')}"><span>User Settings</span></a> </li>
+                    <li class="color_22">
+                        <a class="widgets" data-parent="#sidebar_menu" href="${request.route_url('AdminPanel')}">
+                            <img src="${request.static_url('cuorewebpage:img/menu_icons/others.png')}"><span>Admin Panel</span></a> </li>
                     <li class="color_8">
                         <a class="widgets"data-parent="#sidebar_menu" href="${request.route_url('Contact')}">
                         <img src="${request.static_url('cuorewebpage:img/menu_icons/gallery.png')}"><span>Contact Us</span></a> </li>

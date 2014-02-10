@@ -9,10 +9,12 @@
     <input type="text" name="remDep" value="" hidden>
     <input type="text" name="remTitle" value="" hidden>
 
+    <%doc>
     Search by name, group (department or title), or email:
     <input type="text" name="search" value="">
     <input type="submit" name="searchType" value="Search">
     Or:
+    </%doc>
     <input type="submit" name="searchType" value="Get All Unconfirmed">
     Or:
     <input type="submit" name="searchType" value="Get All Unassigned">
@@ -65,7 +67,7 @@
                 <form action="/registration/edit" method="post">
                     <%doc> Passes through UID of desired user as a hidden field (used to identify target user in registration/edit panel)</%doc>
                     <input type="text" name="user" hidden value="${user[name]}">
-                    <input type="submit" value="Confirm ${name}">
+                    <input type="submit" value="Assign ${name}">
                 </form>
             %endfor
         %endfor
@@ -87,7 +89,7 @@
                 <form action="/registration/edit" method="post">
                     <%doc> Passes through UID of desired user as a hidden field (used to identify target user in registration/edit panel)</%doc>
                     <input type="text" name="user" hidden value="${user[name]}">
-                    <input type="submit" value="Confirm ${name}">
+                    <input type="submit" value="Assign ${name}">
                 </form>
             %endfor
         %endfor

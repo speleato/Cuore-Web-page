@@ -99,23 +99,37 @@ def SubmitRegistration(request):
             #       however the list will also contain some strings that represent a department/title combo that is not
             #       associated with user, these strings are "None" strings (quick fix, go back later w/ AJAX)
             titles=request.POST.getall('titles[]')
+            equity_rate = request.POST.getone('equity_rate')
             uid=request.POST.getone('uid')
 
             # add updated info to database
             user = User(uid=uid)
+
+            # notify user if equity rate is changed
+            if user.getEquityRate() != equity_rate:
+                mailer = get_mailer(request)
+                message = Message(subject="Your Equity Rate for Cuore has been changed",
+                    sender = "info@cuore.io",                    # change to admin email later
+                    recipients = [user.getEmail()],
+                    body = "Your equity rate has been changed from " + str(user.getEquityRate()) + " to " + str(equity_rate))
+                mailer.send(message)
+                user.userInstance['equity_rate'] = equity_rate
+                transaction.commit()
+
+            split_titles = []
+
             for i in titles:
                 if i != "None":
                     Department(name=i.split(",")[0]).addTitle(Title(name=i.split(",")[1]))
                     Title(name=i.split(",")[1]).addUser(user)
-            #confirmed=userNode.get_properties()["confirmed"]
-            #if(confirmed<2):
-            #    confirmed += 2
-            #userNode.update_properties({"title":title, "email":email, "confirmed":confirmed})
-            #titleNode = graph_db.get_or_create_indexed_node(IND_TITLE, "name", title, {"name":title})
-            #departmentNode = graph_db.get_indexed_node(IND_DEP, "name", department)
-            #graph_db.create((titleNode, "IS A", userNode), (departmentNode, "IN", titleNode))
-            #unconfirmedNode = graph_db.get_indexed_node("Unconfirmed", "name", "unconfirmed")
-            #graph_db.match(userNode, "IS", unconfirmedNode).delete()
+                    split_titles.append(i.split(",")[1])
+
+
+            #temporary way of removing titles
+            for i in user.getTitles():
+                if Title(i).getName() not in split_titles:
+                    user.removeTitle(Title(i))
+
 
             # after confirmed by Leo, send email to user
             # if leo confirmed, update confirmation flags

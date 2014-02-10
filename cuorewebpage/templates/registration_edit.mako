@@ -82,16 +82,10 @@
                 <input id="uid" name="uid" value=${user.getUID()} type="hidden"/>
                 <h1>${user.getFullName()}</h1>
                 <%doc>
-                <div class="form-row control-group row-fluid">
-                    <label class="control-label span3" for="inputEmail">Departments</label>
-                    <div class="controls span9">
-                        <select data-placeholder="Choose a Department" class="chzn-select" multiple="" tabindex="3">
-                            %for i in departments:
-                                <option value="${i['department']}">${i['department']}</option>
-                            %endfor
-                        </select>
-                    </div>
-                </div>
+                        This is currently a kludgy solution to assign titles. Ideally it should be done with AJAX so that
+                    the admin can hit a button that says add title, or remove title. This should then pop up a department
+                    and title select box where the contents of the title select box are dynamically rendered based on which
+                    department is selected.
                 </%doc>
                 %for i in departments:
                     <div class="form-row control-group row-fluid">
@@ -117,6 +111,12 @@
                         </div>
                     </div>
                 %endfor
+                <div class="form-row control-group row-fluid">
+                  <label class="control-label span3">Equity Rate</label>
+                  <div class="controls span9">
+                    <input id="equity_rate" name="equity_rate" type="text" value="${user.getEquityRate()}" required class="row-fluid"/>
+                  </div>
+                </div>
                 <div class="form-actions row-fluid">
                   <div class="span7 offset3">
                     <button type="submit" class="btn btn-primary">Confirm</button>
