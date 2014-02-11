@@ -35,6 +35,19 @@
             %endfor
         </div>
     </form>
+        <label for="file">File</label>
+        <div>
+            <p>Available Files</p>
+            %for i in range(0, len(fileList)):
+            <form action="files/download" method="post" accept-charset="utf-8" enctype="multipart/form-data">
+                <b name="file" value=${fileList[i][0]}>${fileList[i][0]}</b>
+                <input type="hidden" name="file" value="${fileList[i][0]}" />
+                <b name="department" style="margin-left:200px" href=#>${fileList[i][1]}</b>
+                <input type="hidden" name="department" value="${fileList[i][1]}" />
+                <input type="submit" style="margin-left:200px" value="Download" /><br/>
+            </form>
+            %endfor
+        </div>
 </div>
 <%block name="footer">
 ${parent.footer()}
