@@ -56,6 +56,16 @@ def Files(request):
         if tasks is not None:
             for i in tasks:
                 ctx['tasks'].append(i['name'])
+
+        #We will now display the files that the user has access.
+        fileList = list()
+        if departments is not None:
+            for i in departments:
+                dept = Department(name=i['name'])
+                departamentFiles = dept.getFiles()
+                for k in departamentFiles:
+                    fileList.append([k['name'], dept.getName(), k['file']])
+        ctx['fileList'] = fileList
         return ctx
     else:
         return redirectUser(request)
@@ -87,9 +97,21 @@ def FileUpload(request):
 @view_config(route_name="FileDownload", renderer="cuorewebpage:templates/files.mako")
 def FileDownload(request):
     if isUserLoggedOn(request):
-        ctx = {}
-        ctx['section'] = 'Files'
-        return ctx
+        if request.POST.get('file') is not None:
+
+            user = request.session['uid']
+
+            fileToDownload = request.POST.get('file')
+            department = request.POST.get('department')
+
+            #We store the file in the database
+            file = File(None, fileToDownload, department)
+            return file.downloadFile(department, fileToDownload, request)
+
+        else:
+            print "error in POST file upload."
+            print request
+        return HTTPFound(location=request.route_url('Files'))
     else:
         return redirectUser(request)
 
