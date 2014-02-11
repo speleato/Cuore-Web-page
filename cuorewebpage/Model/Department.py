@@ -125,12 +125,25 @@ class Department(object):
         else:
             return None
 
+    # Function  : getUsers
+    # Arguments :
+    # Returns   : a list with the users asociated with the current Department
     def getUsers(self):
         global REL_HASUSER
         users = list()
         for t in self.getTitles():
             users.extend(Title(t).getUsers())
         return users
+
+    # Function  : getFiles
+    # Arguments :
+    # Returns   : a list with the files asociated with the current Department
+    def getFiles(self):
+        global REL_HASFILE
+        files = list()
+        for i in list(self.deptInstance.match_outgoing(REL_HASFILE)):
+            files.append(i.end_node)
+        return files
 
     # Connect a title node to self
     def addTitle(self, title_object):
