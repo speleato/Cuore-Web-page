@@ -390,7 +390,10 @@ class User:
     # Arguments :
     # Returns   : a Workspace Object
     def getWorkspace(self):
-        return Department(self.getDepartments()[0]).getWorkspace()
+        if self.getDepartments() is not None and len(self.getDepartments()) > 0:
+            return Department(self.getDepartments()[0]).getWorkspace()
+        else:
+            return None
 
     def getInvitedEvents(self):
         global REL_INVITED
