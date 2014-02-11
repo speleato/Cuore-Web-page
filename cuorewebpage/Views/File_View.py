@@ -115,7 +115,7 @@ def FileDownload(request):
     else:
         return redirectUser(request)
 
-
+#Not working yet.
 @view_config(route_name="FileDelete", renderer="cuorewebpage:templates/files.mako")
 def FileDelete(request):
     if isUserLoggedOn(request):
