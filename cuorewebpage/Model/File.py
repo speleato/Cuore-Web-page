@@ -2,6 +2,8 @@ from database_config import *
 from py2neo import neo4j, node, ogm
 import time
 import os
+import mimetypes
+import urllib
 #from Person import Title
 from web_config import *
 from Department import *
@@ -9,7 +11,7 @@ from Company import *
 from User import *
 from Project import *
 from Task import *
-
+from pyramid.response import FileResponse
 from Title import *
 # Class  : File
 # Methods:
@@ -236,3 +238,18 @@ class File:
     # Clears the entire DB for dev purposes
     def clear(self):
         self.graph_db.clear()
+
+    #Returns the route where the file is stored.
+    def getRoute(self):
+        return self.getDepartment() + '/', self.getName()
+
+        #Returns the route where the file is stored.
+    def downloadFile(self, Department, File, request):
+        global FILESYS_PATH
+        global BASE_ROOT
+        urlOfFile = BASE_ROOT+'/'+FILESYS_PATH+'/'+Department+'/'+File
+        typeOfFile = mimetypes.guess_type(url=urlOfFile)[0]
+        response = FileResponse(urlOfFile, request=request,content_type= mimetypes.guess_type(url=urlOfFile)[0] )
+        response.content_disposition = 'attachment; filename="'+File+'"'
+        return response
+
