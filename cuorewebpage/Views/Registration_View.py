@@ -156,6 +156,7 @@ def SubmitRegistration(request):
             state = re.sub("[^A-Za-z0-9,.\-() ]", "", request.POST.getone('state'))
             zipcode = re.sub("[^A-Za-z0-9,.\-() ]", "", request.POST.getone('zip_code'))
             about = re.sub("[^A-Za-z0-9,.\-() ]", "", request.POST.getone('about'))
+            quote = re.sub("[^A-Za-z0-9,.\-() ]", "", request.POST.getone('quote'))
             req_title = request.POST.getone('req_title').split(",")[1]
             req_dept = request.POST.getone('req_title').split(",")[0]
             uid = request.session["uid"]
@@ -182,7 +183,7 @@ def SubmitRegistration(request):
             # create flags and set to not confirmed
             # create user node in database, put in temporary zone
             user = User(uid=uid, first_name=first_name, last_name=last_name, email=email, confirmed=0,
-                        phone=phone, address=address, city=city, state=state, zipcode=zipcode, about=about, photo=photo, req_title=req_title, req_dept=req_dept)
+                        phone=phone, address=address, city=city, state=state, zipcode=zipcode, about=about, quote=quote, photo=photo, req_title=req_title, req_dept=req_dept)
 #            store.save_unique(IND_USER, "uid", user.uid, user)
             unconfirmedNode=graph_db.get_or_create_indexed_node("Unconfirmed", "name", "unconfirmed", {"name":"unconfirmed"})
 #            userNode=graph_db.get_indexed_node(IND_USER, "uid", user.uid)
@@ -202,6 +203,7 @@ def SubmitRegistration(request):
                                      + "'s registration: " + request.route_url('AdminPanel'))
             mailer.send(message)
             transaction.commit()
+            return HTTPFound(location=request.route_url('Dashboard'))
         elif request.POST.getone('task') == "edit":
             # reg-ex, remove non-digit characters
             email=re.sub("[^A-Za-z0-9.@!#$%&'*+\-/=?^_`{|}~]", "", request.POST.getone('email'))
@@ -211,6 +213,7 @@ def SubmitRegistration(request):
             state = re.sub("[^A-Za-z0-9,.\-() ]", "", request.POST.getone('state'))
             zipcode = re.sub("[^A-Za-z0-9,.\-() ]", "", request.POST.getone('zip_code'))
             about = re.sub("[^A-Za-z0-9,.!?\-() ]", "", request.POST.getone('about'))
+            quote = re.sub("[^A-Za-z0-9,.!?\-() ]", "", request.POST.getone('quote'))
             photo = getCurrentUser(request).getPhoto()
             if request.POST.getone('profile_image') != "":
                 ext = os.path.splitext(request.POST.getone('profile_image').filename)[-1].lower()
@@ -233,7 +236,8 @@ def SubmitRegistration(request):
                 f.write(request.POST.getone('profile_image').value)
                 f.close()
 
-            getCurrentUser(request).getNode().update_properties({"email":email, "phone":phone, "address":address, "city":city, "state":state, "zipcode":zipcode, "photo":photo, "about":about})
+            getCurrentUser(request).getNode().update_properties({"email":email, "phone":phone, "address":address, "city":city, "state":state, "zipcode":zipcode, "photo":photo, "about":about, "quote":quote})
+            return HTTPFound(location=request.route_url('Dashboard'))
     return {}
 
 @view_config(route_name="Registration_Action", match_param="action=confirm", renderer="cuorewebpage:templates/Registration.mako")

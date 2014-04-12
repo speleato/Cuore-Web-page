@@ -13,12 +13,19 @@ def profile(request):
     if isUserLoggedOn(request):
         if getCurrentUser(request) is None:
             return redirectToRegistration(request)
-        ctx = {}
         if request.GET:
-            ctx['user'] = User(uid = request.GET.getone('uid'))
+            mUser = User(uid = request.GET.getone('uid'))
         else:
-            ctx['user'] = getCurrentUser(request)
+            mUser = getCurrentUser(request)
+
+        mDept = mUser.getDepartment()
+        mTitle = mUser.getTitle()
+
+        ctx = {}
         ctx['section'] = "Profile"
+        ctx['user'] = mUser
+        ctx['dept'] = Department(mDept)
+        ctx['title'] = Title(mTitle)
         return ctx
     else:
         return redirectUser(request)

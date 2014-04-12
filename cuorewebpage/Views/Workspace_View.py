@@ -1,6 +1,7 @@
 from cuorewebpage.Model.Project import Project
 from cuorewebpage.Model.Task import Task
 from cuorewebpage.Model.Department import Department
+from cuorewebpage.Model.User import *
 from cuorewebpage.Model.Workspace import Workspace
 from datetime import datetime
 
@@ -27,13 +28,22 @@ def Tasks(request):
             return redirectToRegistration(request)
         ctx = {}
         ctx['section']  = 'Tasks'
-        ctx['id'] = -1
+
         if getCurrentUser(request) is None:
             return redirectUser(request)
-        else: #Get the user, calendar, and events so we can populate them in the template
+        else:
             print "We have an actual user!!"
-            mUser     = User(uid=request.session['uid'])
-            mCalendar = mUser.getCalendar()
+            mUser     = getCurrentUser(request)
+            mDept     = Department(mUser.getDepartment())
+            mWorkspace = Workspace(mDept.getWorkspace())
+
+            projects  = list()
+            for p in mWorkspace.getProjects():
+                projects.append(Project(p))
+
+            tasks     = list()
+            for t in mUser.getAssignedTasks():
+                tasks.append(Task(t))
 
             #Handle the POST request here
             if request.POST:
@@ -42,59 +52,11 @@ def Tasks(request):
                 print "\tAction = " + str(request.POST.getone('action'))
                 print "============================="
 
-                #Create New Event
-                if request.POST.getone('action') == '0':
-                    title = request.POST.getone('title')
-                    start = long(request.POST.getone('sTime'))/1000
-                    end   = long(request.POST.getone('eTime'))/1000
-
-                    nEvent = Event(Name=title, sTime=start, eTime=end, Owner=mUser.getNode())
-                    mCalendar.addEvent(nEvent.getNode())
-                    ctx['id'] = nEvent.getNode()._id
-
-                    print "============================="
-                    print "\tNew Event!"
-                    print "\tTitle: " + title
-                    print "\tId   : " + str(ctx['id'])
-                    print "\tsTime: " + str(start)
-                    print "\teTime: " + str(end)
-                    print "============================="
-
-
-                #Adjust Time of Event
-                elif request.POST.getone('action') == '1':
-                    print "============================="
-                    print "\tId   \t: " + request.POST.getone('id')
-                    print "\tsTime\t: " + str(long(request.POST.getone('sTime'))/1000)
-                    print "\teTime\t: " + str(long(request.POST.getone('eTime'))/1000)
-                    print "============================="
-                    mEvent = Event(graph_db.node(request.POST.getone('id')))
-                    mEvent.setStartTime(long(request.POST.getone('sTime'))/1000)
-                    mEvent.setEndTime(long(request.POST.getone('eTime'))/1000)
-
-
-            #Populate the Event List to pass to the mako file
-            events = list()
-            for event in mCalendar.getEvents():
-                events.append(Event(URI=event))
-
-            #Get all the Events that we have been invited to
-            for event in mUser.getInvitedEvents():
-                events.append(event)
-
-            #Get Tasks for the tasks sidebar
-            tasks       = list()
-
-            workspace   = mUser.getWorkspace()
-            projects    = workspace.getProjects()
-            for project in projects:
-                for task in (Project(project)).getTasks():
-                    tasks.append(Task(task))
+                #Create New Task
 
             ctx['user']     = mUser
             ctx['tasks']    = tasks
-            ctx['events']   = events
-            ctx['calendar'] = mCalendar
+            ctx['projects']   = projects
 
         return ctx
     else:
@@ -111,7 +73,9 @@ def Workspace(request):
             mUser     = User(uid=request.session['uid'])
             mDept     = mUser.getDepartment()
             mWorkspace = Department(mDept).getWorkspace()
-            mProjects  = Workspace(mWorkspace).getProjects()
+            projects = list()
+            for p in mWorkspace.getProjects():
+                projects.append(Project(p))
             mBlog      = Department(mDept).getBlog()
 
         posts = list()
@@ -119,15 +83,15 @@ def Workspace(request):
             posts.append(Post(URI=p))
 
         tasks = list()
-        for p in mProjects:
-            for t in Project(p).getTasks():
+        for p in projects:
+            for t in p.getTasks():
                 tasks.append(Task(t))
 
 
         ctx['user'] = mUser
         ctx['department'] = Department(mDept)
         ctx['posts'] = posts
-        ctx['projects'] = mProjects
+        ctx['projects'] = projects
         ctx['tasks'] = tasks
         return ctx
     else:

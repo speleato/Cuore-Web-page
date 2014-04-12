@@ -15,10 +15,22 @@ def Directory(request):
         if getCurrentUser(request) is None:
             return redirectToRegistration(request)
         ctx = {}
-        ctx['section'] = 'Directory'
         ctx['user'] = getCurrentUser(request)
-        ctx['company'] = Company(Name="Cuore").getName()
-        ctx['departments'] = Company(Name="Cuore").getDepartments()
+        ctx['section'] = 'Directory'
+
+        company = Company(Name="Cuore")
+
+        departments = {}
+        for d in company.getDepartments():
+            dept = Department(d)
+            if dept.getName() != "Admin":
+                titles = list()
+                for t in dept.getTitles():
+                    titles.append(Title(t))
+                departments[dept] = titles
+
+        ctx['departments'] = departments
+        ctx['company'] = company
         return ctx
     else:
         return redirectUser(request)

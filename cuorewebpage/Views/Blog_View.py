@@ -33,6 +33,8 @@ def blog_list_view(request):
             posts     = list()
             for p in mBlog.getPosts():
                 posts.append(Post(URI=p))
+            print "##################################"
+            print posts[0].getTags()
 
             ctx['user']     = mUser
             ctx['blog']     = mBlog
