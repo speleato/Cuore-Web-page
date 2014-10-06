@@ -146,11 +146,12 @@ class Department(object):
         return files
 
     # Connect a title node to self
-    def addTitle(self, title_object):
-        if LBL_TITLES in title_object.titleInstance.get_labels():
-            self.deptInstance.get_or_create_path(REL_HASTITLE, title_object.titleInstance)
-        else:
-            raise Exception("The Node Provided is not a Title")
+    def addTitle(self, title_name):
+        Title(name=title_name, dept=self.deptInstance)
+        #if LBL_TITLES in title_object.titleInstance.get_labels():
+            #self.deptInstance.get_or_create_path(REL_HASTITLE, title_object.titleInstance)
+        #else:
+            #raise Exception("The Node Provided is not a Title")
 
 
 

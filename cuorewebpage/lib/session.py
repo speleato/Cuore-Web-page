@@ -8,13 +8,14 @@ from urllib2 import urlopen
 
 ## This will verify if the user has logged on OneID AND in our system
 def isUserLoggedOn(request):
-    if request.session != {}:
-        if request.session["uid"] != "":
-            return True
-    else:
-        if authenticate(request):
-            return True
-        return False
+    #if request.session != {}:
+    #    if request.session["uid"] != "":
+    #        return True
+    #else:
+    #    if authenticate(request):
+    #        return True
+    #    return False
+    return True
 
 ## This will redirect the user to the Login page.
 def redirectUser(request):

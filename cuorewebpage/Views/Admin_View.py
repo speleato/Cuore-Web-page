@@ -55,11 +55,11 @@ def admin_panel(request):
             if request.POST.getone("addDep"):
                 Company("Cuore").addDepartment(re.sub("[^A-Za-z0-9,.\-() ]", "", request.POST.getone("addDep")))
                 #store.load_unique(IND_COMP, "name", "Cuore", Company).addDepartment(re.escape(request.POST.getone("addDep")))
-                print 1
+                #print 1
             elif request.POST.getone("addTitle"):
                 Department(name=request.POST.getone("addToDep")).addTitle((re.sub("[^A-Za-z0-9,.\-() ]", "", request.POST.getone("addTitle"))))
                 #store.load_unique(IND_DEP, "name", request.POST.getone("addToDep"), Department).addTitle(re.escape(request.POST.getone("addTitle")))
-                print 2
+                #print 2
             #elif request.POST.getone("remDep"):
                 #Company("Cuore").removeDepartment(request.POST.getone("remDep"))
                 #store.load_unique(IND_COMP, "name", "Cuore", Company).removeDepartment(re.escape(request.POST.getone("remDep")))
